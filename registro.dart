@@ -20,7 +20,7 @@ class registranding extends State<registro> {
   String getvalue2 = "";
   String getvalue3 = "";
   String getvalue4 = "";
-  var db = new Mysql();
+ // var db = new Mysql();
 @override
 Widget build(BuildContext context) {
   double screenSize = MediaQuery.of(context).size.width;
@@ -242,7 +242,7 @@ Widget build(BuildContext context) {
                       getvalue2 = entrada_registro_ApellidoCuenta.text.toString();
                       getvalue3 = entrada_registro_ContraCuenta.text.toString();
                       getvalue4 = entrada_registro_RFCCuenta.text.toString();
-                      db.insertarusuario(getvalue, getvalue2, getvalue3, getvalue4);
+                     // db.insertarusuario(getvalue, getvalue2, getvalue3, getvalue4);
                     });
 
               },

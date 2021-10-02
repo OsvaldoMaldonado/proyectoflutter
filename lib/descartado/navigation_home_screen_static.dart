@@ -1,13 +1,20 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:servicios_vic/navigation_category_screen.dart';
+import 'package:servicios_vic/navigation_home_creen.dart';
+import 'package:http/http.dart' as http;
+
+class NavigationHomeScreenStatic extends StatelessWidget{
+  NavigationHomeScreenStatic({Key? key}) : super(key: key);
+  final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
 
 
-class NavigationHomeScreen extends StatelessWidget{
-  NavigationHomeScreen({Key? key}) : super(key: key);
-  GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
+
     return Scaffold(
       key: _globalKey,
       drawer: Drawer(
@@ -60,6 +67,7 @@ class NavigationHomeScreen extends StatelessWidget{
                   child: InkWell(
                     onTap: () {
                       _globalKey.currentState!.openDrawer();
+                      
                     },
                     borderRadius: BorderRadius.circular(30.0),
                       // ignore: prefer_const_constructors
@@ -108,6 +116,7 @@ class NavigationHomeScreen extends StatelessWidget{
             child: Row(
               // ignore: prefer_const_literals_to_create_immutables
               children: <Widget>[
+                
                 professions(const Color(0xff009ece), 'Electricista', 
                 const Icon(Icons.electrical_services,size: 40.0,), context),
                 professions(const Color(0xffff9e00),'Cerrajero', 
@@ -170,10 +179,8 @@ class NavigationHomeScreen extends StatelessWidget{
     );
   }
 
- 
-
   Widget professions (Color color, String profesion, Icon icono,  BuildContext context){
-   double screenSize = MediaQuery.of(context).size.width;
+    double screenSize = MediaQuery.of(context).size.width;
     return Container(
       margin: const EdgeInsets.only(
           left: 6.0,
@@ -195,11 +202,11 @@ class NavigationHomeScreen extends StatelessWidget{
       ),
       child: InkWell(
         onTap: () {
-          Navigator.push(
+          /*Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => NavigationCategoryScreen(profesion: profesion)),
               );
-          },
+          */},
         borderRadius: BorderRadius.circular(20.0),
         // ignore: prefer_const_constructors
         child: Column(
@@ -222,7 +229,7 @@ class NavigationHomeScreen extends StatelessWidget{
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20.0)),
                 color: const Color(0xffe0e0e0)
-              ),
+              ),  
               child: Text(profesion, textAlign: TextAlign.center),
             ),
           ],
@@ -230,5 +237,5 @@ class NavigationHomeScreen extends StatelessWidget{
        ),
      );    
   }
-  
+ 
 }

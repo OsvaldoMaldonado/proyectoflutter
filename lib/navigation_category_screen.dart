@@ -1,13 +1,57 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:servicios_vic/navigation_home_screen.dart';
 import 'package:servicios_vic/navitagion_job_screen.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
+import 'dart:convert';
+import 'navigation_home_creen.dart';
 
+Future<List<TipoServicio>?> fetchTipoServicio(http.Client client, int id, String? nombre) async {
+  if(nombre==null){
+    final response = await client
+      .get(Uri.parse('https://proyectonunoxd.000webhostapp.com/tiposervicio.php/?id=$id'));  
+    return compute(parseTipoServicio, response.body);
+  }else{
+    final response = await client
+      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/tiposerviciobusqueda.php/?id=$id&nombre='$nombre'"));
+    return compute(parseTipoServicio, response.body);
+  }
+}
+
+
+// A function that converts a response body into a List<Categorias>.
+List<TipoServicio> parseTipoServicio(String responseBody) {
+  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+
+  return parsed.map<TipoServicio>((json) => TipoServicio.fromJson(json)).toList();
+}
+
+class TipoServicio {
+  final String id;
+  final String nombre;
+  final String descripcion;
+
+  const TipoServicio({
+    required this.id,
+    required this.nombre,
+    required this.descripcion,
+  });
+
+  factory TipoServicio.fromJson(Map<String, dynamic> json) {
+    return TipoServicio(
+      id: json['idTab_tiposervicio'] as String,
+      nombre: json['nombre'] as String,
+      descripcion: json['descripcion'] as String,
+    );
+  }
+}
 
 class NavigationCategoryScreen extends StatelessWidget{
-  final String? profesion;
-  const NavigationCategoryScreen({Key? key, required this.profesion}) : super(key: key);
-
+  String? profesion;
+  int? id_profesion;
+  String? nombre;
+  NavigationCategoryScreen({Key? key, required this.profesion, required this.id_profesion,required this.nombre});
+  
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
@@ -59,15 +103,14 @@ class NavigationCategoryScreen extends StatelessWidget{
             alignment: Alignment.topLeft,
             margin: const EdgeInsets.only(top:20,),  
             width: screenSize * 0.90,
-            child: const TextField(
-              decoration: InputDecoration(    
-                
+            child: TextField(
+              decoration: const InputDecoration(    
                 focusColor: Colors.grey,  
                 hintText: 'Buscar categorias',
                 fillColor: Color(0xffe0e0e0), filled: true,
                 hintStyle: TextStyle(color: Colors.black),
-
-              ),  
+              ),
+                
             )
           ),
           Container(
@@ -81,105 +124,132 @@ class NavigationCategoryScreen extends StatelessWidget{
             ),
           ),
           Container(
-            alignment: Alignment.topCenter,
-            margin: const EdgeInsets.only(top:20.0,left: 12.0, right: 12.0),
-            child: Column(
-              // ignore: prefer_const_literals_to_create_immutables
-              children: <Widget>[    
-                categories('Cambios', 'Cambios necesarios', context),
-                categories('Instalación', 'Instalaciones en casa', context),
-                categories('Colocación y conexión', 'Colocación y conexión', context),
-              ],
+            alignment: Alignment.topLeft,  
+            width: screenSize * 0.90,
+            child: FutureBuilder<List<TipoServicio>?>(
+              future: fetchTipoServicio(http.Client(), id_profesion!, null),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text('An error has occurred!'),
+                  );
+                } else if (snapshot.hasData) {
+                  return TipoServicioList(tiposervicio: snapshot.data!, profesion: profesion, id_profesion: id_profesion);
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
             ),
           ),
-         
         ],
       ),
     );
   }
 
-   Widget categories (String categoria, String descripcion,  BuildContext context){
-   double screenSize = MediaQuery.of(context).size.width;
-    return Container(
-      alignment: Alignment.topLeft,
-        margin: const EdgeInsets.only(
-          left: 6.0,
-          right: 6.0,
-          bottom: 15.0
-        ),
-        height: screenSize * .22,
-        width: screenSize * .90,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.0),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: const Offset(0, 3), // changes position of shadow
+}
+class TipoServicioList extends StatelessWidget {
+
+  final String? profesion;
+  final int? id_profesion;
+  final List<TipoServicio> tiposervicio;
+  const TipoServicioList({Key? key, required this.tiposervicio, this.profesion, this.id_profesion}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    double screenSize = MediaQuery.of(context).size.width;
+    return GridView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 1,
+        childAspectRatio: 3.5
+      ),
+      itemCount: tiposervicio.length,
+      itemBuilder: (context, index) {
+        return Container(
+          alignment: Alignment.topLeft,
+            margin: const EdgeInsets.only(
+              left: 6.0,
+              right: 6.0,
+              bottom: 15.0
             ),
-          ],
-        ),
-      child: InkWell( 
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => NavigationJobScreen(profesion: profesion, category: categoria,)),
-          );
-        },
-        borderRadius: BorderRadius.circular(20.0),
-        // ignore: prefer_const_constructors
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              margin: const EdgeInsets.only(
-                top: 5.0,
-                left: 10.0,
-              ),
-              child: Text( categoria, 
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
-                  color: Colors.black,
-                ), 
-              ),
+            height: screenSize * .22,
+            width: screenSize * .90,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 3,
+                  offset: const Offset(0, 3), // changes position of shadow
+               ),
+              ],
             ),
-            Container(
-              margin: const EdgeInsets.only(
-                left: 10.0,
-              ),
-              child: Text( descripcion, 
-                style: const TextStyle(
-                  fontSize: 14.0,
-                  color: Colors.black,
-                ), 
-              ),
+          child: InkWell( 
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NavigationJobScreen(tiposervicio: tiposervicio[index].nombre, 
+                id_tiposervicio: int.parse(tiposervicio[index].id), profesion: profesion, id_profesion: id_profesion,)),
+              );
+            },
+            borderRadius: BorderRadius.circular(20.0),
+            // ignore: prefer_const_constructors
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  margin: const EdgeInsets.only(
+                    top: 5.0,
+                    left: 10.0,
+                  ),
+                  child: Text( tiposervicio[index].nombre, 
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.0,
+                      color: Colors.black,
+                    ), 
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(
+                    left: 10.0,
+                  ),
+                  child: Text( tiposervicio[index].descripcion, 
+                    style: const TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.black,
+                    ), 
+                  ),
+                ),
+                Container(
+                  width: screenSize * .20,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: const Color(0xfff96332),
+                  ),
+                  margin: const EdgeInsets.only(
+                    left: 255.0,
+                    top: 10.0
+                  ),
+                  padding: const EdgeInsets.all(4),
+                  child: const Text( 'Categoria', 
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.black,
+                    ), 
+                  ),
+                ),
+              ]
             ),
-            Container(
-              width: screenSize * .20,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.0),
-                color: const Color(0xfff96332),
-              ),
-              margin: const EdgeInsets.only(
-                left: 265.0,
-                top: 10.0
-              ),
-              padding: const EdgeInsets.all(4),
-              child: const Text( 'Categoria', 
-                style: TextStyle(
-                  fontSize: 14.0,
-                  color: Colors.black,
-                ), 
-              ),
-            ),
-          ]
-         ),
-       ),
-       
-     );    
+          ),
+          
+        );    
+      },
+    );
   }
 }

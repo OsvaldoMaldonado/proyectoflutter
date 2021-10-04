@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:servicios_vic/modelo.dart';
-import 'package:servicios_vic/user_profile_screen.dart';
 import 'model/colors.dart';
 import 'navigation_category_screen.dart';
 
@@ -47,9 +46,9 @@ class Categorias {
 }
 
 
-class NavigationHomeScreen extends StatelessWidget {
+class UserProfileScreen extends StatelessWidget {
   final Future<String?> id_usuario;
-  NavigationHomeScreen({Key? key, required this.id_usuario}) : super(key: key);
+  UserProfileScreen({Key? key, required this.id_usuario}) : super(key: key);
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
 
 
@@ -57,116 +56,29 @@ class NavigationHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     
     double screenSize = MediaQuery.of(context).size.width;
-    double screenheight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       key: _globalKey,
       drawer: Drawer(
          child: ListView(
           // Important: Remove any padding from the ListView.
-          
+          padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Color(0xFFF96332),
-                    Color(0xFFFF6365),
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color(0xfff96332),
               ),
-              child: Container(
-                alignment: Alignment.bottomLeft,
-                child: Text(""),
-              ),  
+              child: Text(""),  
             ),
             Column(
               children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 6.0),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => UserProfileScreen(id_usuario: id_usuario)));
-                    },
-                    child: Row(
-                      children: const <Widget>[
-                        Icon(Icons.person_pin, size: 30.0,),
-                        Text('Mi cuenta',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
-                  )
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                  child: InkWell(
-                    child: Row(
-                      children: const <Widget>[
-                        Icon(Icons.access_time,size: 30.0),
-                        Text('Mi Historial de servicios',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
-                  )
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                  child: InkWell(
-                    child: Row(
-                      children: const <Widget>[
-                        Icon(Icons.location_on,size: 30.0),
-                        Text('Mis ubicaciones',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
-                  )
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                  child: InkWell(
-                    child: Row(
-                      children: const <Widget>[
-                        Icon(Icons.credit_card, size: 30.0),
-                        Text('Mis metodos de pago',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
-                  )
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                  child: InkWell(
-                    child: Row(
-                      children: const <Widget>[
-                        Icon(Icons.account_balance, size: 30.0),
-                        Text('Terminos y condiciones',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
-                  )
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                  child: InkWell(
-                    child: Row(
-                      children: const <Widget>[
-                        Icon(Icons.help, size: 30.0),
-                        Text('Ayuda',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
-                  )
-                ),
-                Container(height: screenheight*.40,),
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 6.0),
-                  child: InkWell(
-                    child: Row(
-                      children: const <Widget>[
-                        Icon(Icons.logout, size: 30.0),
-                        Text('Cerrar Sesión',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
-                  )
-                ),
+                drawerItems(const Icon(Icons.person_pin, size: 40.0,), 'Mi cuenta'),
+                drawerItems(const Icon(Icons.access_time, size: 40.0,), 'Mis Historial de servicios'),
+                drawerItems(const Icon(Icons.location_on,size: 40.0,), 'Mis ubicaciones'),
+                drawerItems(const Icon(Icons.credit_card, size: 40.0,), 'Mis metodos de pago'),
+                drawerItems(const Icon(Icons.account_balance, size: 40.0,), 'Terminos y condiciones'),
+                drawerItems(const Icon(Icons.help, size: 40.0,), 'Ayuda'),
+                Container(height: screenSize*.70,),
+                drawerItems(const Icon(Icons.logout, size: 40.0,), 'Cerrar Sesión'),
               ],
             ),
           ],

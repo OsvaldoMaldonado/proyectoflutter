@@ -78,7 +78,7 @@ class NavigationJobScreen extends StatelessWidget{
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => NavigationCategoryScreen(
-                          profesion: profesion, id_profesion: id_profesion)),
+                          profesion: profesion, id_profesion: id_profesion, nombre: '',)),
                       );
                     },
                     borderRadius: BorderRadius.circular(30.0),

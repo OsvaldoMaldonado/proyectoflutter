@@ -77,12 +77,12 @@ class NavigationCategoryScreen extends StatelessWidget{
                     color: const Color(0xffe0e0e0)
                   ),
                   child: InkWell(
-                    onTap: () {
+                    /*onTap: () {
                        Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => NavigationHomeScreen()),
                       );
-                    },
+                    },*/
                     borderRadius: BorderRadius.circular(30.0),
                       // ignore: prefer_const_constructors
                     child: Center(

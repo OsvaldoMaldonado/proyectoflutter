@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'navigation_home_creen.dart';
+import 'package:servicios_vic/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Poppins',
         platform: TargetPlatform.android,
       ),
-      home: NavigationHomeScreen(),
+      home: LoginScreen(),
     );
   }
 }

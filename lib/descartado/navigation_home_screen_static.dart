@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:servicios_vic/navigation_category_screen.dart';
-import 'package:servicios_vic/navigation_home_creen.dart';
+import 'package:servicios_vic/navigation_home_screen.dart';
 import 'package:http/http.dart' as http;
 
 class NavigationHomeScreenStatic extends StatelessWidget{

@@ -1,46 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-//import 'package:servicios_vic/navigation_category_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
-import 'dart:convert';
-
 import 'navigation_category_screen.dart';
-
-Future<List<Servicio>?> fetchServicio(http.Client client, int id) async {
-    final response = await client
-      .get(Uri.parse('https://proyectonunoxd.000webhostapp.com/servicio.php/?id=$id'));
-
-    return compute(parseServicio, response.body);
-  
-}
-
-// A function that converts a response body into a List<Categorias>.
-List<Servicio> parseServicio(String responseBody) {
-  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-
-  return parsed.map<Servicio>((json) => Servicio.fromJson(json)).toList();
-}
-
-class Servicio {
-  final String id;
-  final String nombre;
-  final String descripcion;
-
-  const Servicio({
-    required this.id,
-    required this.nombre,
-    required this.descripcion,
-  });
-
-  factory Servicio.fromJson(Map<String, dynamic> json) {
-    return Servicio(
-      id: json['idTab_servicio'] as String,
-      nombre: json['nombre'] as String,
-      descripcion: json['descripcion'] as String,
-    );
-  }
-}
+import 'package:servicios_vic/model/modelo.dart';
 
 class NavigationJobScreen extends StatelessWidget{
   final String? profesion;

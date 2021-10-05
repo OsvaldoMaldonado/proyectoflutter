@@ -3,48 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:servicios_vic/navitagion_job_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
-import 'dart:convert';
-import 'navigation_home_creen.dart';
-
-Future<List<TipoServicio>?> fetchTipoServicio(http.Client client, int id, String? nombre) async {
-  if(nombre==null){
-    final response = await client
-      .get(Uri.parse('https://proyectonunoxd.000webhostapp.com/tiposervicio.php/?id=$id'));  
-    return compute(parseTipoServicio, response.body);
-  }else{
-    final response = await client
-      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/tiposerviciobusqueda.php/?id=$id&nombre='$nombre'"));
-    return compute(parseTipoServicio, response.body);
-  }
-}
-
-
-// A function that converts a response body into a List<Categorias>.
-List<TipoServicio> parseTipoServicio(String responseBody) {
-  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-
-  return parsed.map<TipoServicio>((json) => TipoServicio.fromJson(json)).toList();
-}
-
-class TipoServicio {
-  final String id;
-  final String nombre;
-  final String descripcion;
-
-  const TipoServicio({
-    required this.id,
-    required this.nombre,
-    required this.descripcion,
-  });
-
-  factory TipoServicio.fromJson(Map<String, dynamic> json) {
-    return TipoServicio(
-      id: json['idTab_tiposervicio'] as String,
-      nombre: json['nombre'] as String,
-      descripcion: json['descripcion'] as String,
-    );
-  }
-}
+import 'package:servicios_vic/model/modelo.dart';
+import 'navigation_home_screen.dart';
 
 class NavigationCategoryScreen extends StatelessWidget{
   String? profesion;
@@ -66,10 +26,7 @@ class NavigationCategoryScreen extends StatelessWidget{
               children: <Widget>[
                 // ignore: prefer_const_constructors
                 Container(
-                  margin: const EdgeInsets.only(
-                    left: 12.0,
-                    right: 12.0
-                  ),
+                  margin: const EdgeInsets.only( left: 12.0,right: 12.0),
                   height: 50,
                   width: 50,
                   decoration: BoxDecoration(
@@ -77,12 +34,12 @@ class NavigationCategoryScreen extends StatelessWidget{
                     color: const Color(0xffe0e0e0)
                   ),
                   child: InkWell(
-                    /*onTap: () {
-                       Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => NavigationHomeScreen()),
-                      );
-                    },*/
+                    onTap: () {
+                       //Navigator.push(
+                        //context,
+                        //MaterialPageRoute(builder: (context) => NavigationHomeScreen(id_usuario: null,)),
+                      //);
+                    },
                     borderRadius: BorderRadius.circular(30.0),
                       // ignore: prefer_const_constructors
                     child: Center(

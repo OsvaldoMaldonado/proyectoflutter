@@ -3,48 +3,11 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:servicios_vic/modelo.dart';
+import 'package:servicios_vic/model/modelo.dart';
 import 'package:servicios_vic/user_profile_screen.dart';
 import 'model/colors.dart';
 import 'navigation_category_screen.dart';
 
-Future<List<Categorias>?> fetchCategorias(http.Client client) async {
-    final response = await client
-      .get(Uri.parse('https://proyectonunoxd.000webhostapp.com/categoriashome.php'));
-
-    return compute(parseCategorias, response.body);
-  
-}
-
-// A function that converts a response body into a List<Categorias>.
-List<Categorias> parseCategorias(String responseBody) {
-  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-
-  return parsed.map<Categorias>((json) => Categorias.fromJson(json)).toList();
-}
-
-class Categorias {
-  final String id;
-  final String nombre;
-  final String color;
-  final String icono;
-
-  const Categorias({
-    required this.id,
-    required this.nombre,
-    required this.color,
-    required this.icono,
-  });
-
-  factory Categorias.fromJson(Map<String, dynamic> json) {
-    return Categorias(
-      id: json['idTab_Categoria'] as String,
-      nombre: json['nombre'] as String,
-      color: json['color'] as String,
-      icono: json['icono'] as String,
-    );
-  }
-}
 
 
 class NavigationHomeScreen extends StatelessWidget {
@@ -93,9 +56,10 @@ class NavigationHomeScreen extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => UserProfileScreen(id_usuario: id_usuario)));
                     },
                     child: Row(
-                      children: const <Widget>[
-                        Icon(Icons.person_pin, size: 30.0,),
-                        Text('Mi cuenta',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
+                      children: <Widget>[
+                        const Icon(Icons.person_pin, size: 30.0),
+                        SizedBox(width: screenSize*0.02,),
+                        const Text('Mi cuenta',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
                       ],
                     )
                   )
@@ -104,8 +68,9 @@ class NavigationHomeScreen extends StatelessWidget {
                   margin: const EdgeInsets.only(left: 12.0,top: 12.0),
                   child: InkWell(
                     child: Row(
-                      children: const <Widget>[
+                      children: <Widget>[
                         Icon(Icons.access_time,size: 30.0),
+                        SizedBox(width: screenSize*0.02,),
                         Text('Mi Historial de servicios',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
                       ],
                     )
@@ -115,8 +80,9 @@ class NavigationHomeScreen extends StatelessWidget {
                   margin: const EdgeInsets.only(left: 12.0,top: 12.0),
                   child: InkWell(
                     child: Row(
-                      children: const <Widget>[
+                      children: <Widget>[
                         Icon(Icons.location_on,size: 30.0),
+                        SizedBox(width: screenSize*0.02,),
                         Text('Mis ubicaciones',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
                       ],
                     )
@@ -126,8 +92,9 @@ class NavigationHomeScreen extends StatelessWidget {
                   margin: const EdgeInsets.only(left: 12.0,top: 12.0),
                   child: InkWell(
                     child: Row(
-                      children: const <Widget>[
+                      children: <Widget>[
                         Icon(Icons.credit_card, size: 30.0),
+                        SizedBox(width: screenSize*0.02,),
                         Text('Mis metodos de pago',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
                       ],
                     )
@@ -137,8 +104,9 @@ class NavigationHomeScreen extends StatelessWidget {
                   margin: const EdgeInsets.only(left: 12.0,top: 12.0),
                   child: InkWell(
                     child: Row(
-                      children: const <Widget>[
+                      children: <Widget>[
                         Icon(Icons.account_balance, size: 30.0),
+                        SizedBox(width: screenSize*0.02,),
                         Text('Terminos y condiciones',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
                       ],
                     )
@@ -148,8 +116,9 @@ class NavigationHomeScreen extends StatelessWidget {
                   margin: const EdgeInsets.only(left: 12.0,top: 12.0),
                   child: InkWell(
                     child: Row(
-                      children: const <Widget>[
+                      children: <Widget>[
                         Icon(Icons.help, size: 30.0),
+                        SizedBox(width: screenSize*0.02,),
                         Text('Ayuda',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
                       ],
                     )
@@ -160,8 +129,9 @@ class NavigationHomeScreen extends StatelessWidget {
                   margin: const EdgeInsets.only(left: 12.0,top: 6.0),
                   child: InkWell(
                     child: Row(
-                      children: const <Widget>[
+                      children: <Widget>[
                         Icon(Icons.logout, size: 30.0),
+                        SizedBox(width: screenSize*0.02,),
                         Text('Cerrar Sesión',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
                       ],
                     )

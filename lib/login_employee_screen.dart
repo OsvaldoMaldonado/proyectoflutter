@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'modelo.dart';
+import 'model/modelo.dart';
 
-class login_empleado extends StatelessWidget{
+class LoginEmployeeScreen extends StatelessWidget{
 
   TextEditingController entrada_login_Empleado_NombreCorreo = TextEditingController();
   TextEditingController entrada_login_Empleado_NombreContra = TextEditingController();
@@ -21,85 +21,70 @@ class login_empleado extends StatelessWidget{
           children: <Widget>[
             Stack(
               children: <Widget>[
-               RotationTransition(
-                  turns: const AlwaysStoppedAnimation(180 / 360),
-                  child: SizedBox(
-                    width: screenSize,
-                    height: screenheight * 0.22,
-                    child: const DecoratedBox(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFFFF6365),
-                            Color(0xFFF96332),
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
+                SizedBox(
+                  width: screenSize,
+                  height: screenheight * 0.22,
+                  child: const DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xFFF96332),
+                          Color(0xFFFF6365),
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
                       ),
                     ),
                   ),
                 ),
-
                 Positioned(
                   bottom : 0,
-                  child: RotationTransition(
-                    turns: AlwaysStoppedAnimation(180 / 360),
-                    child: Container(
-                      width: screenSize,
-                      height: screenheight * 0.02,
-                      child: const DecoratedBox(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20.0)),
-                          color: Colors.white,
-                        ),
+                  child: SizedBox(
+                    width: screenSize,
+                    height: screenheight * 0.03,
+                    child: const DecoratedBox(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+                        color: Colors.white,
                       ),
                     ),
                   ),
                 ),
-
-
               ],
             ),
             Container(
-
-              alignment: Alignment.centerLeft,
+              alignment: Alignment.center,
               child:const Text(
-                '  Iniciar sesión',
-                  style: TextStyle(fontWeight: FontWeight.bold,
-                  fontSize: 25),
+                'Iniciar sesión',
+                  style: TextStyle(
+                  fontSize: 22),
                 ),
             ),
             SizedBox(height: screenheight * 0.03,),
-            Container(
+            SizedBox(
               width: screenSize * 0.90,
               height: screenheight * 0.10,
               child:TextField(
                 controller: entrada_login_Empleado_NombreCorreo,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder( borderRadius: BorderRadius.circular(20.0),
-                    borderSide: const BorderSide(color: Color(0xFFe0e0e0), width: 2.0),),
-                  fillColor: Color(0xFFe0e0e0), filled: true,
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.email),
                   labelText: 'Correo Electronico',
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: screenSize * 0.90,
               height: screenheight * 0.10,
               child:TextField(
                 controller: entrada_login_Empleado_NombreContra,
-                obscureText: true,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder( borderRadius: BorderRadius.circular(20.0),
-                    borderSide: const BorderSide(color: Color(0xFFe0e0e0), width: 2.0),),
-                  fillColor: Color(0xFFe0e0e0), filled: true,
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.password_outlined),
                   labelText: 'Contraseña',
                 ),
               ),
             ),
+            SizedBox(height: screenheight * 0.02),
             OutlinedButton(
-
               onPressed: () async{
                 getvalue = entrada_login_Empleado_NombreContra.text.toString();
                 getvalue2 = entrada_login_Empleado_NombreCorreo.text.toString();

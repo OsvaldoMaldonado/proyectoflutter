@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 
 //Agregar que reciba la id del empleado
-class EspecializacionEmpleado extends StatefulWidget {
+class RegisterEmployeeJobsScreen extends StatefulWidget {
 
   @override
-  EspecializacionEmpleadoState createState() => EspecializacionEmpleadoState();
+  RegisterEmployeeJobsState createState() => RegisterEmployeeJobsState();
 }
 
-class EspecializacionEmpleadoState extends State<EspecializacionEmpleado> {
+class RegisterEmployeeJobsState extends State<RegisterEmployeeJobsScreen> {
   Map<String, bool?> lightSwitches = {
     'Electricista': false,
     'Carpintero': false,

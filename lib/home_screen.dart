@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'login_usuario.dart';
-import 'login_empleado.dart';
+import 'login_user_screen.dart';
+import 'login_employee_screen.dart';
 import 'register_user_screen.dart';
 import 'register_employee_screen.dart';
 
 
-class LoginScreen extends  StatelessWidget {
+class HomeScreen extends  StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -22,37 +22,31 @@ class LoginScreen extends  StatelessWidget {
           children: <Widget>[
             Stack(
               children: <Widget>[
-                RotationTransition(
-                  turns: const AlwaysStoppedAnimation(180 / 360),
-                  child: SizedBox(
-                    width: screenSize,
-                    height: screenheight * 0.22,
-                    child: const DecoratedBox(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFFFF6365),
-                            Color(0xFFF96332),
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
+                SizedBox(
+                  width: screenSize,
+                  height: screenheight * 0.22,
+                  child: const DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xFFF96332),
+                          Color(0xFFFF6365),
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
                       ),
                     ),
                   ),
                 ),
                 Positioned(
                   bottom : 0,
-                  child: RotationTransition(
-                    turns: const AlwaysStoppedAnimation(180 / 360),
-                    child: SizedBox(
-                      width: screenSize,
-                      height: screenheight * 0.02,
-                      child: const DecoratedBox(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20.0)),
-                          color: Colors.white,
-                        ),
+                  child: SizedBox(
+                    width: screenSize,
+                    height: screenheight * 0.03,
+                    child: const DecoratedBox(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -60,17 +54,17 @@ class LoginScreen extends  StatelessWidget {
               ],
             ),
             Container(
-              alignment: Alignment.centerLeft,
+              alignment: Alignment.center,
               child:const Text(
-                "  ¡Bienvenido a Servicios Vic!",
-                style: TextStyle(fontWeight: FontWeight.bold,
-                fontSize: 25),
+                "¡Bienvenido a Servicios Vic!",
+                style: TextStyle(
+                fontSize: 22,),
               ),
             ),
             SizedBox(height: screenheight * 0.04,),
             OutlinedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => registro()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterUserScreen()));
               },
               child: const Text('Crear Cuenta', style: TextStyle(color: Colors.black, fontSize: 20)
               ),
@@ -89,7 +83,7 @@ class LoginScreen extends  StatelessWidget {
             SizedBox(height: screenheight * 0.01,),
             OutlinedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => login_usuario()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginUserScreen()));
               },
               child: const Text('Iniciar sesion', style: TextStyle(color: Colors.black, fontSize: 20)
               ),
@@ -134,7 +128,7 @@ class LoginScreen extends  StatelessWidget {
             SizedBox(height:screenheight * 0.04,),
             OutlinedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => registro_empleado()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterEmployeeScreen()));
               },
               child: const Text('¡Afiliate con nosotros!', style: TextStyle(color: Color(0xFFF96332), fontSize: 20)
               ),
@@ -155,7 +149,7 @@ class LoginScreen extends  StatelessWidget {
             OutlinedButton(
 
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => login_empleado()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginEmployeeScreen()));
 
               },
               child: const Text('Iniciar sesion como prestador', style: TextStyle(color: Color(0xFFF96332), fontSize: 20)

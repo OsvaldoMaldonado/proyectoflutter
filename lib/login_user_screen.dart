@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:servicios_vic/navigation_home_creen.dart';
-import 'modelo.dart';
+import 'package:servicios_vic/navigation_home_screen.dart';
+import 'model/modelo.dart';
 
-class login_usuario extends StatelessWidget{
+class LoginUserScreen extends StatelessWidget{
 
   TextEditingController entrada_login_NombreCorreo = TextEditingController();
   TextEditingController entrada_login_NombreContra = TextEditingController();
   String getvalue = "";
   String getvalue2 = "";
+
+  LoginUserScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
@@ -23,51 +25,43 @@ class login_usuario extends StatelessWidget{
           children: <Widget>[
             Stack(
               children: <Widget>[
-               RotationTransition(
-                  turns: const AlwaysStoppedAnimation(180 / 360),
-                  child: SizedBox(
-                    width: screenSize,
-                    height: screenheight * 0.22,
-                    child: const DecoratedBox(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFFFF6365),
-                            Color(0xFFF96332),
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
+                SizedBox(
+                  width: screenSize,
+                  height: screenheight * 0.22,
+                  child: const DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xFFF96332),
+                          Color(0xFFFF6365),
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
                       ),
                     ),
                   ),
                 ),
                 Positioned(
                   bottom : 0,
-                  child: RotationTransition(
-                    turns: AlwaysStoppedAnimation(180 / 360),
-                    child: Container(
-                      width: screenSize,
-                      height: screenheight * 0.02,
-                      child: const DecoratedBox(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20.0)),
-                          color: Colors.white,
-                        ),
+                  child: SizedBox(
+                    width: screenSize,
+                    height: screenheight * 0.03,
+                    child: const DecoratedBox(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+                        color: Colors.white,
                       ),
                     ),
                   ),
                 ),
-
-
               ],
             ),
             Container(
-              alignment: Alignment.centerLeft,
+              alignment: Alignment.center,
               child:const Text(
-                '  Iniciar sesión',
-                style: TextStyle(fontWeight: FontWeight.bold,
-                fontSize: 25),
+                'Iniciar sesión',
+                style: TextStyle(
+                fontSize: 22),
               ),
             ),
             SizedBox(height: screenheight * 0.05,),
@@ -76,10 +70,8 @@ class login_usuario extends StatelessWidget{
               height: screenheight * 0.10,
               child:TextField(
                 controller: entrada_login_NombreCorreo,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder( borderRadius: BorderRadius.circular(20.0),
-                    borderSide: const BorderSide(color: Color(0xFFe0e0e0), width: 2.0),),
-                  fillColor: Color(0xFFe0e0e0), filled: true,
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.email),
                   labelText: 'Correo Electronico',
                 ),
               ),
@@ -90,10 +82,8 @@ class login_usuario extends StatelessWidget{
               child:TextField(
                 controller: entrada_login_NombreContra,
                 obscureText: true,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder( borderRadius: BorderRadius.circular(20.0),
-                    borderSide: const BorderSide(color: Color(0xFFe0e0e0), width: 2.0),),
-                  fillColor: Color(0xFFe0e0e0), filled: true,
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.password_outlined),
                   labelText: 'Contraseña',
                 ),
               ),
@@ -104,15 +94,15 @@ class login_usuario extends StatelessWidget{
                 getvalue = entrada_login_NombreContra.text.toString();
                 getvalue2 = entrada_login_NombreCorreo.text.toString();
                 id_Usuario = login(getvalue2, getvalue);
-                if(id_Usuario == null){
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text("Credenciales Incorrectas"),
-                  ));
-                }else{
-                    Navigator.push(
+                if(id_Usuario!=null){
+                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => NavigationHomeScreen(id_usuario: id_Usuario,)),
-                  );
+                   );
+                }else{
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text("Credenciales Incorrectas"),
+                  ));
                 }
               },
               child: const Text('Iniciar sesión', style: TextStyle(color: Colors.white, fontSize: 20)),

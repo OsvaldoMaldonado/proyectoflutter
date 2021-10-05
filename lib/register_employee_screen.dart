@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'model/modelo.dart';
 import 'register_employee_jobs_screen.dart';
@@ -12,6 +14,8 @@ class RegisterEmployeeScreen extends StatelessWidget{
   String getvalue3 = "";
   String getvalue4 = "";
   String getvalue5 = "";
+
+  RegisterEmployeeScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
@@ -156,7 +160,7 @@ class RegisterEmployeeScreen extends StatelessWidget{
                     getvalue4 = entrada_registro_Empleado_RFCCuenta.text.toString();
                     getvalue5 = entrada_registro_Empleado_NombreCorreo.text.toString();
                     insertarempleado(getvalue5, getvalue, getvalue2, getvalue3, getvalue4);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterEmployeeJobsScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterEmployeeJobsScreen()));
 
                   },
                   child: const Text('Crear Cuenta', style: TextStyle(color: Colors.white, fontSize: 20)),

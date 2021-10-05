@@ -1,16 +1,17 @@
+// ignore_for_file: must_be_immutable, non_constant_identifier_names
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:servicios_vic/navitagion_job_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:servicios_vic/model/modelo.dart';
-import 'navigation_home_screen.dart';
 
 class NavigationCategoryScreen extends StatelessWidget{
   String? profesion;
   int? id_profesion;
   String? nombre;
-  NavigationCategoryScreen({Key? key, required this.profesion, required this.id_profesion,required this.nombre});
+  NavigationCategoryScreen({Key? key, required this.profesion, required this.id_profesion,required this.nombre}) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -60,8 +61,8 @@ class NavigationCategoryScreen extends StatelessWidget{
             alignment: Alignment.topLeft,
             margin: const EdgeInsets.only(top:20,),  
             width: screenSize * 0.90,
-            child: TextField(
-              decoration: const InputDecoration(    
+            child: const TextField(
+              decoration: InputDecoration(    
                 focusColor: Colors.grey,  
                 hintText: 'Buscar categorias',
                 fillColor: Color(0xffe0e0e0), filled: true,

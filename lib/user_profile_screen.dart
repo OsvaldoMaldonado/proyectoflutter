@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,128 +10,14 @@ import 'package:servicios_vic/model/modelo.dart';
 
 class UserProfileScreen extends StatelessWidget {
   final Future<String?> id_usuario;
-  UserProfileScreen({Key? key, required this.id_usuario}) : super(key: key);
-  final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+  const UserProfileScreen({Key? key, required this.id_usuario}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     
     double screenSize = MediaQuery.of(context).size.width;
-    double screenheight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      key: _globalKey,
-      drawer: Drawer(
-         child: ListView(
-          // Important: Remove any padding from the ListView.
-          
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Color(0xFFF96332),
-                    Color(0xFFFF6365),
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-              ),
-              child: Container(
-                alignment: Alignment.bottomLeft,
-                child: Text(""),
-              ),  
-            ),
-            Column(
-              children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 6.0),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => UserProfileScreen(id_usuario: id_usuario)));
-                    },
-                    child: Row(
-                      children: const <Widget>[
-                        Icon(Icons.person_pin, size: 30.0,),
-                        Text('Mi cuenta',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
-                  )
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                  child: InkWell(
-                    child: Row(
-                      children: const <Widget>[
-                        Icon(Icons.access_time,size: 30.0),
-                        Text('Mi Historial de servicios',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
-                  )
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                  child: InkWell(
-                    child: Row(
-                      children: const <Widget>[
-                        Icon(Icons.location_on,size: 30.0),
-                        Text('Mis ubicaciones',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
-                  )
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                  child: InkWell(
-                    child: Row(
-                      children: const <Widget>[
-                        Icon(Icons.credit_card, size: 30.0),
-                        Text('Mis metodos de pago',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
-                  )
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                  child: InkWell(
-                    child: Row(
-                      children: const <Widget>[
-                        Icon(Icons.account_balance, size: 30.0),
-                        Text('Terminos y condiciones',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
-                  )
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                  child: InkWell(
-                    child: Row(
-                      children: const <Widget>[
-                        Icon(Icons.help, size: 30.0),
-                        Text('Ayuda',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
-                  )
-                ),
-                Container(height: screenheight*.40,),
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 6.0),
-                  child: InkWell(
-                    child: Row(
-                      children: const <Widget>[
-                        Icon(Icons.logout, size: 30.0),
-                        Text('Cerrar Sesión',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
-                  )
-                ),
-              ],
-            ),
-          ],
-        ),
-      ), 
       body: Column(
         children: <Widget>[
           // TOP HEADER
@@ -153,7 +41,7 @@ class UserProfileScreen extends StatelessWidget {
                   ),
                   child: InkWell(
                     onTap: () {
-                      _globalKey.currentState!.openDrawer();
+                      
                     },
                     borderRadius: BorderRadius.circular(30.0),
                       // ignore: prefer_const_constructors
@@ -242,25 +130,25 @@ class Perfil extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
                 alignment: Alignment.centerLeft,
-                child: Text("Correo Electronico >   " + perfil[index].correo, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                child: Text("Correo Electronico >   " + perfil[index].correo, textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
               ),
               const Divider(color: Color(0xFFF96332),thickness: 2.0),
               Container(
                 margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
                 alignment: Alignment.centerLeft,
-                child: Text("Nombre >   " + perfil[index].nombre, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                child: Text("Nombre >   " + perfil[index].nombre, textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
               ),
               const Divider(color: Color(0xFFF96332),thickness: 2.0),
               Container(
                 margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
                 alignment: Alignment.centerLeft,
-                child: Text("Apellido >   " + perfil[index].apellido, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                child: Text("Apellido >   " + perfil[index].apellido, textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
               ),
               const Divider(color: Color(0xFFF96332),thickness: 2.0),
               Container(
                 margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
                 alignment: Alignment.centerLeft,
-                child: Text("Telefono >  " + perfil[index].telefono, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                child: Text("Telefono >  " + perfil[index].telefono, textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
               ),
               const Divider(color: Color(0xFFF96332),thickness: 2.0),
               Container(

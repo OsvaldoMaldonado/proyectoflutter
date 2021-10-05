@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:convert';
 import 'dart:core';
 import 'package:flutter/foundation.dart';
@@ -5,8 +7,9 @@ import 'package:http/http.dart' as http;
 
 insertarusuario(String correo, String nombre, String apellido, String contrasena, String telefono) async{
   String theUrl = "https://proyectonunoxd.000webhostapp.com/insertarusuario.php";
-
-  var res = await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
+  
+  //var res = 
+  await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
   body: {
     "u_correo":correo,
     "u_nombre":nombre,
@@ -15,8 +18,8 @@ insertarusuario(String correo, String nombre, String apellido, String contrasena
     "u_telefono":telefono,
   });
 
-  var respbody = jsonDecode(res.body.toString());
-  print(respbody);
+  //var respbody = jsonDecode(res.body.toString());
+
 
 }
 Future<String?> login(String correo,String contrasena) async{
@@ -39,8 +42,9 @@ Future<String?> login(String correo,String contrasena) async{
 
 insertarempleado(String correo, String nombre, String apellido, String contrasena, String RFC) async{
   String theUrl = "https://proyectonunoxd.000webhostapp.com/insertarempleado.php";
-
-  var res = await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
+  
+  //var res = 
+  await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
       body: {
         "u_correo":correo,
         "u_nombre":nombre,
@@ -48,11 +52,12 @@ insertarempleado(String correo, String nombre, String apellido, String contrasen
         "u_contrasena":contrasena,
         "u_RFC":RFC,
       });
-  try{
+      
+  /*try{
     var respbody = jsonDecode(res.body.toString());
     print(respbody);
   }catch(e) { 
-  }
+  }*/
 }
 
 Future<String?> usuarioActivo (String id) async{
@@ -73,15 +78,16 @@ Future<String?> usuarioActivo (String id) async{
 
 loginempleado(String correo,String contrasena) async{
   String theUrl = "https://proyectonunoxd.000webhostapp.com/logearempleado.php";
-
-  var res = await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
+  
+  //var res = 
+  await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
       body: {
         "u_correo":correo,
         "u_contrasena":contrasena,
       });
 
-  var respbody = jsonDecode(res.body.toString());
-  print(respbody);
+  //var respbody = jsonDecode(res.body.toString());
+  //print(respbody);
 
 }
 

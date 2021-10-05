@@ -1,7 +1,10 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:servicios_vic/navigation_home_screen.dart';
 import 'model/modelo.dart';
 
+// ignore: must_be_immutable
 class LoginUserScreen extends StatelessWidget{
 
   TextEditingController entrada_login_NombreCorreo = TextEditingController();

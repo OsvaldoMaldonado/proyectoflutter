@@ -1,5 +1,6 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -42,7 +43,7 @@ class NavigationHomeScreen extends StatelessWidget {
               ),
               child: Container(
                 alignment: Alignment.bottomLeft,
-                child: Text(""),
+                child: const Text(""),
               ),  
             ),
             Column(
@@ -69,9 +70,9 @@ class NavigationHomeScreen extends StatelessWidget {
                   child: InkWell(
                     child: Row(
                       children: <Widget>[
-                        Icon(Icons.access_time,size: 30.0),
+                        const Icon(Icons.access_time,size: 30.0),
                         SizedBox(width: screenSize*0.02,),
-                        Text('Mi Historial de servicios',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
+                        const Text('Mi Historial de servicios',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
                       ],
                     )
                   )
@@ -81,9 +82,9 @@ class NavigationHomeScreen extends StatelessWidget {
                   child: InkWell(
                     child: Row(
                       children: <Widget>[
-                        Icon(Icons.location_on,size: 30.0),
+                        const Icon(Icons.location_on,size: 30.0),
                         SizedBox(width: screenSize*0.02,),
-                        Text('Mis ubicaciones',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
+                        const Text('Mis ubicaciones',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
                       ],
                     )
                   )
@@ -93,9 +94,9 @@ class NavigationHomeScreen extends StatelessWidget {
                   child: InkWell(
                     child: Row(
                       children: <Widget>[
-                        Icon(Icons.credit_card, size: 30.0),
+                        const Icon(Icons.credit_card, size: 30.0),
                         SizedBox(width: screenSize*0.02,),
-                        Text('Mis metodos de pago',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
+                        const Text('Mis metodos de pago',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
                       ],
                     )
                   )
@@ -105,9 +106,9 @@ class NavigationHomeScreen extends StatelessWidget {
                   child: InkWell(
                     child: Row(
                       children: <Widget>[
-                        Icon(Icons.account_balance, size: 30.0),
+                        const Icon(Icons.account_balance, size: 30.0),
                         SizedBox(width: screenSize*0.02,),
-                        Text('Terminos y condiciones',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
+                        const Text('Terminos y condiciones',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
                       ],
                     )
                   )
@@ -117,9 +118,9 @@ class NavigationHomeScreen extends StatelessWidget {
                   child: InkWell(
                     child: Row(
                       children: <Widget>[
-                        Icon(Icons.help, size: 30.0),
+                        const Icon(Icons.help, size: 30.0),
                         SizedBox(width: screenSize*0.02,),
-                        Text('Ayuda',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
+                        const Text('Ayuda',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
                       ],
                     )
                   )
@@ -130,9 +131,9 @@ class NavigationHomeScreen extends StatelessWidget {
                   child: InkWell(
                     child: Row(
                       children: <Widget>[
-                        Icon(Icons.logout, size: 30.0),
+                        const Icon(Icons.logout, size: 30.0),
                         SizedBox(width: screenSize*0.02,),
-                        Text('Cerrar Sesión',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
+                        const Text('Cerrar Sesión',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
                       ],
                     )
                   )

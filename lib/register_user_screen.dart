@@ -1,9 +1,12 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:servicios_vic/login_user_screen.dart';
 import 'model/modelo.dart';
 
 class RegisterUserScreen extends StatefulWidget {
+  const RegisterUserScreen({Key? key}) : super(key: key);
+
   @override
   RegisterUserState createState() => RegisterUserState();
 }

@@ -1,12 +1,17 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'model/modelo.dart';
 
+// ignore: must_be_immutable
 class LoginEmployeeScreen extends StatelessWidget{
 
   TextEditingController entrada_login_Empleado_NombreCorreo = TextEditingController();
   TextEditingController entrada_login_Empleado_NombreContra = TextEditingController();
   String getvalue = "";
   String getvalue2 = "";
+
+  LoginEmployeeScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;

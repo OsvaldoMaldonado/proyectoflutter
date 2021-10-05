@@ -6,6 +6,8 @@ import 'register_employee_screen.dart';
 
 
 class HomeScreen extends  StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +66,7 @@ class HomeScreen extends  StatelessWidget {
             SizedBox(height: screenheight * 0.04,),
             OutlinedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterUserScreen()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterUserScreen()));
               },
               child: const Text('Crear Cuenta', style: TextStyle(color: Colors.black, fontSize: 20)
               ),

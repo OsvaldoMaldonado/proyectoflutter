@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Poppins',
         platform: TargetPlatform.android,
       ),
-      home: HomeScreen(),
+      home: const HomeScreen(),
     );
   }
 }

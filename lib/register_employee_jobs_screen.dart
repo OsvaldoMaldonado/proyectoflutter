@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 //Agregar que reciba la id del empleado
 class RegisterEmployeeJobsScreen extends StatefulWidget {
+  const RegisterEmployeeJobsScreen({Key? key}) : super(key: key);
+
 
   @override
   RegisterEmployeeJobsState createState() => RegisterEmployeeJobsState();
@@ -57,8 +59,8 @@ class RegisterEmployeeJobsState extends State<RegisterEmployeeJobsScreen> {
                   Positioned(
                     bottom : 0,
                     child: RotationTransition(
-                      turns: AlwaysStoppedAnimation(180 / 360),
-                      child: Container(
+                      turns: const AlwaysStoppedAnimation(180 / 360),
+                      child: SizedBox(
                         width: screenSize,
                         height: screenheight * 0.02,
                         child: const DecoratedBox(

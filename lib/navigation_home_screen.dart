@@ -1,20 +1,35 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:servicios_vic/home_screen.dart';
 import 'package:servicios_vic/model/modelo.dart';
 import 'package:servicios_vic/user_profile_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'model/colors.dart';
 import 'navigation_category_screen.dart';
 
 
+class NavigationHomeScreen extends StatefulWidget{
+   const NavigationHomeScreen({Key? key}) : super(key: key);
 
-class NavigationHomeScreen extends StatelessWidget {
-  final Future<String?> id_usuario;
-  NavigationHomeScreen({Key? key, required this.id_usuario}) : super(key: key);
+  @override
+  NavigationHomeState createState() => NavigationHomeState();
+}
+
+
+class NavigationHomeState extends State<NavigationHomeScreen> {
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+
+  String busqueda = "";
+  final controllerBusqueda = TextEditingController();
+
+
+  Future<void> setBuscador(String textoBuscador) async {
+    print(textoBuscador);
+    setState(() => busqueda = textoBuscador);
+  }
 
 
   @override
@@ -54,7 +69,7 @@ class NavigationHomeScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => UserProfileScreen(id_usuario: id_usuario)));
+                        MaterialPageRoute(builder: (context) => UserProfileScreen()));
                     },
                     child: Row(
                       children: <Widget>[
@@ -129,6 +144,12 @@ class NavigationHomeScreen extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.only(left: 12.0,top: 6.0),
                   child: InkWell(
+                    onTap: () async {
+                       SharedPreferences prefs = await SharedPreferences.getInstance();
+                        prefs.remove('id');
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (BuildContext ctx) => const HomeScreen()));
+                    },
                     child: Row(
                       children: <Widget>[
                         const Icon(Icons.logout, size: 30.0),
@@ -186,39 +207,42 @@ class NavigationHomeScreen extends StatelessWidget {
             ),
           ),
           // PROFESIONES
+          
+          Container(
+            alignment: Alignment.topLeft,  
+            margin: const EdgeInsets.only(top:15,),
+            width: screenSize * 0.90,
+            child: TextField(
+              onSubmitted: (textoBuscador){
+                setBuscador(textoBuscador);
+              },
+              decoration: const InputDecoration(    
+                focusColor: Colors.grey,  
+                hintText: 'Buscar profesiones',
+                fillColor: Color(0xffe0e0e0), filled: true,
+                hintStyle: TextStyle(color: Colors.black),
+              ),  
+            )
+          ),
           Container(
             alignment: Alignment.topLeft,
-            margin: const EdgeInsets.only(top:20, left: 20.0),
+            margin: const EdgeInsets.only(top:10, left: 20.0),
             child: const Text('Profesiones populares', 
                   style: TextStyle(
                     fontSize: 18.0,
                     color: Colors.black,
                     ),
                   ),  
-            ),
-          Container(
-            alignment: Alignment.topLeft,  
-            width: screenSize * 0.90,
-            child: const TextField(
-              decoration: InputDecoration(    
-                
-                focusColor: Colors.grey,  
-                hintText: 'Buscar profesiones',
-                fillColor: Color(0xffe0e0e0), filled: true,
-                hintStyle: TextStyle(color: Colors.black),
-
-              ),  
-            )
-          ), 
+            ), 
           Container(
             alignment: Alignment.topLeft,  
             width: screenSize * 0.90,
             child: FutureBuilder<List<Categorias>?>(
-              future: fetchCategorias(http.Client()),
+              future: fetchCategorias(http.Client(), busqueda),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(
-                    child: Text('An error has occurred!'),
+                    child: Text('Ningun Resultado!'),
                   );
                 } else if (snapshot.hasData) {
                   return CategoriasList(categorias: snapshot.data!);
@@ -245,29 +269,6 @@ class NavigationHomeScreen extends StatelessWidget {
     );
   }
 }
-
-Widget drawerItems(Icon icono, String itemName){
-    return InkWell(
-      onTap: () {
-      },
-      child: Row(
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.only(left: 15.0, top: 5.0, bottom: 5.0),
-            child: icono,
-          ),
-          Container(
-            padding: const EdgeInsets.only(left:5.0, top: 5.0, bottom: 5.0),
-            child: Text(itemName, style: const TextStyle(
-              fontSize: 16.0,
-              color: Colors.black,
-              )
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
 class CategoriasList extends StatelessWidget {
   const CategoriasList({Key? key, required this.categorias}) : super(key: key);
@@ -309,7 +310,7 @@ class CategoriasList extends StatelessWidget {
               Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => NavigationCategoryScreen(
-                      profesion: categorias[index].nombre, id_profesion: int.parse(categorias[index].id,), nombre: null)),
+                      profesion: categorias[index].nombre, id_profesion: int.parse(categorias[index].id,))),
                   );
               },
             borderRadius: BorderRadius.circular(20.0),

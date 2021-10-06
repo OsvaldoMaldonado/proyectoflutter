@@ -6,13 +6,33 @@ import 'package:servicios_vic/navitagion_job_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:servicios_vic/model/modelo.dart';
+import 'navigation_home_screen.dart';
 
-class NavigationCategoryScreen extends StatelessWidget{
+class NavigationCategoryScreen extends StatefulWidget{
+
   String? profesion;
   int? id_profesion;
-  String? nombre;
-  NavigationCategoryScreen({Key? key, required this.profesion, required this.id_profesion,required this.nombre}) : super(key: key);
+
+  NavigationCategoryScreen({Key? key, required this.profesion, required this.id_profesion}) : super(key: key);
   
+  @override
+  NavigationCategoryState createState() => NavigationCategoryState(id_profesion: id_profesion, profesion: profesion);
+}
+
+
+class NavigationCategoryState extends State<NavigationCategoryScreen> {
+  NavigationCategoryState({Key? key, required this.profesion, required this.id_profesion});
+
+  String busqueda = "";
+
+  Future<void> setBuscador(String textoBuscador) async {
+    print(textoBuscador);
+    setState(() => busqueda = textoBuscador);
+  }
+
+  String? profesion;
+  int? id_profesion;
+ 
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
@@ -36,10 +56,10 @@ class NavigationCategoryScreen extends StatelessWidget{
                   ),
                   child: InkWell(
                     onTap: () {
-                       //Navigator.push(
-                        //context,
-                        //MaterialPageRoute(builder: (context) => NavigationHomeScreen(id_usuario: null,)),
-                      //);
+                       Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const NavigationHomeScreen()),
+                       );
                     },
                     borderRadius: BorderRadius.circular(30.0),
                       // ignore: prefer_const_constructors
@@ -61,8 +81,11 @@ class NavigationCategoryScreen extends StatelessWidget{
             alignment: Alignment.topLeft,
             margin: const EdgeInsets.only(top:20,),  
             width: screenSize * 0.90,
-            child: const TextField(
-              decoration: InputDecoration(    
+            child: TextField(
+              onSubmitted: (textoBuscador){
+                setBuscador(textoBuscador);
+              },
+              decoration: const InputDecoration(    
                 focusColor: Colors.grey,  
                 hintText: 'Buscar categorias',
                 fillColor: Color(0xffe0e0e0), filled: true,
@@ -85,11 +108,11 @@ class NavigationCategoryScreen extends StatelessWidget{
             alignment: Alignment.topLeft,  
             width: screenSize * 0.90,
             child: FutureBuilder<List<TipoServicio>?>(
-              future: fetchTipoServicio(http.Client(), id_profesion!, null),
+              future: fetchTipoServicio(http.Client(), id_profesion!, busqueda),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(
-                    child: Text('An error has occurred!'),
+                    child: Text('Ningun Resultado!'),
                   );
                 } else if (snapshot.hasData) {
                   return TipoServicioList(tiposervicio: snapshot.data!, profesion: profesion, id_profesion: id_profesion);
@@ -116,6 +139,7 @@ class TipoServicioList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
+    double screenSheght = MediaQuery.of(context).size.height;
     return GridView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
@@ -132,7 +156,6 @@ class TipoServicioList extends StatelessWidget {
               right: 6.0,
               bottom: 15.0
             ),
-            height: screenSize * .22,
             width: screenSize * .90,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
@@ -161,8 +184,8 @@ class TipoServicioList extends StatelessWidget {
               children: <Widget>[
                 Container(
                   margin: const EdgeInsets.only(
-                    top: 5.0,
-                    left: 10.0,
+                    top: 10.0,
+                    left: 15.0,
                   ),
                   child: Text( tiposervicio[index].nombre, 
                     style: const TextStyle(
@@ -174,7 +197,7 @@ class TipoServicioList extends StatelessWidget {
                 ),
                 Container(
                   margin: const EdgeInsets.only(
-                    left: 10.0,
+                    left: 16.0,
                   ),
                   child: Text( tiposervicio[index].descripcion, 
                     style: const TextStyle(
@@ -190,9 +213,8 @@ class TipoServicioList extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20.0),
                     color: const Color(0xfff96332),
                   ),
-                  margin: const EdgeInsets.only(
-                    left: 255.0,
-                    top: 10.0
+                  margin: EdgeInsets.only(
+                    left: screenSize * .63,
                   ),
                   padding: const EdgeInsets.all(4),
                   child: const Text( 'Categoria', 

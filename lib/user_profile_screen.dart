@@ -5,18 +5,34 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:servicios_vic/model/modelo.dart';
+import 'package:servicios_vic/navigation_home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-
-
-class UserProfileScreen extends StatelessWidget {
-  final Future<String?> id_usuario;
-  const UserProfileScreen({Key? key, required this.id_usuario}) : super(key: key);
+class UserProfileScreen extends StatefulWidget {
+  const UserProfileScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    
-    double screenSize = MediaQuery.of(context).size.width;
+  UserProfileState createState() => UserProfileState();
+}
 
+
+class UserProfileState extends State<UserProfileScreen> {
+
+    String idUser = '';
+
+    Future<void> getPhone() async {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String id = prefs.getString('id') ?? '';
+
+      setState(() => idUser = id);
+    }
+  
+  @override
+  Widget build(BuildContext context) {
+    if (idUser == ''){
+      getPhone();
+    }
+    double screenSize = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -41,12 +57,14 @@ class UserProfileScreen extends StatelessWidget {
                   ),
                   child: InkWell(
                     onTap: () {
-                      
+                       Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => NavigationHomeScreen()));
                     },
                     borderRadius: BorderRadius.circular(30.0),
                       // ignore: prefer_const_constructors
                     child: Center(
-                      child: const Icon(Icons.menu, color: Color(0xfff96332)),
+                      child: const Icon(Icons.arrow_back, color: Color(0xfff96332)),
                     ),
                   ),
                 ),
@@ -63,8 +81,8 @@ class UserProfileScreen extends StatelessWidget {
           Container(
             alignment: Alignment.topLeft,  
             width: screenSize * 0.90,
-            child: FutureBuilder<List<User>?>(
-              future: fetchUser(http.Client(), id_usuario),
+            child: FutureBuilder<List<User>?>(   
+              future: fetchUser(http.Client(), idUser),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(
@@ -97,7 +115,7 @@ class Perfil extends StatelessWidget {
 
     return ListView.builder(
       scrollDirection: Axis.vertical,
-      shrinkWrap: false,
+      shrinkWrap: true,
       itemCount: perfil.length,
       itemBuilder: (context, index) {
         return Container(

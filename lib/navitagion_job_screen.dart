@@ -7,13 +7,35 @@ import 'package:flutter/foundation.dart';
 import 'navigation_category_screen.dart';
 import 'package:servicios_vic/model/modelo.dart';
 
-class NavigationJobScreen extends StatelessWidget{
+class NavigationJobScreen extends StatefulWidget{
+
   final String? profesion;
   final int? id_profesion;
   final String? tiposervicio;
   final int? id_tiposervicio;
-  const NavigationJobScreen({Key? key, required this.tiposervicio, required this.id_tiposervicio, this.profesion, this.id_profesion}) : super(key: key);
 
+  NavigationJobScreen({Key? key, required this.tiposervicio, required this.id_tiposervicio, this.profesion, this.id_profesion}) : super(key: key);
+  
+  @override
+  NavigationJobState createState() => NavigationJobState(id_profesion: id_profesion, profesion: profesion, id_tiposervicio: id_tiposervicio, tiposervicio: tiposervicio);
+}
+
+
+class NavigationJobState extends State<NavigationJobScreen> {
+  NavigationJobState({Key? key, required this.tiposervicio, required this.id_tiposervicio, this.profesion, this.id_profesion});
+
+  String busqueda = "";
+
+  Future<void> setBuscador(String textoBuscador) async {
+    print(textoBuscador);
+    setState(() => busqueda = textoBuscador);
+  }
+  final String? profesion;
+  final int? id_profesion;
+  final String? tiposervicio;
+  final int? id_tiposervicio;
+
+  
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
@@ -43,7 +65,7 @@ class NavigationJobScreen extends StatelessWidget{
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => NavigationCategoryScreen(
-                          profesion: profesion, id_profesion: id_profesion, nombre: '',)),
+                          profesion: profesion, id_profesion: id_profesion,)),
                       );
                     },
                     borderRadius: BorderRadius.circular(30.0),
@@ -66,14 +88,15 @@ class NavigationJobScreen extends StatelessWidget{
             alignment: Alignment.topLeft,
             margin: const EdgeInsets.only(top: 20, ),  
             width: screenSize * 0.90,
-            child: const TextField(
-              decoration: InputDecoration(    
-                
+            child: TextField(
+              onSubmitted: (textoBuscador){
+                setBuscador(textoBuscador);
+              },
+              decoration: const InputDecoration(    
                 focusColor: Colors.grey,  
                 hintText: 'Buscar trabajos',
                 fillColor: Color(0xffe0e0e0), filled: true,
                 hintStyle: TextStyle(color: Colors.black),
-
               ),  
             )
           ),
@@ -97,11 +120,11 @@ class NavigationJobScreen extends StatelessWidget{
                   alignment: Alignment.topLeft,  
                   width: screenSize * 0.90,
                   child: FutureBuilder<List<Servicio>?>(
-                    future: fetchServicio(http.Client(), id_tiposervicio!),
+                    future: fetchServicio(http.Client(), id_tiposervicio!, busqueda),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
                         return const Center(
-                          child: Text('An error has occurred!'),
+                          child: Text('Ningun Resultado!'),
                         );
                       } else if (snapshot.hasData) {
                         return ServicioList(servicio: snapshot.data!);
@@ -170,8 +193,8 @@ class ServicioList extends StatelessWidget {
               children: <Widget>[
                 Container(
                   margin: const EdgeInsets.only(
-                    top: 5.0,
-                    left: 10.0,
+                    top: 10.0,
+                    left: 15.0,
                   ),
                   child: Text( servicio[index].nombre, 
                     style: const TextStyle(
@@ -183,7 +206,7 @@ class ServicioList extends StatelessWidget {
                 ),
                 Container(
                   margin: const EdgeInsets.only(
-                    left: 10.0,
+                    left: 15.0,
                   ),
                   child: Text( servicio[index].descripcion, 
                     style: const TextStyle(
@@ -199,9 +222,8 @@ class ServicioList extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20.0),
                     color: const Color(0xfff96332),
                   ),
-                  margin: const EdgeInsets.only(
-                    left: 255.0,
-                    top: 10.0
+                  margin: EdgeInsets.only(
+                    left: screenSize * .63,
                   ),
                   padding: const EdgeInsets.all(4),
                   child: const Text( 'Trabajo', 

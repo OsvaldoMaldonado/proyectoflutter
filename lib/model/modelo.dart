@@ -2,13 +2,18 @@
 
 import 'dart:convert';
 import 'dart:core';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:servicios_vic/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../navigation_home_screen.dart';
 
 insertarusuario(String correo, String nombre, String apellido, String contrasena, String telefono) async{
   String theUrl = "https://proyectonunoxd.000webhostapp.com/insertarusuario.php";
   
-  //var res = 
   await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
   body: {
     "u_correo":correo,
@@ -18,27 +23,35 @@ insertarusuario(String correo, String nombre, String apellido, String contrasena
     "u_telefono":telefono,
   });
 
-  //var respbody = jsonDecode(res.body.toString());
-
 
 }
-Future<String?> login(String correo,String contrasena) async{
-  String theUrl = "https://proyectonunoxd.000webhostapp.com/logearusuario.php";
 
-  var res = await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
-      body: {
-        "u_correo":correo,
-        "u_contrasena":contrasena,
-      });
-  try{
-      var respbody = jsonDecode(res.body.toString());
-      return respbody;
-      
-  // ignore: empty_catches
-  }catch(e) { 
-    return "Error";
-  } 
+Future<void> userLogin(String email, String password, BuildContext context) async{
+
+  // SERVER LOGIN API URL
+  var url = 'https://proyectonunoxd.000webhostapp.com/logearusuario.php';
+
+  // Store all data with Param Name.
+  var data = {'email': email, 'password' : password};
+
+  // Starting Web API Call.
+  var response = await http.post(Uri.parse(Uri.encodeFull(url)), body: json.encode(data));
+
+  // Getting Server response into variable.
+  var message = jsonDecode(response.body);
+
+  // If the Response Message is Matched.
+  if(message != 'Invalid'){
+    print("acceso");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    prefs.setString('id', message);
+    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+      NavigationHomeScreen()), (Route<dynamic> route) => false);
+  }else{
+  }
+
 }
+
 
 insertarempleado(String correo, String nombre, String apellido, String contrasena, String RFC) async{
   String theUrl = "https://proyectonunoxd.000webhostapp.com/insertarempleado.php";
@@ -60,21 +73,6 @@ insertarempleado(String correo, String nombre, String apellido, String contrasen
   }*/
 }
 
-Future<String?> usuarioActivo (String id) async{
-  String theUrl = "https://proyectonunoxd.000webhostapp.com/usuarioactivo.php";
-
-  var res = await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
-      body: {
-        "id":id,
-      });
-  try{
-      var respbody = jsonDecode(res.body.toString());
-      return respbody;
-  // ignore: empty_catches
-  }catch(e) { 
-  } 
-  return null;
-}
 
 loginempleado(String correo,String contrasena) async{
   String theUrl = "https://proyectonunoxd.000webhostapp.com/logearempleado.php";
@@ -93,17 +91,20 @@ loginempleado(String correo,String contrasena) async{
 
 
 // Modelo constructor del perfil de usuario
-Future<List<User>?> fetchUser(http.Client client, Future<String?> id) async {
+Future<List<User>?> fetchUser(http.Client client, String id) async {
     final response = await client
-      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/user.php?id=1"));
+      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/user.php?id=$id"));
     return compute(parseUser, response.body);
 }
 
 // A function that converts a response body into a List<Categorias>.
-List<User> parseUser(String responseBody) {
-  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+List<User>? parseUser(String responseBody) {
+  try{
+    final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
 
-  return parsed.map<User>((json) => User.fromJson(json)).toList();
+    return parsed.map<User>((json) => User.fromJson(json)).toList();
+  }catch(e){}
+  return null;
 }
 
 class User {
@@ -132,19 +133,28 @@ class User {
 
 //Modelo constructor del menu de navegación de home
 
-Future<List<Categorias>?> fetchCategorias(http.Client client) async {
+Future<List<Categorias>?> fetchCategorias(http.Client client, String nombre) async {
+  if(nombre != ''){
+    final response = await client
+      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/categoriashome.php?nombre=$nombre"));
+
+    return compute(parseCategorias, response.body);
+  }else{
     final response = await client
       .get(Uri.parse('https://proyectonunoxd.000webhostapp.com/categoriashome.php'));
 
     return compute(parseCategorias, response.body);
-  
+  }
+    
 }
 
 // A function that converts a response body into a List<Categorias>.
-List<Categorias> parseCategorias(String responseBody) {
-  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-
-  return parsed.map<Categorias>((json) => Categorias.fromJson(json)).toList();
+List<Categorias>? parseCategorias(String responseBody) {
+  try{
+    final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+    return parsed.map<Categorias>((json) => Categorias.fromJson(json)).toList();
+  }catch(e){}
+  return null;
 }
 
 class Categorias {
@@ -173,23 +183,25 @@ class Categorias {
 
 //Modelo constructor de navegación categorias
 Future<List<TipoServicio>?> fetchTipoServicio(http.Client client, int id, String? nombre) async {
-  if(nombre==null){
+  if(nombre!=''){
     final response = await client
-      .get(Uri.parse('https://proyectonunoxd.000webhostapp.com/tiposervicio.php/?id=$id'));  
+      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/tiposervicio.php/?id=$id&nombre='$nombre'"));
     return compute(parseTipoServicio, response.body);
   }else{
     final response = await client
-      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/tiposerviciobusqueda.php/?id=$id&nombre='$nombre'"));
+      .get(Uri.parse('https://proyectonunoxd.000webhostapp.com/tiposervicio.php/?id=$id'));  
     return compute(parseTipoServicio, response.body);
   }
 }
 
 
 // A function that converts a response body into a List<Categorias>.
-List<TipoServicio> parseTipoServicio(String responseBody) {
-  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-
-  return parsed.map<TipoServicio>((json) => TipoServicio.fromJson(json)).toList();
+List<TipoServicio>? parseTipoServicio(String responseBody) {
+  try{
+    final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+    return parsed.map<TipoServicio>((json) => TipoServicio.fromJson(json)).toList();
+  }catch(e){}
+  return null;
 }
 
 class TipoServicio {
@@ -214,19 +226,25 @@ class TipoServicio {
 
 
 //Modelo contructor del menu de trabajos
-Future<List<Servicio>?> fetchServicio(http.Client client, int id) async {
-    final response = await client
-      .get(Uri.parse('https://proyectonunoxd.000webhostapp.com/servicio.php/?id=$id'));
-
-    return compute(parseServicio, response.body);
-  
+Future<List<Servicio>?> fetchServicio(http.Client client, int id, String nombre) async {
+    if(nombre!=''){
+      final response = await client
+        .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/servicio.php/?id=$id&nombre='$nombre'"));
+      return compute(parseServicio, response.body);
+    }else{
+      final response = await client
+        .get(Uri.parse('https://proyectonunoxd.000webhostapp.com/servicio.php/?id=$id'));
+      return compute(parseServicio, response.body);
+    }
 }
 
 // A function that converts a response body into a List<Categorias>.
-List<Servicio> parseServicio(String responseBody) {
-  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-
-  return parsed.map<Servicio>((json) => Servicio.fromJson(json)).toList();
+List<Servicio>? parseServicio(String responseBody) {
+  try{
+    final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+    return parsed.map<Servicio>((json) => Servicio.fromJson(json)).toList();
+  }catch(e){}
+  return null;
 }
 
 class Servicio {

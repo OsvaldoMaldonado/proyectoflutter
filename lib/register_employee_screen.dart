@@ -163,7 +163,7 @@ class RegisterEmployeeScreen extends StatelessWidget{
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterEmployeeJobsScreen()));
 
                   },
-                  child: const Text('Crear Cuenta', style: TextStyle(color: Colors.white, fontSize: 20)),
+                  child: const Text('Siguiente', style: TextStyle(color: Colors.white, fontSize: 20)),
                     style: OutlinedButton.styleFrom(
                         shape: const StadiumBorder (
                           side: BorderSide(

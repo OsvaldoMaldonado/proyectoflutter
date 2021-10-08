@@ -108,18 +108,16 @@ class LoginUserState extends State<LoginUserScreen>{
                 userLogin(getvalue2, getvalue, context);
               },
               child: const Text('Iniciar sesión', style: TextStyle(color: Colors.white, fontSize: 20)),
-                style: OutlinedButton.styleFrom(
-                    shape: const StadiumBorder (
-                      side: BorderSide(
-                          width: 20,
-                      )
-                    ),
-                  side: const BorderSide( width: 1, color: Color(0xFFF96332),),
-                    //  padding: EdgeInsets.all(60),
-                  minimumSize: Size(screenSize * 0.90, screenheight * 0.07),
-                    backgroundColor: const Color(0xFFF96332),
+              style: OutlinedButton.styleFrom(
+                shape: const StadiumBorder (
+                  side: BorderSide( width: 20,)
                 ),
+                side: const BorderSide( width: 1, color: Color(0xFFF96332),),
+                    //  padding: EdgeInsets.all(60),
+                minimumSize: Size(screenSize * 0.90, screenheight * 0.07),
+                backgroundColor: const Color(0xFFF96332),
               ),
+            ),
           ],
         ),
       ),

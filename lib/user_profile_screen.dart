@@ -59,7 +59,7 @@ class UserProfileState extends State<UserProfileScreen> {
                     onTap: () {
                        Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => NavigationHomeScreen()));
+                        MaterialPageRoute(builder: (context) => const NavigationHomeScreen()));
                     },
                     borderRadius: BorderRadius.circular(30.0),
                       // ignore: prefer_const_constructors
@@ -141,38 +141,78 @@ class Perfil extends StatelessWidget {
                     image: const DecorationImage(
                     fit: BoxFit.fill,
                     image: NetworkImage(
-                          "https://i.imgur.com/BoN9kdC.png")
+                          "https://t2.uc.ltmcdn.com/images/7/0/0/img_como_saber_si_un_hombre_es_maduro_34007_600_square.jpg")
                           )
                 ) 
               ),
               Container(
                 margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
                 alignment: Alignment.centerLeft,
-                child: Text("Correo Electronico >   " + perfil[index].correo, textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
+                child: Row(
+                  children: <Widget>[
+                    Text("Correo Electronico >   " + perfil[index].correo, textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
+                    SizedBox(width: screenSize * 0.1,),
+                    const InkWell(
+                      child: Text('Editar', style: TextStyle(color: Colors.grey, fontSize: 14),textAlign: TextAlign.end,),
+                    ),
+                  ],
+                ),
               ),
               const Divider(color: Color(0xFFF96332),thickness: 2.0),
               Container(
                 margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
                 alignment: Alignment.centerLeft,
-                child: Text("Nombre >   " + perfil[index].nombre, textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
+                child: Row(
+                  children: <Widget>[
+                  Text("Nombre >   " + perfil[index].nombre, textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
+                  SizedBox(width: screenSize * 0.46,),
+                  const InkWell(
+                      child: Text('Editar', style: TextStyle(color: Colors.grey, fontSize: 14),textAlign: TextAlign.end,),
+                    ),
+                  ],
+                ),
               ),
               const Divider(color: Color(0xFFF96332),thickness: 2.0),
               Container(
                 margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
                 alignment: Alignment.centerLeft,
-                child: Text("Apellido >   " + perfil[index].apellido, textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
-              ),
+                child: Row(
+                  children: <Widget>[
+                  Text("Apellido >   " + perfil[index].apellido, textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
+                  SizedBox(width: screenSize * 0.36,),
+                  const InkWell(
+                      child: Text('Editar', style: TextStyle(color: Colors.grey, fontSize: 14),textAlign: TextAlign.end,),
+                    ),
+                  ],
+                ),
+             ),
               const Divider(color: Color(0xFFF96332),thickness: 2.0),
               Container(
                 margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
                 alignment: Alignment.centerLeft,
-                child: Text("Telefono >  " + perfil[index].telefono, textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
-              ),
+                child: Row(
+                  children: <Widget>[
+                  Text("Telefono >  " + perfil[index].telefono, textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
+                  SizedBox(width: screenSize * 0.52,),
+                  const InkWell(
+                      child: Text('Editar', style: TextStyle(color: Colors.grey, fontSize: 14),textAlign: TextAlign.end,),
+                    ),
+                  ],
+                ),
+               ),
               const Divider(color: Color(0xFFF96332),thickness: 2.0),
               Container(
                 margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
                 alignment: Alignment.centerLeft,
-                child: const Text("Contraseña >", textAlign: TextAlign.left,style: TextStyle(fontSize: 18),)
+                child: Row(
+                  children: <Widget>[
+                  const Text("Contraseña >", textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                  SizedBox(width: screenSize * 0.531),
+                  const InkWell(
+                      child: Text('Editar', style: TextStyle(color: Colors.grey, fontSize: 14),textAlign: TextAlign.end,),
+                    ),
+                  ],
+                ),
               ),
             ],
            ),

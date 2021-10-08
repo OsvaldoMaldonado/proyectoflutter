@@ -75,11 +75,11 @@ class RegisterEmployeeJobsState extends State<RegisterEmployeeJobsScreen> {
                 ],
               ),
               Container(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 child:const Text(
-                  '  En que te especializas',
-                  style: TextStyle(fontWeight: FontWeight.bold,
-                  fontSize: 25),
+                  'En que te especializas',
+                  style: TextStyle(
+                  fontSize: 22),
                 ),
               ),  
               Expanded(

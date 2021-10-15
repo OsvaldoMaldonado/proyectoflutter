@@ -1,6 +1,12 @@
+<<<<<<< Updated upstream
 # flutter_app3
 
 A new Flutter application.
+=======
+# servicios_vic
+
+A new Flutter project.
+>>>>>>> Stashed changes
 
 ## Getting Started
 

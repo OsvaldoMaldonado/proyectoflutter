@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 name: flutter_app3
+=======
+name: servicios_vic
+>>>>>>> Stashed changes
 description: A new Flutter application.
 
 # The following line prevents the package from being accidentally published to
@@ -36,6 +40,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   mysql1: ^0.19.2
   http: ^0.13.3
+<<<<<<< Updated upstream
+=======
+  shared_preferences: ^2.0.8
+>>>>>>> Stashed changes
 
 dev_dependencies:
   flutter_test:
@@ -78,8 +86,13 @@ flutter:
   fonts:
        - family: Poppins
          fonts:
+<<<<<<< Updated upstream
            - asset: assets/fonts/Poppins-Regular.ttf
            - asset: assets/fonts/Poppins-Bold.ttf
+=======
+           - asset: fonts/Poppins-Regular.ttf
+           - asset: fonts/Poppins-Bold.ttf
+>>>>>>> Stashed changes
              weight: 700
    #    - family: Trajan Pro
    #     fonts:
@@ -88,4 +101,8 @@ flutter:
    #      weight: 700
 
   # For details regarding fonts from package dependencies,
+<<<<<<< Updated upstream
   # see https://flutter.dev/custom-fonts/#from-packages
+=======
+  # see https://flutter.dev/custom-fonts/#from-packages
+>>>>>>> Stashed changes

@@ -8,12 +8,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+<<<<<<< Updated upstream
 import 'package:flutter_app3/main.dart';
+=======
+import 'package:servicios_vic/main.dart';
+>>>>>>> Stashed changes
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
+<<<<<<< Updated upstream
     await tester.pumpWidget(MyApp());
+=======
+    await tester.pumpWidget(const MyApp());
+>>>>>>> Stashed changes
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

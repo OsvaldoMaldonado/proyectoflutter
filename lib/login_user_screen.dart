@@ -1,11 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, unrelated_type_equality_checks
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:servicios_vic/navigation_home_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'model/modelo.dart';
+import 'model/modelo_login_cuentas.dart';
 
 // ignore: must_be_immutable
 class LoginUserScreen extends StatefulWidget {
@@ -88,6 +84,7 @@ class LoginUserState extends State<LoginUserScreen>{
                 ),
               ),
             ),
+            SizedBox(height: screenheight * 0.01,),
             SizedBox(
               width: screenSize * 0.90,
               height: screenheight * 0.10,
@@ -108,18 +105,16 @@ class LoginUserState extends State<LoginUserScreen>{
                 userLogin(getvalue2, getvalue, context);
               },
               child: const Text('Iniciar sesión', style: TextStyle(color: Colors.white, fontSize: 20)),
-                style: OutlinedButton.styleFrom(
-                    shape: const StadiumBorder (
-                      side: BorderSide(
-                          width: 20,
-                      )
-                    ),
-                  side: const BorderSide( width: 1, color: Color(0xFFF96332),),
-                    //  padding: EdgeInsets.all(60),
-                  minimumSize: Size(screenSize * 0.90, screenheight * 0.07),
-                    backgroundColor: const Color(0xFFF96332),
+              style: OutlinedButton.styleFrom(
+                shape: const StadiumBorder (
+                  side: BorderSide( width: 20,)
                 ),
+                side: const BorderSide( width: 1, color: Color(0xFFF96332),),
+                    //  padding: EdgeInsets.all(60),
+                minimumSize: Size(screenSize * 0.90, screenheight * 0.07),
+                backgroundColor: const Color(0xFFF96332),
               ),
+            ),
           ],
         ),
       ),

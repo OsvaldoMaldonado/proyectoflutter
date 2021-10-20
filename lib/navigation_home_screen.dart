@@ -4,9 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:servicios_vic/home_screen.dart';
-import 'package:servicios_vic/model/modelo.dart';
+import 'package:servicios_vic/model/modelo_navegacion_usuario.dart';
 import 'package:servicios_vic/user_profile_screen.dart';
-import 'package:servicios_vic/services_user_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'model/colors.dart';
 import 'navigation_category_screen.dart';
@@ -28,7 +27,7 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
 
 
   Future<void> setBuscador(String textoBuscador) async {
-    print(textoBuscador);
+    //print(textoBuscador);
     setState(() => busqueda = textoBuscador);
   }
 
@@ -41,6 +40,13 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
 
     return Scaffold(
       key: _globalKey,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        shadowColor: Colors.transparent,
+        foregroundColor: const Color(0xFFF96332),
+        title: const Text('¿Qué necesitas hoy?', style: TextStyle(fontSize: 20.0,color: Colors.black,),)
+      ),
       drawer: Drawer(
          child: ListView(
           // Important: Remove any padding from the ListView.
@@ -70,7 +76,7 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => UserProfileScreen()));
+                        MaterialPageRoute(builder: (context) => const UserProfileScreen()));
                     },
                     child: Row(
                       children: <Widget>[
@@ -84,11 +90,6 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
                 Container(
                   margin: const EdgeInsets.only(left: 12.0,top: 12.0),
                   child: InkWell(
-                      onTap: (){
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ServicesUserScreen()));
-                      },
                     child: Row(
                       children: <Widget>[
                         const Icon(Icons.access_time,size: 30.0),
@@ -153,6 +154,7 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
                     onTap: () async {
                        SharedPreferences prefs = await SharedPreferences.getInstance();
                         prefs.remove('id');
+                        prefs.remove('type');
                         Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (BuildContext ctx) => const HomeScreen()));
                     },
@@ -172,51 +174,9 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
       ), 
       body: Column(
         children: <Widget>[
-          // TOP HEADER
-          Container(
-            alignment: Alignment.topCenter,
-            margin: const EdgeInsets.only(top: 45.0),
-            child: Row(
-              // ignore: prefer_const_literals_to_create_immutables
-              children: <Widget>[
-                // ignore: prefer_const_constructors
-                Container(
-                  margin: const EdgeInsets.only(
-                    left: 12.0,
-                    right: 12.0
-                  ),
-                  height: 50,
-                  width: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.0),
-                    color: const Color(0xffe0e0e0)
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      _globalKey.currentState!.openDrawer();
-                      
-                    },
-                    borderRadius: BorderRadius.circular(30.0),
-                      // ignore: prefer_const_constructors
-                    child: Center(
-                      child: const Icon(Icons.menu, color: Color(0xfff96332)),
-                    ),
-                  ),
-                ),
-                const Text('¿Qué necesitas hoy?', 
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.black,
-                    ),
-                  )
-              ],
-            ),
-          ),
-          // PROFESIONES
-          
+          SizedBox(height: screenheight * 0.01),
           Container(
             alignment: Alignment.topLeft,  
-            margin: const EdgeInsets.only(top:15,),
             width: screenSize * 0.90,
             child: TextField(
               onSubmitted: (textoBuscador){
@@ -230,6 +190,7 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
               ),  
             )
           ),
+          SizedBox(height: screenheight * 0.01),
           Container(
             alignment: Alignment.topLeft,
             margin: const EdgeInsets.only(top:10, left: 20.0),
@@ -239,7 +200,8 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
                     color: Colors.black,
                     ),
                   ),  
-            ), 
+          ), 
+          SizedBox(height: screenheight * 0.01),
           Container(
             alignment: Alignment.topLeft,  
             width: screenSize * 0.90,
@@ -260,6 +222,7 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
               },
             ),
           ),
+          SizedBox(height: screenheight * 0.01),
           Container(
             alignment: Alignment.topRight,
             margin: const EdgeInsets.only(top: 10.0, right: 15.0),

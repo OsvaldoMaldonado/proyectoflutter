@@ -16,6 +16,7 @@ class HomeScreen extends  StatelessWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
+     
       body: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -85,7 +86,7 @@ class HomeScreen extends  StatelessWidget {
             SizedBox(height: screenheight * 0.01,),
             OutlinedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginUserScreen()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginUserScreen()));
               },
               child: const Text('Iniciar sesion', style: TextStyle(color: Colors.black, fontSize: 20)
               ),

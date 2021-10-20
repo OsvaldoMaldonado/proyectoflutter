@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'model/modelo.dart';
+import 'model/modelo_login_cuentas.dart';
 import 'register_employee_jobs_screen.dart';
 class RegisterEmployeeScreen extends StatelessWidget{
   TextEditingController entrada_registro_Empleado_NombreCorreo = TextEditingController();
@@ -89,6 +89,7 @@ class RegisterEmployeeScreen extends StatelessWidget{
                     ),
                   ),
                 ),
+                SizedBox(height: screenheight * 0.01,),
                 Row(
                   children: <Widget>[
                     SizedBox(width: screenSize * 0.05),
@@ -117,6 +118,7 @@ class RegisterEmployeeScreen extends StatelessWidget{
                     ),
                   ],
                 ),
+                SizedBox(height: screenheight * 0.01,),
                 SizedBox(
                   width: screenSize * 0.90,
                   height: screenheight * 0.10,
@@ -129,6 +131,7 @@ class RegisterEmployeeScreen extends StatelessWidget{
                     ),
                   ),
                 ),
+                SizedBox(height: screenheight * 0.01,),
                 SizedBox(
                   width: screenSize * 0.90,
                   height: screenheight * 0.10,
@@ -140,6 +143,7 @@ class RegisterEmployeeScreen extends StatelessWidget{
                     ),
                   ),
                 ),
+                SizedBox(height: screenheight * 0.01,),
                 SizedBox(
                   width: screenSize * 0.90,
                   height: screenheight * 0.10,
@@ -151,6 +155,7 @@ class RegisterEmployeeScreen extends StatelessWidget{
                     ),
                   ),
                 ),
+                SizedBox(height: screenheight * 0.01,),
                 OutlinedButton(
 
                   onPressed: () {
@@ -163,7 +168,7 @@ class RegisterEmployeeScreen extends StatelessWidget{
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterEmployeeJobsScreen()));
 
                   },
-                  child: const Text('Crear Cuenta', style: TextStyle(color: Colors.white, fontSize: 20)),
+                  child: const Text('Siguiente', style: TextStyle(color: Colors.white, fontSize: 20)),
                     style: OutlinedButton.styleFrom(
                         shape: const StadiumBorder (
                           side: BorderSide(
@@ -176,6 +181,7 @@ class RegisterEmployeeScreen extends StatelessWidget{
                         backgroundColor: const Color(0xFFF96332),
                     ),
                   ),
+                SizedBox(height: screenheight * 0.01,),
                 ],
               ),  
             ),

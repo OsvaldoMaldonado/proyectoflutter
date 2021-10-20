@@ -1,72 +1,63 @@
-import 'dart:async';
-import 'dart:convert';
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
-import 'model/modelo.dart';
-import 'package:servicios_vic/services_employee_screen.dart';
-import 'package:servicios_vic/user_profile_screen.dart';
 import 'package:servicios_vic/employee_profile_screen.dart';
-import 'model/colors.dart';
-import 'navigation_category_screen.dart';
+import 'package:servicios_vic/home_screen.dart';
+import 'package:servicios_vic/maps_employee_jobs_location_screen.dart';
+import 'package:servicios_vic/model/modelo_navegacion_empleado.dart';
+import 'package:servicios_vic/user_profile_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-Future<List<Categorias>?> fetchCategorias(http.Client client) async {
-  final response = await client
-      .get(Uri.parse('https://proyectonunoxd.000webhostapp.com/categoriashome.php'));
+class NavigationHomeEmployeeScreen extends StatefulWidget{
+   const NavigationHomeEmployeeScreen({Key? key}) : super(key: key);
 
-  return compute(parseCategorias, response.body);
-
-}
-
-// A function that converts a response body into a List<Categorias>.
-List<Categorias> parseCategorias(String responseBody) {
-  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-
-  return parsed.map<Categorias>((json) => Categorias.fromJson(json)).toList();
-}
-
-class Categorias {
-  final String id;
-  final String nombre;
-  final String color;
-  final String icono;
-
-  const Categorias({
-    required this.id,
-    required this.nombre,
-    required this.color,
-    required this.icono,
-  });
-
-  factory Categorias.fromJson(Map<String, dynamic> json) {
-    return Categorias(
-      id: json['idTab_Categoria'] as String,
-      nombre: json['nombre'] as String,
-      color: json['color'] as String,
-      icono: json['icono'] as String,
-    );
-  }
+  @override
+  NavigationHomeEmployeeState createState() => NavigationHomeEmployeeState();
 }
 
 
-class NavigationEmployeeScreen extends StatelessWidget {
-  final Future<String?> id_usuario;
-  NavigationEmployeeScreen({Key? key, required this.id_usuario}) : super(key: key);
+class NavigationHomeEmployeeState extends State<NavigationHomeEmployeeScreen> {
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
 
+  String locacion = "";
+  String id = '3';
+  double latitud = 0.0, longitud = 0.0;
+
+  void _getiD() async {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String idUser = prefs.getString('id') ?? '';
+
+      setState(() => id = idUser);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-
+    if (id == ''){
+      _getiD();
+    }
     double screenSize = MediaQuery.of(context).size.width;
     double screenheight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       key: _globalKey,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        shadowColor: Colors.transparent,
+        foregroundColor: const Color(0xFFF96332),
+        title: const Text('Mis trabajos activos', style: TextStyle(fontSize: 20.0,color: Colors.black,),)
+      ),
       drawer: Drawer(
-        child: ListView(
+         child: ListView(
           // Important: Remove any padding from the ListView.
-
           children: [
             DrawerHeader(
               decoration: const BoxDecoration(
@@ -81,143 +72,262 @@ class NavigationEmployeeScreen extends StatelessWidget {
               ),
               child: Container(
                 alignment: Alignment.bottomLeft,
-                child: Text(""),
-              ),
+                child: const Text(""),
+              ),  
             ),
             Column(
               children: <Widget>[
                 Container(
-                    margin: const EdgeInsets.only(left: 12.0,top: 6.0),
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => EmployeeProfileScreen(id_usuario: id_usuario)));
-                        },
-                        child: Row(
-                          children: const <Widget>[
-                            Icon(Icons.person_pin, size: 30.0,),
-                            Text('Mi cuenta',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                          ],
-                        )
+                  margin: const EdgeInsets.only(left: 12.0,top: 6.0),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const EmployeeProfileScreen()));
+                    },
+                    child: Row(
+                      children: <Widget>[
+                        const Icon(Icons.person_pin, size: 30.0),
+                        SizedBox(width: screenSize*0.02,),
+                        const Text('Mi cuenta',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
+                      ],
                     )
+                  )
                 ),
                 Container(
-                    margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                    child: InkWell(
-                      onTap: (){
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ServicesEmployeeScreen(id_usuario: id_usuario)));
-                      },
-                        child: Row(
-                          children: const <Widget>[
-                            Icon(Icons.access_time,size: 30.0),
-                            Text('Mi Historial de servicios',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                          ],
-                        )
+                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
+                  child: InkWell(
+                    child: Row(
+                      children: <Widget>[
+                        const Icon(Icons.access_time,size: 30.0),
+                        SizedBox(width: screenSize*0.02,),
+                        const Text('Mi Historial de servicios',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
+                      ],
                     )
+                  )
                 ),
                 Container(
-                    margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                    child: InkWell(
-                        child: Row(
-                          children: const <Widget>[
-                            Icon(Icons.location_on,size: 30.0),
-                            Text('Mis ubicaciones',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                          ],
-                        )
+                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
+                  child: InkWell(
+                    child: Row(
+                      children: <Widget>[
+                        const Icon(Icons.location_on,size: 30.0),
+                        SizedBox(width: screenSize*0.02,),
+                        const Text('Mis ubicaciones',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
+                      ],
                     )
+                  )
                 ),
                 Container(
-                    margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                    child: InkWell(
-                        child: Row(
-                          children: const <Widget>[
-                            Icon(Icons.credit_card, size: 30.0),
-                            Text('Mis metodos de pago',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                          ],
-                        )
+                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
+                  child: InkWell(
+                    child: Row(
+                      children: <Widget>[
+                        const Icon(Icons.account_balance, size: 30.0),
+                        SizedBox(width: screenSize*0.02,),
+                        const Text('Terminos y condiciones',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
+                      ],
                     )
+                  )
                 ),
                 Container(
-                    margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                    child: InkWell(
-                        child: Row(
-                          children: const <Widget>[
-                            Icon(Icons.account_balance, size: 30.0),
-                            Text('Terminos y condiciones',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                          ],
-                        )
+                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
+                  child: InkWell(
+                    child: Row(
+                      children: <Widget>[
+                        const Icon(Icons.help, size: 30.0),
+                        SizedBox(width: screenSize*0.02,),
+                        const Text('Ayuda',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
+                      ],
                     )
-                ),
-                Container(
-                    margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                    child: InkWell(
-                        child: Row(
-                          children: const <Widget>[
-                            Icon(Icons.help, size: 30.0),
-                            Text('Ayuda',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                          ],
-                        )
-                    )
+                  )
                 ),
                 Container(height: screenheight*.40,),
                 Container(
-                    margin: const EdgeInsets.only(left: 12.0,top: 6.0),
-                    child: InkWell(
-                        child: Row(
-                          children: const <Widget>[
-                            Icon(Icons.logout, size: 30.0),
-                            Text('Cerrar Sesión',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                          ],
-                        )
+                  margin: const EdgeInsets.only(left: 12.0,top: 6.0),
+                  child: InkWell(
+                    onTap: () async {
+                       SharedPreferences prefs = await SharedPreferences.getInstance();
+                        prefs.remove('id');
+                        prefs.remove('type');
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (BuildContext ctx) => const HomeScreen()));
+                    },
+                    child: Row(
+                      children: <Widget>[
+                        const Icon(Icons.logout, size: 30.0),
+                        SizedBox(width: screenSize*0.02,),
+                        const Text('Cerrar Sesión',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
+                      ],
                     )
+                  )
                 ),
               ],
             ),
           ],
         ),
-      ),
+      ), 
       body: Column(
         children: <Widget>[
-          // TOP HEADER
+          SizedBox(height: screenheight * 0.01),
           Container(
-            alignment: Alignment.topCenter,
-            margin: const EdgeInsets.only(top: 45.0),
-            child: Row(
-              // ignore: prefer_const_literals_to_create_immutables
-              children: <Widget>[
-                // ignore: prefer_const_constructors
-                Container(
-                  margin: const EdgeInsets.only(
-                      left: 12.0,
-                      right: 12.0
-                  ),
-                  height: 50,
-                  width: 50,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30.0),
-                      color: const Color(0xffe0e0e0)
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      _globalKey.currentState!.openDrawer();
-
-                    },
-                    borderRadius: BorderRadius.circular(30.0),
-                    // ignore: prefer_const_constructors
-                    child: Center(
-                      child: const Icon(Icons.menu, color: Color(0xfff96332)),
-                    ),
-                  ),
-                ),
-              ],
+            alignment: Alignment.center,  
+            width: screenSize,
+            child: FutureBuilder<List<TrabajosEmpleado>?>(
+              future: fetchTrabajosEmpleado(http.Client(), int.parse(id)),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text('Ningun Resultado!'),
+                  );
+                } else if (snapshot.hasData) {
+                  return TrabajosEmpleadoList(trabajosEmpleado: snapshot.data!);
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
             ),
           ),
-    ],
-    ),
+       ],
+      ),
     );
+  }
+}
 
+class TrabajosEmpleadoList extends StatefulWidget{
+  const TrabajosEmpleadoList({Key? key, required this.trabajosEmpleado}) : super(key: key);
+  final List<TrabajosEmpleado> trabajosEmpleado;
+
+  @override
+  // ignore: no_logic_in_create_state
+  TrabajosEmpleadoListState createState() => TrabajosEmpleadoListState(trabajosEmpleado: trabajosEmpleado);
+}
+
+
+class TrabajosEmpleadoListState extends State<TrabajosEmpleadoList> {
+  TrabajosEmpleadoListState({Key? key, required this.trabajosEmpleado});
+
+  var locacion = "";
+
+  /*void _lugar(double latitud, double longitud) async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(latitud, longitud);
+    String location = placemarks[0].street.toString() + ", " + placemarks[0].subLocality.toString() + ", " + placemarks[0].locality.toString();
+    setState(() {
+      locacion = location;
+    });
+  }*/
+
+  final List<TrabajosEmpleado> trabajosEmpleado;
+  @override
+  Widget build(BuildContext context) {
+    double screenSize = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: trabajosEmpleado.length,
+      itemBuilder: (context, index) {
+        return Container(
+          alignment: Alignment.center,
+          margin: EdgeInsets.only(
+              left: screenSize * 0.05,
+              right: screenSize * 0.05,
+              bottom: 10.0
+          ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 3,
+                offset: const Offset(0, 3), // changes position of shadow
+              ),
+            ],
+          ),
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyHomePage(latitud:trabajosEmpleado[index].latitud, longitud:trabajosEmpleado[index].longitud)),
+              );
+            },
+            borderRadius: BorderRadius.circular(20.0),
+            // ignore: prefer_const_constructors
+            child: Container(
+              margin: EdgeInsets.only(
+                  left: screenSize * 0.05,
+                  right: screenSize * 0.05,
+                  bottom: 10.0,
+                  top: 10.0
+              ),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text("Estado > " + trabajosEmpleado[index].estado_servicio, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text("Fecha de publicación > " + trabajosEmpleado[index].fecha_publicacion, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text("Ubicación > " + trabajosEmpleado[index].latitud + ", " +  trabajosEmpleado[index].longitud, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text("Descripcion > " + trabajosEmpleado[index].descripcion, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text("Usuario > " + trabajosEmpleado[index].nombre + " " + trabajosEmpleado[index].apellido, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text("Telefono > " + trabajosEmpleado[index].telefono, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text("Servicio > " + trabajosEmpleado[index].nombreS, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                      ],
+                    ),
+                  ),
+                ],
+              ),       
+            ),
+          ),   
+        );    
+      },
+    );
   }
 }

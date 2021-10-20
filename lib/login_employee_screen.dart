@@ -1,8 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'model/modelo.dart';
-import 'navigation_home_employee_screen.dart';
+import 'model/modelo_login_cuentas.dart';
 
 // ignore: must_be_immutable
 class LoginEmployeeScreen extends StatelessWidget{
@@ -11,8 +10,8 @@ class LoginEmployeeScreen extends StatelessWidget{
   TextEditingController entrada_login_Empleado_NombreContra = TextEditingController();
   String getvalue = "";
   String getvalue2 = "";
-  late Future<String?> id_Usuario;
 
+  LoginEmployeeScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
@@ -78,10 +77,12 @@ class LoginEmployeeScreen extends StatelessWidget{
                 ),
               ),
             ),
+            SizedBox(height: screenheight * 0.01,),
             SizedBox(
               width: screenSize * 0.90,
               height: screenheight * 0.10,
               child:TextField(
+                obscureText: true,
                 controller: entrada_login_Empleado_NombreContra,
                 decoration: const InputDecoration(
                   icon: Icon(Icons.password_outlined),
@@ -94,17 +95,7 @@ class LoginEmployeeScreen extends StatelessWidget{
               onPressed: () async{
                 getvalue = entrada_login_Empleado_NombreContra.text.toString();
                 getvalue2 = entrada_login_Empleado_NombreCorreo.text.toString();
-               id_Usuario = loginempleado(getvalue2, getvalue);
-                if(id_Usuario == null){
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text("Credenciales Incorrectas"),
-                  ));
-                }else{
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => NavigationEmployeeScreen(id_usuario: id_Usuario,)),
-                  );
-                }
+                loginempleado(getvalue2, getvalue, context);
               },
               child: const Text('Iniciar sesión', style: TextStyle(color: Colors.white, fontSize: 20)),
                 style: OutlinedButton.styleFrom(

@@ -4,8 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
+import 'package:servicios_vic/navigation_employees_screen.dart';
 import 'navigation_category_screen.dart';
-import 'package:servicios_vic/model/modelo.dart';
+import 'package:servicios_vic/model/modelo_navegacion_usuario.dart';
 
 class NavigationJobScreen extends StatefulWidget{
 
@@ -14,9 +15,10 @@ class NavigationJobScreen extends StatefulWidget{
   final String? tiposervicio;
   final int? id_tiposervicio;
 
-  NavigationJobScreen({Key? key, required this.tiposervicio, required this.id_tiposervicio, this.profesion, this.id_profesion}) : super(key: key);
+  const NavigationJobScreen({Key? key, required this.tiposervicio, required this.id_tiposervicio, this.profesion, this.id_profesion}) : super(key: key);
   
   @override
+  // ignore: no_logic_in_create_state
   NavigationJobState createState() => NavigationJobState(id_profesion: id_profesion, profesion: profesion, id_tiposervicio: id_tiposervicio, tiposervicio: tiposervicio);
 }
 
@@ -27,7 +29,7 @@ class NavigationJobState extends State<NavigationJobScreen> {
   String busqueda = "";
 
   Future<void> setBuscador(String textoBuscador) async {
-    print(textoBuscador);
+    //print(textoBuscador);
     setState(() => busqueda = textoBuscador);
   }
   final String? profesion;
@@ -35,58 +37,23 @@ class NavigationJobState extends State<NavigationJobScreen> {
   final String? tiposervicio;
   final int? id_tiposervicio;
 
-  
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
+    double screenheight = MediaQuery.of(context).size.width;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        shadowColor: Colors.transparent,
+        foregroundColor: const Color(0xFFF96332),
+        title: const Text('¿Que trabajo estas buscando?', style: TextStyle(fontSize: 20.0,color: Colors.black,),)
+      ),
       body: Column(
         children: <Widget>[
-          Container(
-            alignment: Alignment.topCenter,
-            margin: const EdgeInsets.only(top: 45.0),
-            child: Row(
-              // ignore: prefer_const_literals_to_create_immutables
-              children: <Widget>[
-                // ignore: prefer_const_constructors
-                Container(
-                  margin: const EdgeInsets.only(
-                    left: 12.0,
-                    right: 12.0
-                  ),
-                  height: 50,
-                  width: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.0),
-                    color: const Color(0xffe0e0e0)
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => NavigationCategoryScreen(
-                          profesion: profesion, id_profesion: id_profesion,)),
-                      );
-                    },
-                    borderRadius: BorderRadius.circular(30.0),
-                      // ignore: prefer_const_constructors
-                    child: Center(
-                      child: const Icon(Icons.arrow_back, color: Color(0xfff96332)),
-                    ),
-                  ),
-                ),
-                const Text('¿Qué trabajo estas buscando?', 
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.black,
-                    ),
-                  )
-              ],
-            ),
-          ),
+          SizedBox(height: screenheight * 0.01),
           Container(
             alignment: Alignment.topLeft,
-            margin: const EdgeInsets.only(top: 20, ),  
             width: screenSize * 0.90,
             child: TextField(
               onSubmitted: (textoBuscador){
@@ -100,6 +67,7 @@ class NavigationJobState extends State<NavigationJobScreen> {
               ),  
             )
           ),
+          SizedBox(height: screenheight * 0.01),
           Container(
             alignment: Alignment.topLeft,
             margin: const EdgeInsets.only(top: 10.0, left: 20.0),
@@ -110,6 +78,7 @@ class NavigationJobState extends State<NavigationJobScreen> {
               ),
             ),
           ),
+          SizedBox(height: screenheight * 0.01),
           Container(
             alignment: Alignment.topCenter,
             margin: const EdgeInsets.only(top:20.0,left: 12.0, right: 12.0),
@@ -127,7 +96,7 @@ class NavigationJobState extends State<NavigationJobScreen> {
                           child: Text('Ningun Resultado!'),
                         );
                       } else if (snapshot.hasData) {
-                        return ServicioList(servicio: snapshot.data!);
+                        return ServicioList(servicio: snapshot.data!, profesion: profesion, id_profesion: id_profesion, tiposervicio: tiposervicio, id_tiposervicio: id_tiposervicio);
                       } else {
                         return const Center(
                           child: CircularProgressIndicator(),
@@ -143,12 +112,17 @@ class NavigationJobState extends State<NavigationJobScreen> {
       ),
     );
   }
-
 }
 
 class ServicioList extends StatelessWidget {
+  
+  final String? profesion;
+  final int? id_profesion;
+  final String? tiposervicio;
+  final int? id_tiposervicio;
+
   final List<Servicio> servicio;
-  const ServicioList({Key? key, required this.servicio}) : super(key: key);
+  const ServicioList({Key? key, required this.servicio, this.profesion, this.id_profesion, this.tiposervicio, this.id_tiposervicio}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
@@ -184,7 +158,11 @@ class ServicioList extends StatelessWidget {
             ),
           child: InkWell( 
             onTap: () {
-             
+               Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NavigationEmployeesScreen(profesion : profesion, id_profesion: id_profesion, tiposervicio: tiposervicio, id_tiposervicio: id_tiposervicio, 
+                id_servicio: int.parse(servicio[index].id), servicio: servicio[index].nombre)),
+              );
             },
             borderRadius: BorderRadius.circular(20.0),
             // ignore: prefer_const_constructors
@@ -196,7 +174,7 @@ class ServicioList extends StatelessWidget {
                     top: 10.0,
                     left: 15.0,
                   ),
-                  child: Text( servicio[index].nombre, 
+                  child: Text(servicio[index].nombre, 
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18.0,

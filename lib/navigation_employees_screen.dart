@@ -1,50 +1,92 @@
-// ignore_for_file: must_be_immutable, non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:servicios_vic/navitagion_job_screen.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:servicios_vic/model/modelo_navegacion_usuario.dart';
-import 'navigation_home_screen.dart';
 
-class NavigationCategoryScreen extends StatefulWidget{
+import 'navigation_confirm_job_screen.dart';
 
-  String? profesion;
-  int? id_profesion;
+class NavigationEmployeesScreen extends StatefulWidget{
 
-  NavigationCategoryScreen({Key? key, required this.profesion, required this.id_profesion}) : super(key: key);
+  final String? profesion;
+  final int? id_profesion;
+  final String? tiposervicio;
+  final int? id_tiposervicio;
+  final String? servicio;
+  final int? id_servicio;
+
+  const NavigationEmployeesScreen({Key? key, required this.tiposervicio, required this.id_tiposervicio, this.profesion, this.id_profesion, this.servicio, this.id_servicio}) : super(key: key);
   
   @override
   // ignore: no_logic_in_create_state
-  NavigationCategoryState createState() => NavigationCategoryState(id_profesion: id_profesion, profesion: profesion);
+  NavigationEmployeesState createState() => NavigationEmployeesState(id_tiposervicio: id_tiposervicio, tiposervicio: tiposervicio, id_profesion: id_profesion, id_servicio: id_servicio, profesion: profesion, servicio: servicio);
 }
 
 
-class NavigationCategoryState extends State<NavigationCategoryScreen> {
-  NavigationCategoryState({Key? key, required this.profesion, required this.id_profesion});
+class NavigationEmployeesState extends State<NavigationEmployeesScreen> {
+  NavigationEmployeesState({Key? key, required this.tiposervicio, required this.id_tiposervicio, required this.profesion, required this.id_profesion, required this.id_servicio, required this.servicio});
 
   String busqueda = "";
+  double latitud = 0.0, longitud = 0.0;
 
   Future<void> setBuscador(String textoBuscador) async {
     //print(textoBuscador);
     setState(() => busqueda = textoBuscador);
   }
 
-  String? profesion;
-  int? id_profesion;
- 
+  final String? profesion;
+  final int? id_profesion;
+  final String? tiposervicio;
+  final int? id_tiposervicio;
+  final String? servicio;
+  final int? id_servicio;
+
+
+  void _getCurrentLocation() async {
+    LocationPermission permission;
+    
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        setState(() {
+          latitud = 0.0;
+        });
+      }else{
+        var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+        setState(() {
+          latitud = position.latitude;
+          longitud = position.longitude;
+        });
+      }
+    }else{
+      var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      setState(() {
+          latitud = position.latitude;
+          longitud = position.longitude;
+      });
+    }
+  }
+  @override
+  void initState() {
+    _getCurrentLocation();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
-    double screenheight = MediaQuery.of(context).size.height;
+    double screenheight = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         shadowColor: Colors.transparent,
         foregroundColor: const Color(0xFFF96332),
-        title: const Text('¿Que categoria estas buscando?', style: TextStyle(fontSize: 20.0,color: Colors.black,),)
+        title: const Text('Prestadores Disponibles', style: TextStyle(fontSize: 20.0,color: Colors.black,),)
       ),
       body: Column(
         children: <Widget>[
@@ -58,18 +100,17 @@ class NavigationCategoryState extends State<NavigationCategoryScreen> {
               },
               decoration: const InputDecoration(    
                 focusColor: Colors.grey,  
-                hintText: 'Buscar categorias',
+                hintText: 'Buscar prestador',
                 fillColor: Color(0xffe0e0e0), filled: true,
                 hintStyle: TextStyle(color: Colors.black),
-              ),
-                
+              ),  
             )
           ),
           SizedBox(height: screenheight * 0.01),
           Container(
             alignment: Alignment.topLeft,
             margin: const EdgeInsets.only(top: 10.0, left: 20.0),
-            child: Text('Profesion > $profesion', 
+            child: Text('Profesion > $profesion > $tiposervicio > $servicio', 
               style: const TextStyle(
                 fontSize: 12.0,
                 color: Colors.black,
@@ -78,41 +119,50 @@ class NavigationCategoryState extends State<NavigationCategoryScreen> {
           ),
           SizedBox(height: screenheight * 0.01),
           Container(
-            alignment: Alignment.topLeft,  
-            width: screenSize * 0.90,
-            child: FutureBuilder<List<TipoServicio>?>(
-              future: fetchTipoServicio(http.Client(), id_profesion!, busqueda),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return const Center(
-                    child: Text('Ningun Resultado!'),
-                  );
-                } else if (snapshot.hasData) {
-                  return TipoServicioList(tiposervicio: snapshot.data!, profesion: profesion, id_profesion: id_profesion);
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
+            alignment: Alignment.topCenter,
+            margin: const EdgeInsets.only(top:20.0,left: 12.0, right: 12.0),
+            child: Column(
+              // ignore: prefer_const_literals_to_create_immutables
+              children: <Widget>[    
+                Container(
+                  alignment: Alignment.topLeft,  
+                  width: screenSize * 0.90,
+                  child: FutureBuilder<List<Empleados>?>(
+                    future: fetchEmpleados(http.Client(), busqueda, id_servicio!, latitud, longitud),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return const Center(
+                          child: Text('Ningun Resultado!'),
+                        );
+                      } else if (snapshot.hasData) {
+                        return EmpleadosList(empleados: snapshot.data!, servicio: servicio, id_servicio: id_servicio);
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                  ),
+                ),
+               ],
             ),
           ),
         ],
       ),
     );
   }
-
 }
-class TipoServicioList extends StatelessWidget {
 
-  final String? profesion;
-  final int? id_profesion;
-  final List<TipoServicio> tiposervicio;
-  const TipoServicioList({Key? key, required this.tiposervicio, this.profesion, this.id_profesion}) : super(key: key);
+class EmpleadosList extends StatelessWidget {
+
+  final List<Empleados> empleados;
+  final String? servicio;
+  final int? id_servicio;
+
+  const EmpleadosList({Key? key, required this.empleados, required this.servicio, required this.id_servicio}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
-    //double screenSheght = MediaQuery.of(context).size.height;
     return GridView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
@@ -120,7 +170,7 @@ class TipoServicioList extends StatelessWidget {
         crossAxisCount: 1,
         childAspectRatio: 3.5
       ),
-      itemCount: tiposervicio.length,
+      itemCount: empleados.length,
       itemBuilder: (context, index) {
         return Container(
           alignment: Alignment.topLeft,
@@ -129,6 +179,7 @@ class TipoServicioList extends StatelessWidget {
               right: 6.0,
               bottom: 15.0
             ),
+            height: screenSize * .22,
             width: screenSize * .90,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
@@ -146,8 +197,7 @@ class TipoServicioList extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => NavigationJobScreen(tiposervicio: tiposervicio[index].nombre, 
-                id_tiposervicio: int.parse(tiposervicio[index].id), profesion: profesion, id_profesion: id_profesion,)),
+                MaterialPageRoute(builder: (context) => NavigationConfirmJobScreen(servicio:servicio, id_servicio:id_servicio, id_prestador: empleados[index].id, prestador: empleados[index].nombre + " " + empleados[index].apellido)),
               );
             },
             borderRadius: BorderRadius.circular(20.0),
@@ -160,7 +210,7 @@ class TipoServicioList extends StatelessWidget {
                     top: 10.0,
                     left: 15.0,
                   ),
-                  child: Text( tiposervicio[index].nombre, 
+                  child: Text(empleados[index].nombre + " " + empleados[index].apellido,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18.0,
@@ -170,9 +220,9 @@ class TipoServicioList extends StatelessWidget {
                 ),
                 Container(
                   margin: const EdgeInsets.only(
-                    left: 16.0,
+                    left: 15.0,
                   ),
-                  child: Text( tiposervicio[index].descripcion, 
+                  child: Text("Numero telefonico: " + empleados[index].telefono, 
                     style: const TextStyle(
                       fontSize: 14.0,
                       color: Colors.black,
@@ -190,7 +240,7 @@ class TipoServicioList extends StatelessWidget {
                     left: screenSize * .63,
                   ),
                   padding: const EdgeInsets.all(4),
-                  child: const Text( 'Categoria', 
+                  child: const Text( 'Prestador', 
                     style: TextStyle(
                       fontSize: 14.0,
                       color: Colors.black,

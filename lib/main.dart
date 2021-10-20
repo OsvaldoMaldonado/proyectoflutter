@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:servicios_vic/home_screen.dart';
+import 'package:servicios_vic/navigation_home_employee_screen.dart';
 import 'package:servicios_vic/navigation_home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,7 +19,7 @@ void main() async {
      ));
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var id = prefs.getString('id');
-    print(id);
+    var type = prefs.getString('type');
     runApp(MaterialApp(
       title: 'ServiciosVic',
       debugShowCheckedModeBanner: false,
@@ -26,8 +27,9 @@ void main() async {
         fontFamily: 'Poppins',
         platform: TargetPlatform.android,
       ),
-      home: id == null ? const HomeScreen() : NavigationHomeScreen())
-      );
+      home: id == null ? const HomeScreen() : type == 'usuario' ? 
+      const NavigationHomeScreen() : const NavigationHomeEmployeeScreen())
+    );
   // ignore: prefer_const_constructors
     
 }

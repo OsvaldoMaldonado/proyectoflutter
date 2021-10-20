@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:servicios_vic/login_user_screen.dart';
-import 'model/modelo.dart';
+import 'model/modelo_login_cuentas.dart';
 
 class RegisterUserScreen extends StatefulWidget {
   const RegisterUserScreen({Key? key}) : super(key: key);
@@ -35,6 +35,7 @@ class RegisterUserState extends State<RegisterUserScreen> {
     double screenheight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -97,6 +98,7 @@ class RegisterUserState extends State<RegisterUserScreen> {
                         ),
                     ),
                   ),
+                  SizedBox(height: screenheight * 0.01,),
                   Row(
                     children: <Widget>[
                       SizedBox(width: screenSize * 0.05),
@@ -124,6 +126,7 @@ class RegisterUserState extends State<RegisterUserScreen> {
                       ),
                     ],
                   ),
+                  SizedBox(height: screenheight * 0.01,),
                   SizedBox(
                     width: screenSize * 0.90,
                     height: screenheight * 0.10,
@@ -136,6 +139,7 @@ class RegisterUserState extends State<RegisterUserScreen> {
                       ),
                     ),
                   ),
+                  SizedBox(height: screenheight * 0.01,),
                   SizedBox(
                     width: screenSize * 0.90,
                     height: screenheight * 0.10,
@@ -147,6 +151,7 @@ class RegisterUserState extends State<RegisterUserScreen> {
                       ),
                     ),
                   ),
+                  SizedBox(height: screenheight * 0.01,),
                   SizedBox(
                     width: screenSize * 0.90,
                     height: screenheight * 0.10,
@@ -158,14 +163,15 @@ class RegisterUserState extends State<RegisterUserScreen> {
                       ),
                     ),
                   ),
+                  SizedBox(height: screenheight * 0.01,),
                   const Text("Metodo de pago", style: TextStyle(fontSize: 16),),
-                  SizedBox(height: screenheight * 0.02 ,),
+                  SizedBox(height: screenheight * 0.01 ,),
                   Row(
                     children: <Widget>[
                       SizedBox(width: screenSize * 0.05),
                       SizedBox(
                         width: screenSize * 0.30,
-                        height: screenheight * 0.07,
+                        height: screenheight * 0.10,
                         child: InputDecorator(
                           decoration: const InputDecoration(
                             icon: Icon(Icons.credit_card),
@@ -273,7 +279,7 @@ class RegisterUserState extends State<RegisterUserScreen> {
                       getvalue4 = entrada_registro_TelefonoCuenta.text.toString();
                       getvalue5 = entrada_registro_NombreCorreo.text.toString();
                       insertarusuario(getvalue5, getvalue, getvalue2, getvalue3, getvalue4);
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => LoginUserScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginUserScreen()));
                   
                     },
                     child: const Text('Crear Cuenta', style: TextStyle(color: Colors.white, fontSize: 20)),
@@ -289,6 +295,7 @@ class RegisterUserState extends State<RegisterUserScreen> {
                         backgroundColor: const Color(0xFFF96332),
                     ),
                   ),
+                  SizedBox(height: screenheight * 0.01,),
                ],
               ),
             ),

@@ -4,8 +4,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:servicios_vic/model/modelo.dart';
-import 'package:servicios_vic/navigation_home_screen.dart';
+import 'package:servicios_vic/model/modelo_perfil_cuentas.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -34,52 +33,16 @@ class UserProfileState extends State<UserProfileScreen> {
     }
     double screenSize = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          // TOP HEADER
-          Container(
-            alignment: Alignment.topCenter,
-            margin: const EdgeInsets.only(top: 45.0),
-            child: Row(
-              // ignore: prefer_const_literals_to_create_immutables
-              children: <Widget>[
-                // ignore: prefer_const_constructors
-                Container(
-                  margin: const EdgeInsets.only(
-                    left: 12.0,
-                    right: 12.0
-                  ),
-                  height: 50,
-                  width: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.0),
-                    color: const Color(0xffe0e0e0)
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                       Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const NavigationHomeScreen()));
-                    },
-                    borderRadius: BorderRadius.circular(30.0),
-                      // ignore: prefer_const_constructors
-                    child: Center(
-                      child: const Icon(Icons.arrow_back, color: Color(0xfff96332)),
-                    ),
-                  ),
-                ),
-                const Text('Mi cuenta', 
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.black,
-                    ),
-                  )
-              ],
-            ),
-          ),
-          // PROFESIONES
-          Container(
-            alignment: Alignment.topLeft,  
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        shadowColor: Colors.transparent,
+        foregroundColor: const Color(0xFFF96332),
+        title: const Text('Mi perfil', style: TextStyle(fontSize: 20.0,color: Colors.black,),)
+      ),
+      body: Center(
+          child: Container(
+            alignment: Alignment.topCenter,  
             width: screenSize * 0.90,
             child: FutureBuilder<List<User>?>(   
               future: fetchUser(http.Client(), idUser),
@@ -98,7 +61,6 @@ class UserProfileState extends State<UserProfileScreen> {
               },
             ),
           ),
-       ],
       ),
     );
   }
@@ -127,11 +89,10 @@ class Perfil extends StatelessWidget {
           height: screenheight * .70,
           width: screenSize * .90,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
+              SizedBox(height: screenheight * 0.01),
               Container(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
                 width: 100.0,
                 height: 100.0,
@@ -145,15 +106,15 @@ class Perfil extends StatelessWidget {
                           )
                 ) 
               ),
+              SizedBox(height: screenheight * 0.01),
               Container(
                 margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-                alignment: Alignment.centerLeft,
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text("Correo Electronico >   " + perfil[index].correo, textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
-                    SizedBox(width: screenSize * 0.1,),
                     const InkWell(
-                      child: Text('Editar', style: TextStyle(color: Colors.grey, fontSize: 14),textAlign: TextAlign.end,),
+                      child: Text('\Editar', style: TextStyle(color: Colors.grey, fontSize: 14),textAlign: TextAlign.end,),
                     ),
                   ],
                 ),
@@ -161,11 +122,10 @@ class Perfil extends StatelessWidget {
               const Divider(color: Color(0xFFF96332),thickness: 2.0),
               Container(
                 margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-                alignment: Alignment.centerLeft,
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                   Text("Nombre >   " + perfil[index].nombre, textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
-                  SizedBox(width: screenSize * 0.46,),
                   const InkWell(
                       child: Text('Editar', style: TextStyle(color: Colors.grey, fontSize: 14),textAlign: TextAlign.end,),
                     ),
@@ -175,11 +135,10 @@ class Perfil extends StatelessWidget {
               const Divider(color: Color(0xFFF96332),thickness: 2.0),
               Container(
                 margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-                alignment: Alignment.centerLeft,
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                   Text("Apellido >   " + perfil[index].apellido, textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
-                  SizedBox(width: screenSize * 0.36,),
                   const InkWell(
                       child: Text('Editar', style: TextStyle(color: Colors.grey, fontSize: 14),textAlign: TextAlign.end,),
                     ),
@@ -189,11 +148,10 @@ class Perfil extends StatelessWidget {
               const Divider(color: Color(0xFFF96332),thickness: 2.0),
               Container(
                 margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-                alignment: Alignment.centerLeft,
-                child: Row(
+                child: Row(                  
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                   Text("Telefono >  " + perfil[index].telefono, textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
-                  SizedBox(width: screenSize * 0.52,),
                   const InkWell(
                       child: Text('Editar', style: TextStyle(color: Colors.grey, fontSize: 14),textAlign: TextAlign.end,),
                     ),
@@ -205,10 +163,10 @@ class Perfil extends StatelessWidget {
                 margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
                 alignment: Alignment.centerLeft,
                 child: Row(
-                  children: <Widget>[
-                  const Text("Contraseña >", textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
-                  SizedBox(width: screenSize * 0.531),
-                  const InkWell(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const <Widget>[
+                  Text("Contraseña >", textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                  InkWell(
                       child: Text('Editar', style: TextStyle(color: Colors.grey, fontSize: 14),textAlign: TextAlign.end,),
                     ),
                   ],

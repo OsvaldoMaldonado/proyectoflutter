@@ -2,39 +2,47 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
+import 'package:servicios_vic/employee_profile_screen.dart';
 import 'package:servicios_vic/home_screen.dart';
-import 'package:servicios_vic/model/modelo_navegacion_usuario.dart';
+import 'package:servicios_vic/maps_employee_jobs_location_screen.dart';
+import 'package:servicios_vic/model/modelo_navegacion_empleado.dart';
 import 'package:servicios_vic/user_profile_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'model/colors.dart';
-import 'navigation_category_screen.dart';
 
-
-class NavigationHomeScreen extends StatefulWidget{
-   const NavigationHomeScreen({Key? key}) : super(key: key);
+class NavigationHomeEmployeeScreen extends StatefulWidget{
+   const NavigationHomeEmployeeScreen({Key? key}) : super(key: key);
 
   @override
-  NavigationHomeState createState() => NavigationHomeState();
+  NavigationHomeEmployeeState createState() => NavigationHomeEmployeeState();
 }
 
 
-class NavigationHomeState extends State<NavigationHomeScreen> {
+class NavigationHomeEmployeeState extends State<NavigationHomeEmployeeScreen> {
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
 
-  String busqueda = "";
-  final controllerBusqueda = TextEditingController();
+  String locacion = "";
+  String id = '3';
+  double latitud = 0.0, longitud = 0.0;
 
+  void _getiD() async {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String idUser = prefs.getString('id') ?? '';
 
-  Future<void> setBuscador(String textoBuscador) async {
-    //print(textoBuscador);
-    setState(() => busqueda = textoBuscador);
+      setState(() => id = idUser);
   }
 
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    
+    if (id == ''){
+      _getiD();
+    }
     double screenSize = MediaQuery.of(context).size.width;
     double screenheight = MediaQuery.of(context).size.height;
 
@@ -45,12 +53,11 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
         elevation: 0,
         shadowColor: Colors.transparent,
         foregroundColor: const Color(0xFFF96332),
-        title: const Text('¿Qué necesitas hoy?', style: TextStyle(fontSize: 20.0,color: Colors.black,),)
+        title: const Text('Mis trabajos activos', style: TextStyle(fontSize: 20.0,color: Colors.black,),)
       ),
       drawer: Drawer(
          child: ListView(
           // Important: Remove any padding from the ListView.
-          
           children: [
             DrawerHeader(
               decoration: const BoxDecoration(
@@ -76,7 +83,7 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const UserProfileScreen()));
+                        MaterialPageRoute(builder: (context) => const EmployeeProfileScreen()));
                     },
                     child: Row(
                       children: <Widget>[
@@ -107,18 +114,6 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
                         const Icon(Icons.location_on,size: 30.0),
                         SizedBox(width: screenSize*0.02,),
                         const Text('Mis ubicaciones',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
-                  )
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                  child: InkWell(
-                    child: Row(
-                      children: <Widget>[
-                        const Icon(Icons.credit_card, size: 30.0),
-                        SizedBox(width: screenSize*0.02,),
-                        const Text('Mis metodos de pago',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
                       ],
                     )
                   )
@@ -176,44 +171,17 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
         children: <Widget>[
           SizedBox(height: screenheight * 0.01),
           Container(
-            alignment: Alignment.topLeft,  
-            width: screenSize * 0.90,
-            child: TextField(
-              onSubmitted: (textoBuscador){
-                setBuscador(textoBuscador);
-              },
-              decoration: const InputDecoration(    
-                focusColor: Colors.grey,  
-                hintText: 'Buscar profesiones',
-                fillColor: Color(0xffe0e0e0), filled: true,
-                hintStyle: TextStyle(color: Colors.black),
-              ),  
-            )
-          ),
-          SizedBox(height: screenheight * 0.01),
-          Container(
-            alignment: Alignment.topLeft,
-            margin: const EdgeInsets.only(top:10, left: 20.0),
-            child: const Text('Profesiones populares', 
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    color: Colors.black,
-                    ),
-                  ),  
-          ), 
-          SizedBox(height: screenheight * 0.01),
-          Container(
-            alignment: Alignment.topLeft,  
-            width: screenSize * 0.90,
-            child: FutureBuilder<List<Categorias>?>(
-              future: fetchCategorias(http.Client(), busqueda),
+            alignment: Alignment.center,  
+            width: screenSize,
+            child: FutureBuilder<List<TrabajosEmpleado>?>(
+              future: fetchTrabajosEmpleado(http.Client(), int.parse(id)),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(
                     child: Text('Ningun Resultado!'),
                   );
                 } else if (snapshot.hasData) {
-                  return CategoriasList(categorias: snapshot.data!);
+                  return TrabajosEmpleadoList(trabajosEmpleado: snapshot.data!);
                 } else {
                   return const Center(
                     child: CircularProgressIndicator(),
@@ -222,49 +190,55 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
               },
             ),
           ),
-          SizedBox(height: screenheight * 0.01),
-          Container(
-            alignment: Alignment.topRight,
-            margin: const EdgeInsets.only(top: 10.0, right: 15.0),
-            child: const Text('Mostar mas', 
-                  style: TextStyle(
-                    fontSize: 12.0,
-                    color: Colors.black,
-                    ),
-                  ),  
-            ),
        ],
       ),
     );
   }
 }
 
-class CategoriasList extends StatelessWidget {
-  const CategoriasList({Key? key, required this.categorias}) : super(key: key);
+class TrabajosEmpleadoList extends StatefulWidget{
+  const TrabajosEmpleadoList({Key? key, required this.trabajosEmpleado}) : super(key: key);
+  final List<TrabajosEmpleado> trabajosEmpleado;
 
-  final List<Categorias> categorias;
+  @override
+  // ignore: no_logic_in_create_state
+  TrabajosEmpleadoListState createState() => TrabajosEmpleadoListState(trabajosEmpleado: trabajosEmpleado);
+}
+
+
+class TrabajosEmpleadoListState extends State<TrabajosEmpleadoList> {
+  TrabajosEmpleadoListState({Key? key, required this.trabajosEmpleado});
+
+  var locacion = "";
+
+  /*void _lugar(double latitud, double longitud) async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(latitud, longitud);
+    String location = placemarks[0].street.toString() + ", " + placemarks[0].subLocality.toString() + ", " + placemarks[0].locality.toString();
+    setState(() {
+      locacion = location;
+    });
+  }*/
+
+  final List<TrabajosEmpleado> trabajosEmpleado;
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
-    return GridView.builder(
+    double screenHeight = MediaQuery.of(context).size.height;
+    return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-      ),
-      itemCount: categorias.length,
+      itemCount: trabajosEmpleado.length,
       itemBuilder: (context, index) {
         return Container(
-          margin: const EdgeInsets.only(
-              left: 6.0,
-              right: 6.0,
+          alignment: Alignment.center,
+          margin: EdgeInsets.only(
+              left: screenSize * 0.05,
+              right: screenSize * 0.05,
               bottom: 10.0
           ),
-          height: screenSize * .28,
-          width: screenSize * .28,
           decoration: BoxDecoration(
+            color: Colors.white,
             borderRadius: BorderRadius.circular(20.0),
-            
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.5),
@@ -277,41 +251,82 @@ class CategoriasList extends StatelessWidget {
           child: InkWell(
             onTap: () {
               Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => NavigationCategoryScreen(
-                      profesion: categorias[index].nombre, id_profesion: int.parse(categorias[index].id,))),
-                  );
-              },
+                context,
+                MaterialPageRoute(builder: (context) => MyHomePage(latitud:trabajosEmpleado[index].latitud, longitud:trabajosEmpleado[index].longitud)),
+              );
+            },
             borderRadius: BorderRadius.circular(20.0),
             // ignore: prefer_const_constructors
-            child: Column(
-              children: <Widget>[
-                Container(
-                  height: screenSize * .20,
-                  width: screenSize,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(20.0)),
-                    color: HexColor(categorias[index].color),
+            child: Container(
+              margin: EdgeInsets.only(
+                  left: screenSize * 0.05,
+                  right: screenSize * 0.05,
+                  bottom: 10.0,
+                  top: 10.0
+              ),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text("Estado > " + trabajosEmpleado[index].estado_servicio, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                      ],
+                    ),
                   ),
-                  child: Icon(IconData(int.parse(categorias[index].icono), fontFamily: 'MaterialIcons'), size: 40.0,),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(
-                    top: 6
+                  Container(
+                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text("Fecha de publicación > " + trabajosEmpleado[index].fecha_publicacion, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                      ],
+                    ),
                   ),
-                  height: screenSize * .07,
-                  width: screenSize,
-                  // ignore: prefer_const_constructors
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20.0)),
-                    color: const Color(0xffe0e0e0)
-                  ),  
-                  child: Text(categorias[index].nombre, textAlign: TextAlign.center),
-                ),
-              ],
-             ),
-           ),
-         );    
+                  Container(
+                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text("Ubicación > " + trabajosEmpleado[index].latitud + ", " +  trabajosEmpleado[index].longitud, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text("Descripcion > " + trabajosEmpleado[index].descripcion, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text("Usuario > " + trabajosEmpleado[index].nombre + " " + trabajosEmpleado[index].apellido, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text("Telefono > " + trabajosEmpleado[index].telefono, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text("Servicio > " + trabajosEmpleado[index].nombreS, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                      ],
+                    ),
+                  ),
+                ],
+              ),       
+            ),
+          ),   
+        );    
       },
     );
   }

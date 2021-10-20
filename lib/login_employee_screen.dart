@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'model/modelo.dart';
+import 'model/modelo_login_cuentas.dart';
 
 // ignore: must_be_immutable
 class LoginEmployeeScreen extends StatelessWidget{
@@ -77,10 +77,12 @@ class LoginEmployeeScreen extends StatelessWidget{
                 ),
               ),
             ),
+            SizedBox(height: screenheight * 0.01,),
             SizedBox(
               width: screenSize * 0.90,
               height: screenheight * 0.10,
               child:TextField(
+                obscureText: true,
                 controller: entrada_login_Empleado_NombreContra,
                 decoration: const InputDecoration(
                   icon: Icon(Icons.password_outlined),
@@ -93,7 +95,7 @@ class LoginEmployeeScreen extends StatelessWidget{
               onPressed: () async{
                 getvalue = entrada_login_Empleado_NombreContra.text.toString();
                 getvalue2 = entrada_login_Empleado_NombreCorreo.text.toString();
-                loginempleado(getvalue2, getvalue);
+                loginempleado(getvalue2, getvalue, context);
               },
               child: const Text('Iniciar sesión', style: TextStyle(color: Colors.white, fontSize: 20)),
                 style: OutlinedButton.styleFrom(

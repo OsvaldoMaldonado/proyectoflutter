@@ -1,11 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, unrelated_type_equality_checks
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:servicios_vic/navigation_home_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'model/modelo.dart';
+import 'model/modelo_login_cuentas.dart';
 
 // ignore: must_be_immutable
 class LoginUserScreen extends StatefulWidget {
@@ -88,6 +84,7 @@ class LoginUserState extends State<LoginUserScreen>{
                 ),
               ),
             ),
+            SizedBox(height: screenheight * 0.01,),
             SizedBox(
               width: screenSize * 0.90,
               height: screenheight * 0.10,

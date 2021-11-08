@@ -8,6 +8,8 @@ import 'package:servicios_vic/employee_profile_screen.dart';
 import 'package:servicios_vic/home_screen.dart';
 import 'package:servicios_vic/maps_employee_jobs_location_screen.dart';
 import 'package:servicios_vic/model/modelo_navegacion_empleado.dart';
+import 'package:servicios_vic/serivce_time_employee_screen.dart';
+import 'package:servicios_vic/services_employee_screen.dart';
 import 'package:servicios_vic/user_profile_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -53,7 +55,7 @@ class NavigationHomeEmployeeState extends State<NavigationHomeEmployeeScreen> {
         elevation: 0,
         shadowColor: Colors.transparent,
         foregroundColor: const Color(0xFFF96332),
-        title: const Text('Mis trabajos activos', style: TextStyle(fontSize: 20.0,color: Colors.black,),)
+        title: const Text('Trabajos activos', style: TextStyle(fontSize: 20.0,color: Colors.black,),)
       ),
       drawer: Drawer(
          child: ListView(
@@ -97,11 +99,33 @@ class NavigationHomeEmployeeState extends State<NavigationHomeEmployeeScreen> {
                 Container(
                   margin: const EdgeInsets.only(left: 12.0,top: 12.0),
                   child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ServicesEmployeeScreen()));
+                    },
                     child: Row(
                       children: <Widget>[
                         const Icon(Icons.access_time,size: 30.0),
                         SizedBox(width: screenSize*0.02,),
-                        const Text('Mi Historial de servicios',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
+                        const Text('Historial de servicios',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
+                      ],
+                    )
+                  )
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ServiceTimeEmployeeScreen()));
+                    },
+                    child: Row(
+                      children: <Widget>[
+                        const Icon(Icons.time_to_leave,size: 30.0),
+                        SizedBox(width: screenSize*0.02,),
+                        const Text('Configuración de Diponibilidad',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
                       ],
                     )
                   )
@@ -113,7 +137,7 @@ class NavigationHomeEmployeeState extends State<NavigationHomeEmployeeScreen> {
                       children: <Widget>[
                         const Icon(Icons.location_on,size: 30.0),
                         SizedBox(width: screenSize*0.02,),
-                        const Text('Mis ubicaciones',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
+                        const Text('Ubicaciones',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
                       ],
                     )
                   )
@@ -170,9 +194,7 @@ class NavigationHomeEmployeeState extends State<NavigationHomeEmployeeScreen> {
       body: Column(
         children: <Widget>[
           SizedBox(height: screenheight * 0.01),
-          Container(
-            alignment: Alignment.center,  
-            width: screenSize,
+          Expanded(
             child: FutureBuilder<List<TrabajosEmpleado>?>(
               future: fetchTrabajosEmpleado(http.Client(), int.parse(id)),
               builder: (context, snapshot) {
@@ -210,14 +232,6 @@ class TrabajosEmpleadoListState extends State<TrabajosEmpleadoList> {
   TrabajosEmpleadoListState({Key? key, required this.trabajosEmpleado});
 
   var locacion = "";
-
-  /*void _lugar(double latitud, double longitud) async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(latitud, longitud);
-    String location = placemarks[0].street.toString() + ", " + placemarks[0].subLocality.toString() + ", " + placemarks[0].locality.toString();
-    setState(() {
-      locacion = location;
-    });
-  }*/
 
   final List<TrabajosEmpleado> trabajosEmpleado;
   @override

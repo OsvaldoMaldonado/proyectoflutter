@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:servicios_vic/model/modelo_perfil_cuentas.dart';
 import 'package:http/http.dart' as http;
@@ -52,7 +54,7 @@ class EmployeeProfileState extends State<EmployeeProfileScreen> {
                   );
                 } else if (snapshot.hasData) {
                   //return Text(snapshot.data!.correo);
-                  return Perfil(perfil: snapshot.data!);
+                  return Perfil(perfil: snapshot.data!, idEmployee: idEmployee);
                 } else {
                   return const Center(
                     child: CircularProgressIndicator(),
@@ -67,9 +69,10 @@ class EmployeeProfileState extends State<EmployeeProfileScreen> {
 }
 
 class Perfil extends StatelessWidget {
-  const Perfil({Key? key, required this.perfil}) : super(key: key);
+  const Perfil({Key? key, required this.perfil, required this.idEmployee}) : super(key: key);
 
   final Employee perfil;
+  final String idEmployee;
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
@@ -104,6 +107,19 @@ class Perfil extends StatelessWidget {
         ),
         SizedBox(height: screenheight * 0.01),
         Container(
+          child: Row(
+            mainAxisAlignment:  MainAxisAlignment.center,
+            children: const <Widget>[
+              Icon(Icons.star, color: Colors.yellow, size: 25,),
+              Icon(Icons.star, color: Colors.yellow, size: 25,),
+              Icon(Icons.star, color: Colors.yellow, size: 25,),
+              Icon(Icons.star, color: Colors.yellow, size: 25,),
+              Icon(Icons.star_outline, color: Colors.yellow, size: 25,),
+            ]
+          )
+        ),
+        SizedBox(height: screenheight * 0.01),
+        Container(
           alignment: Alignment.center,
           child: FutureBuilder<String>(   
             future: getLocacion(double.parse(perfil.latitud), double.parse(perfil.longitud)),
@@ -133,7 +149,132 @@ class Perfil extends StatelessWidget {
         const Divider(color: Colors.black,thickness: 1.0),
         SizedBox(height: screenheight * 0.1),
         const Divider(color: Colors.black,thickness: 1.0),
+        Expanded(
+            child: FutureBuilder<List<Resenas>?>(   
+              future: fetchEmployeeReviews(http.Client(), idEmployee),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text('An error has occurred!'),
+                  );
+                } else if (snapshot.hasData) {
+                  return EmpleadoReviewsList(resenasEmpleado: snapshot.data!);
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            ),
+          ),
       ],
     );
   }     
+}
+
+
+class EmpleadoReviewsList extends StatelessWidget {
+  const EmpleadoReviewsList({Key? key, required this.resenasEmpleado});
+
+
+  final List<Resenas> resenasEmpleado;
+  @override
+  Widget build(BuildContext context) {
+    double screenSize = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: resenasEmpleado.length,
+      itemBuilder: (context, index) {
+        return Container(
+          alignment: Alignment.topLeft,
+          margin: EdgeInsets.only(
+              left: screenSize * 0.05,
+              right: screenSize * 0.05,
+              bottom: 10.0
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(resenasEmpleado[index].nombre + " " + resenasEmpleado[index].apellido, style: const TextStyle(fontSize: 14)),
+                  Text (resenasEmpleado[index].fecha_aceptacion, style: const TextStyle(fontSize: 14)),
+                ],
+              ),
+              calificacion(resenasEmpleado[index].valoracion),
+              Text(resenasEmpleado[index].resena, style: const TextStyle(fontSize: 12), textAlign: TextAlign.start,),
+              const Divider(color: Color(0xFFF96332),thickness: 0.5),           
+            ],
+          )
+        );    
+      },
+    );
+  }
+
+  Widget calificacion (String cantidad){
+    double cantidadNumerica = 6; 
+    try{
+      cantidadNumerica = double.parse(cantidad);
+    }catch(e){
+      return const Text(" ");
+    }
+    if(cantidadNumerica < 1.1){
+      return Row(
+        children: const <Widget>[
+          Icon(Icons.star, color: Colors.yellow, size: 12,),
+          Icon(Icons.star_outline, color: Colors.yellow, size: 12,),
+          Icon(Icons.star_outline, color: Colors.yellow, size: 12,),
+          Icon(Icons.star_outline, color: Colors.yellow, size: 12,),
+          Icon(Icons.star_outline, color: Colors.yellow, size: 12,),
+        ]
+      );
+    }
+    else if(cantidadNumerica < 2.1){
+      return Row(
+        children: const <Widget>[
+          Icon(Icons.star, color: Colors.yellow, size: 12,),
+          Icon(Icons.star, color: Colors.yellow, size: 12,),
+          Icon(Icons.star_outline, color: Colors.yellow, size: 12,),
+          Icon(Icons.star_outline, color: Colors.yellow, size: 12,),
+        Icon(Icons.star_outline, color: Colors.yellow, size: 12,),
+        ]
+      );
+    }
+    else if(cantidadNumerica < 3.1){
+      return Row(
+        children: const <Widget>[
+          Icon(Icons.star, color: Colors.yellow, size: 12,),
+          Icon(Icons.star, color: Colors.yellow, size: 12,),
+          Icon(Icons.star, color: Colors.yellow, size: 12,),
+          Icon(Icons.star_outline, color: Colors.yellow, size: 12,),
+          Icon(Icons.star_outline, color: Colors.yellow, size: 12,),
+        ]
+      );
+    }
+    else if(cantidadNumerica < 4.1){
+      return Row(
+        children: const <Widget>[
+          Icon(Icons.star, color: Colors.yellow, size: 12,),
+          Icon(Icons.star, color: Colors.yellow, size: 12,),
+          Icon(Icons.star, color: Colors.yellow, size: 12,),
+          Icon(Icons.star, color: Colors.yellow, size: 12,),
+          Icon(Icons.star_outline, color: Colors.yellow, size: 12,),
+        ]
+      );
+    }
+    else {
+      return Row(
+        children: const <Widget>[
+          Icon(Icons.star, color: Colors.yellow, size: 12,),
+          Icon(Icons.star, color: Colors.yellow, size: 12,),
+          Icon(Icons.star, color: Colors.yellow, size: 12,),
+          Icon(Icons.star, color: Colors.yellow, size: 12,),
+          Icon(Icons.star, color: Colors.yellow, size: 12,),
+        ]
+      );
+    }
+  }
 }

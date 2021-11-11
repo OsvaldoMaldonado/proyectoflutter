@@ -29,7 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _location.onLocationChanged.listen((l) {
       _controller.animateCamera(
         CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(l.latitude, l.longitude),zoom: 15),
+          CameraPosition(target: LatLng(l!.latitude!, l!.longitude!),zoom: 15),
           ),
       );
     });

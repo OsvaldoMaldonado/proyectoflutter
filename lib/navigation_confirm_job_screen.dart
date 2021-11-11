@@ -9,6 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:servicios_vic/model/modelo_login_cuentas.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'model/PaypalPayment.dart';
+
 class NavigationConfirmJobScreen extends StatefulWidget{
 
   final String? servicio;
@@ -25,7 +27,8 @@ class NavigationConfirmJobScreen extends StatefulWidget{
 
 
 class NavigationConfirmJobState extends State<NavigationConfirmJobScreen> {
-  
+  String dropdownValue = 'Efectivo';
+
   NavigationConfirmJobState({Key? key, required this.servicio, required this.id_servicio, required this.id_prestador, required this.prestador});
   String busqueda = "";
   String locacion = "";
@@ -92,6 +95,7 @@ class NavigationConfirmJobState extends State<NavigationConfirmJobScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     double screenSize = MediaQuery.of(context).size.width;
     double screenheight = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -111,105 +115,153 @@ class NavigationConfirmJobState extends State<NavigationConfirmJobScreen> {
               top: 10.0
           ),
           width: screenSize * .90,
-          child: Column(
-          children: <Widget>[
-            Container(
-              margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-              child: Row(
-                children: const <Widget>[
-                  Text("Estado > Pendiente", textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
-                ],
-              ),
-            ),
-            const Divider(color: Color(0xFFF96332),thickness: 2.0),
-            Container(
-              width: screenSize * .90,
-              margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-              child: Row(
-                children: <Widget>[
-                  Text("Fecha > " + _getCurrentDate(), textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
-                ],
-              ),
-            ),
-            const Divider(color: Color(0xFFF96332),thickness: 2.0),
-            Container(
-              width: screenSize * .90,
-              margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-              child: Row(
-                children: const <Widget>[
-                  Flexible(
-                    child:Text("Costo > \$50.0MX (Este precio es el costo de la visita, nuestro prestador evaluara el precio real del servicio)",  maxLines: 15,overflow: TextOverflow.fade, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
-                  ),
-                ],
-              ),
-            ),
-            const Divider(color: Color(0xFFF96332),thickness: 2.0),
-            Container(
-              width: screenSize * .90,
-              margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-              child: Row(
-                children: <Widget>[
-                  Flexible(
-                    child:Text("Ubicación > " + locacion, maxLines: 15,overflow: TextOverflow.fade, textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
-                  ),
-                ],
-              ),
-            ),
-            const Divider(color: Color(0xFFF96332),thickness: 2.0),
-            Container(
-              width: screenSize * .90,
-              margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-              child: Column(
-                children: <Widget>[
-                  const Text("Descripción > ", textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
-                  TextField(
-                    controller: descripcion_controller,
-                    decoration: const InputDecoration(
-                      labelText: 'Escriba su descripción del trabajo',
-                    ),
-                  ),
-                ],  
-              ),
-            ),
-            const Divider(color: Color(0xFFF96332),thickness: 2.0),
-            Container(
-              width: screenSize * .90,
-              margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-              child: Row(
-                children: <Widget>[
-                  Text("Prestador > $prestador" , textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
-                ],  
-              ),
-            ),
-            const Divider(color: Color(0xFFF96332),thickness: 2.0),
-            Container(
-              width: screenSize * .90,
-              margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-              child: Row(
-                children: <Widget>[
-                  Text("Servicio > $servicio" , textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
-                ],  
-              ),
-            ),
-            SizedBox(height: screenheight * 0.1,),
-            OutlinedButton(
-              onPressed: (){
-                descripcion = descripcion_controller.text.toString();
-                insertartrabajo("pendiente", _getCurrentDate(), 50.0, latitud, longitud, descripcion, int.parse(id_prestador.toString()), int.parse(id), id_servicio, context);     
-              },
-              child: const Text('Crear contrato', style: TextStyle(color: Colors.white, fontSize: 20)),
-              style: OutlinedButton.styleFrom(
-                shape: const StadiumBorder (
-                  side: BorderSide( width: 20,)
+          child: SingleChildScrollView(
+            child: Column(
+            children: <Widget>[
+              Container(
+                margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                child: Row(
+                  children: const <Widget>[
+                    Text("Estado > Pendiente", textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                  ],
                 ),
-                side: const BorderSide( width: 1, color: Color(0xFFF96332),),
-                    //  padding: EdgeInsets.all(60),
-                minimumSize: Size(screenSize * 0.90, screenheight * 0.15),
-                backgroundColor: const Color(0xFFF96332),
               ),
-            ),
-          ],
+              const Divider(color: Color(0xFFF96332),thickness: 2.0),
+              Container(
+                width: screenSize * .90,
+                margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                child: Row(
+                  children: <Widget>[
+                    Text("Fecha > " + _getCurrentDate(), textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
+                  ],
+                ),
+              ),
+              const Divider(color: Color(0xFFF96332),thickness: 2.0),
+              Container(
+                width: screenSize * .90,
+                margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                child: Row(
+                  children: const <Widget>[
+                    Flexible(
+                      child:Text("Costo > \$50.0MX (Este precio es el costo de la visita, nuestro prestador evaluara el precio real del servicio)",  maxLines: 15,overflow: TextOverflow.fade, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(color: Color(0xFFF96332),thickness: 2.0),
+              Container(
+                width: screenSize * .90,
+                margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                child: Row(
+                  children: <Widget>[
+                    Flexible(
+                      child:Text("Ubicación > " + locacion, maxLines: 15,overflow: TextOverflow.fade, textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(color: Color(0xFFF96332),thickness: 2.0),
+              Container(
+                width: screenSize * .90,
+                margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                child: Column(
+                  children: <Widget>[
+                    const Text("Descripción > ", textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                    TextField(
+                      controller: descripcion_controller,
+                      decoration: const InputDecoration(
+                        labelText: 'Escriba su descripción del trabajo',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(color: Color(0xFFF96332),thickness: 2.0),
+              Container(
+                width: screenSize * .90,
+                margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                child: Row(
+                  children: <Widget>[
+                    Text("Prestador > $prestador" , textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
+                  ],
+                ),
+              ),
+              const Divider(color: Color(0xFFF96332),thickness: 2.0),
+              Container(
+                width: screenSize * .90,
+                margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                child: Row(
+                  children: <Widget>[
+                    Text("Servicio > $servicio" , textAlign: TextAlign.left,style: const TextStyle(fontSize: 18),),
+                  ],
+                ),
+              ),
+               Row(
+                 children: <Widget>[
+                  DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    value: dropdownValue,
+                    icon: const Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    elevation: 16,
+
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        dropdownValue = newValue!;
+                        if(dropdownValue == 'Efectivo'){
+
+                        }else{
+                          if(dropdownValue == 'Paypal'){
+
+                          }
+                        }
+                      });
+                    },
+                    items: <String>['Efectivo', 'Paypal']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+              ),
+      ],
+               ),
+              OutlinedButton(
+                onPressed: (){
+                  descripcion = descripcion_controller.text.toString();
+                  if(dropdownValue == 'Paypal'){
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => PaypalPayment(
+                          onFinish: (number) async {
+                            // payment done
+
+                              print('order id: ' + number);
+                              insertartrabajo("pendiente", _getCurrentDate(), 50.0, latitud, longitud, descripcion, int.parse(id_prestador.toString()), int.parse(id), id_servicio, context);
+
+                          },
+                        ),
+                      ),
+                    );
+                  }
+
+                },
+                child: const Text('Crear contrato', style: TextStyle(color: Colors.white, fontSize: 20)),
+                style: OutlinedButton.styleFrom(
+                  shape: const StadiumBorder (
+                    side: BorderSide( width: 20,)
+                  ),
+                  side: const BorderSide( width: 1, color: Color(0xFFF96332),),
+                      //  padding: EdgeInsets.all(60),
+                  minimumSize: Size(screenSize * 0.90, screenheight * 0.15),
+                  backgroundColor: const Color(0xFFF96332),
+                ),
+              ),
+            ],
         ),
+          ),
       ),
     );
   }

@@ -44,7 +44,17 @@ class User {
   }
 }
 
+datosespecializaciones() async{
+  String theUrl = "https://tadeo46.000webhostapp.com/mostrarespecialidades.php";
 
+  var res = await http.get(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"});
+
+  var  responsebody = json.decode(res.body);
+
+  //print("${responsebody [0] ["title"]}");
+  return responsebody;
+
+}
 // Modelo constructor del perfil de usuario
 Future<Employee?> fetchEmployee(http.Client client, String id) async {
     final response = await client
@@ -88,55 +98,9 @@ class Employee {
   }
 }
 
+
 Future<String> getLocacion(double latitud, double longitud) async {
   List<Placemark> placemarks = await placemarkFromCoordinates(latitud, longitud);   
   var locacion = placemarks[0].subLocality.toString() + ", " + placemarks[0].locality.toString();
   return locacion;
-}
-
-
-// Modelo constructor del perfil de usuario
-Future<List<Resenas>?> fetchEmployeeReviews(http.Client client, String id) async {
-    final response = await client
-      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/resenasempleado.php/?id=$id"));
-    return compute(parseEmployeeReviews, response.body);
-}
-
-// A function that converts a response body into a List<Categorias>.
-List<Resenas>? parseEmployeeReviews(String responseBody) {
-  try{
-    final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-
-    return parsed.map<Resenas>((json) => Resenas.fromJson(json)).toList();
-  }catch(e){}
-  return null;
-}
-
-class Resenas {
-  final String resena;
-  final String valoracion;
-  final String fecha_aceptacion;
-  final String nombre_servicio;
-  final String nombre;
-  final String apellido;
-
-  const Resenas({
-    required this.resena,
-    required this.valoracion,
-    required this.fecha_aceptacion,
-    required this.nombre_servicio,
-    required this.nombre,
-    required this.apellido,
-  });
-
-  factory Resenas.fromJson(Map<String, dynamic> json) {
-    return Resenas(
-      resena: json['resena'] as String,
-      valoracion: json['valoracion'] as String,
-      fecha_aceptacion: json['fecha_aceptacion'] as String,
-      nombre_servicio: json['nombre_servicio'] as String,
-      nombre: json['nombre'] as String,
-      apellido: json['apellido'] as String,
-    );
-  }
 }

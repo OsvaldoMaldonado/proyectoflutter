@@ -69,7 +69,7 @@ class EmployeeProfileState extends State<EmployeeProfileScreen> {
 }
 
 class Perfil extends StatelessWidget {
-  const Perfil({Key? key, required this.perfil, required this.idEmployee}) : super(key: key);
+  const Perfil({Key? key,required this.perfil,required this.idEmployee}) : super(key: key);
 
   final Employee perfil;
   final String idEmployee;
@@ -174,7 +174,7 @@ class Perfil extends StatelessWidget {
 
 
 class EmpleadoReviewsList extends StatelessWidget {
-  const EmpleadoReviewsList({Key? key, required this.resenasEmpleado});
+  const EmpleadoReviewsList({Key? key,required this.resenasEmpleado});
 
 
   final List<Resenas> resenasEmpleado;

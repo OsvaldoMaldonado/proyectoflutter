@@ -37,13 +37,17 @@ dependencies:
   mysql1: ^0.19.2
   http: ^0.13.3
   shared_preferences: ^2.0.8
-  google_maps_flutter: ^0.5.5
+  google_maps_flutter: ^2.1.0
   location: ^4.3.0
   flutter_polyline_points: ^1.0.0
   geocoding: ^2.0.1
   geolocator: ^7.7.0
   intl: ^0.17.0
   time_range: ^1.0.2
+  webview_flutter: ^2.3.0
+  http_auth: ^1.0.1
+  google_fonts: ^2.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -82,12 +86,6 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
-       - family: Poppins
-         fonts:
-           - asset: fonts/Poppins-Regular.ttf
-           - asset: fonts/Poppins-Bold.ttf
-             weight: 700
    #    - family: Trajan Pro
    #     fonts:
    #    - asset: fonts/TrajanPro.ttf

@@ -67,7 +67,7 @@ class UserProfileState extends State<UserProfileScreen> {
 }
 
 class Perfil extends StatelessWidget {
-  const Perfil({Key? key, required this.perfil}) : super(key: key);
+  const Perfil({Key? key,required this.perfil}) : super(key: key);
 
   final List<User> perfil;
   @override

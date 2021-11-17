@@ -47,58 +47,9 @@ class ServicesEmployeeState extends State<ServicesEmployeeScreen> {
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[   
+        children: <Widget>[    
           SizedBox(height: screenheight * 0.01),
-          Container(
-            margin: const EdgeInsets.only(left: 10.0),
-            child: const Text("Servicios Pendientes de aprobación: ", style: TextStyle(fontSize: 18,),),
-          ),   
-          SizedBox(height: screenheight * 0.01),
-          Expanded(
-            child: FutureBuilder<List<HistorialServiciosEmpleadoP>?>(
-              future: fetchHistorialServiciosEmpleadoP(http.Client(), id, 'pendiente'),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return const Center(
-                    child: Text('Ningun Resultado!'),
-                  );
-                } else if (snapshot.hasData) {
-                  return HistorialServiciosEmpleadoPList(historialServiciosEmpleado: snapshot.data!);
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
-            ),
-          ),
-          const Divider(color: Colors.black,thickness: 1),     
-          SizedBox(height: screenheight * 0.01),
-          Container(
-            margin: const EdgeInsets.only(left: 10.0),
-            child: const Text("Servicios Activos: ", style: TextStyle(fontSize: 18,)),
-          ),   
-          SizedBox(height: screenheight * 0.01),
-          Expanded(
-            child: FutureBuilder<List<HistorialServiciosEmpleadoP>?>(
-              future: fetchHistorialServiciosEmpleadoP(http.Client(), id, 'activo'),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return const Center(
-                    child: Text('Ningun Resultado!'),
-                  );
-                } else if (snapshot.hasData) {
-                  return HistorialServiciosEmpleadoAList(historialServiciosEmpleado: snapshot.data!);
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
-            ),
-          ),
-          const Divider(color: Colors.black,thickness: 1),     
-          SizedBox(height: screenheight * 0.01),
+         
           Container(
             margin: const EdgeInsets.only(left: 10.0),
             child: const  Text("Servicios Finalizados: ", style: TextStyle(fontSize: 18,), textAlign: TextAlign.start,),
@@ -129,7 +80,7 @@ class ServicesEmployeeState extends State<ServicesEmployeeScreen> {
 }
 
 class HistorialServiciosEmpleadoPList extends StatelessWidget {
-  const HistorialServiciosEmpleadoPList({Key? key, required this.historialServiciosEmpleado});
+  const HistorialServiciosEmpleadoPList({Key? key,required this.historialServiciosEmpleado});
 
   final List<HistorialServiciosEmpleadoP> historialServiciosEmpleado;
   @override
@@ -236,7 +187,7 @@ class HistorialServiciosEmpleadoPList extends StatelessWidget {
 }
 
 class HistorialServiciosEmpleadoAList extends StatelessWidget {
-  const HistorialServiciosEmpleadoAList({Key? key, required this.historialServiciosEmpleado});
+  const HistorialServiciosEmpleadoAList({Key? key,required this.historialServiciosEmpleado});
 
   final List<HistorialServiciosEmpleadoP> historialServiciosEmpleado;
   @override
@@ -344,7 +295,7 @@ class HistorialServiciosEmpleadoAList extends StatelessWidget {
 
 
 class HistorialServiciosEmpleadoFList extends StatelessWidget {
-  const HistorialServiciosEmpleadoFList({Key? key, required this.historialServiciosEmpleado});
+  const HistorialServiciosEmpleadoFList({Key? key,required this.historialServiciosEmpleado});
 
   final List<HistorialServiciosEmpleadoP> historialServiciosEmpleado;
   @override

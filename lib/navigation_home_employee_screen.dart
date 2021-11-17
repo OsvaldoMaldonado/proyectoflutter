@@ -2,16 +2,15 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
 import 'package:servicios_vic/employee_profile_screen.dart';
 import 'package:servicios_vic/home_screen.dart';
 import 'package:servicios_vic/maps_employee_jobs_location_screen.dart';
 import 'package:servicios_vic/model/modelo_navegacion_empleado.dart';
-import 'package:servicios_vic/serivce_time_employee_screen.dart';
 import 'package:servicios_vic/services_employee_screen.dart';
-import 'package:servicios_vic/user_profile_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'model/modelo_perfil_cuentas.dart';
 
 class NavigationHomeEmployeeScreen extends StatefulWidget{
    const NavigationHomeEmployeeScreen({Key? key}) : super(key: key);
@@ -25,26 +24,22 @@ class NavigationHomeEmployeeState extends State<NavigationHomeEmployeeScreen> {
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
 
   String locacion = "";
-  String id = '3';
   double latitud = 0.0, longitud = 0.0;
+  String idEmployee = '';
 
-  void _getiD() async {
+    Future<void> getId() async {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final String idUser = prefs.getString('id') ?? '';
+      final String id = prefs.getString('id') ?? '';
 
-      setState(() => id = idUser);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
+      setState(() => idEmployee = id);
+    }
+  
   @override
   Widget build(BuildContext context) {
-    if (id == ''){
-      _getiD();
+    if (idEmployee == ''){
+      getId();
     }
+
     double screenSize = MediaQuery.of(context).size.width;
     double screenheight = MediaQuery.of(context).size.height;
 
@@ -58,168 +53,137 @@ class NavigationHomeEmployeeState extends State<NavigationHomeEmployeeScreen> {
         title: const Text('Trabajos activos', style: TextStyle(fontSize: 20.0,color: Colors.black,),)
       ),
       drawer: Drawer(
-         child: ListView(
-          // Important: Remove any padding from the ListView.
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Color(0xFFF96332),
-                    Color(0xFFFF6365),
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-              ),
-              child: Container(
-                alignment: Alignment.bottomLeft,
-                child: const Text(""),
-              ),  
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            UserAccountsDrawerHeader(
+            accountName: FutureBuilder<Employee?>(   
+              future: fetchEmployee(http.Client(), idEmployee),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Text('An error has occurred!');
+                } else if (snapshot.hasData) {
+                  return Text(snapshot.data!.nombre + " " + snapshot.data!.apellido ,style: const TextStyle(fontSize: 14.0,color: Colors.black,),);
+                  //return Text(snapshot.data!.correo);
+                } else {
+                  return LinearProgressIndicator(minHeight: 4,);
+                }
+              },
             ),
-            Column(
-              children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 6.0),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const EmployeeProfileScreen()));
-                    },
-                    child: Row(
-                      children: <Widget>[
-                        const Icon(Icons.person_pin, size: 30.0),
-                        SizedBox(width: screenSize*0.02,),
-                        const Text('Mi cuenta',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
+            accountEmail: FutureBuilder<Employee?>(   
+              future: fetchEmployee(http.Client(), idEmployee),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Text('An error has occurred!');
+                } else if (snapshot.hasData) {
+                  return Text(snapshot.data!.correo ,style: const TextStyle(fontSize: 14.0,color: Colors.black,),);
+                  //return Text(snapshot.data!.correo);
+                } else {
+                  return LinearProgressIndicator(minHeight: 4,);
+                }
+              },
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.horizontal(right: Radius.circular(30)),
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFFF96332),
+                  Color(0xFFFF6365),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            currentAccountPicture: CircleAvatar(
+                backgroundImage: NetworkImage(
+                    "https://randomuser.me/api/portraits/men/46.jpg")),
+            ),
+            ListTile(
+              title: Row(
+                children: const <Widget>[
+                  SizedBox(width: 7.0,),
+                  Icon(Icons.person_pin, size: 30.0, color: Colors.black54),
+                  Padding(
+                    padding: EdgeInsets.only(left: 15.0),
+                    child: Text('Mi cuenta',style: TextStyle(fontSize: 18.0, color: Colors.black54),),
                   )
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const ServicesEmployeeScreen()));
-                    },
-                    child: Row(
-                      children: <Widget>[
-                        const Icon(Icons.access_time,size: 30.0),
-                        SizedBox(width: screenSize*0.02,),
-                        const Text('Historial de servicios',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
+                ],
+              ),
+              onTap: (){
+                Navigator.push(context,MaterialPageRoute(builder: (context) => const EmployeeProfileScreen()));
+              } ,
+            ),
+            ListTile(
+              title: Row(
+                children: const <Widget>[
+                  SizedBox(width: 7.0,),
+                  Icon(Icons.access_time,size: 30.0, color: Colors.black54),
+                  Padding(
+                    padding: EdgeInsets.only(left: 15.0),
+                    child: Text('Historial de servicios',style: TextStyle(fontSize: 18.0, color: Colors.black54),),
                   )
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const ServiceTimeEmployeeScreen()));
-                    },
-                    child: Row(
-                      children: <Widget>[
-                        const Icon(Icons.time_to_leave,size: 30.0),
-                        SizedBox(width: screenSize*0.02,),
-                        const Text('Configuración de Diponibilidad',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
+                ],
+              ),
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const ServicesEmployeeScreen()));  
+              } ,
+            ),
+            ListTile(
+              title: Row(
+                children: const <Widget>[
+                  SizedBox(width: 7.0,),
+                  Icon(Icons.logout, size: 30.0, color: Colors.black54),
+                  Padding(
+                    padding: EdgeInsets.only(left: 15.0),
+                    child: Text('Cerrar Sesión',style: TextStyle(fontSize: 18.0, color: Colors.black54),),
                   )
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                  child: InkWell(
-                    child: Row(
-                      children: <Widget>[
-                        const Icon(Icons.location_on,size: 30.0),
-                        SizedBox(width: screenSize*0.02,),
-                        const Text('Ubicaciones',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
-                  )
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                  child: InkWell(
-                    child: Row(
-                      children: <Widget>[
-                        const Icon(Icons.account_balance, size: 30.0),
-                        SizedBox(width: screenSize*0.02,),
-                        const Text('Terminos y condiciones',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
-                  )
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 12.0),
-                  child: InkWell(
-                    child: Row(
-                      children: <Widget>[
-                        const Icon(Icons.help, size: 30.0),
-                        SizedBox(width: screenSize*0.02,),
-                        const Text('Ayuda',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
-                  )
-                ),
-                Container(height: screenheight*.40,),
-                Container(
-                  margin: const EdgeInsets.only(left: 12.0,top: 6.0),
-                  child: InkWell(
-                    onTap: () async {
-                       SharedPreferences prefs = await SharedPreferences.getInstance();
-                        prefs.remove('id');
-                        prefs.remove('type');
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (BuildContext ctx) => const HomeScreen()));
-                    },
-                    child: Row(
-                      children: <Widget>[
-                        const Icon(Icons.logout, size: 30.0),
-                        SizedBox(width: screenSize*0.02,),
-                        const Text('Cerrar Sesión',style: TextStyle(fontSize: 18.0,color: Colors.black,),),
-                      ],
-                    )
-                  )
-                ),
-              ],
+                ],
+              ),
+              onTap: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.remove('id');
+                prefs.remove('type');
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (BuildContext ctx) => const HomeScreen()));
+              },
             ),
           ],
         ),
       ), 
-      body: Column(
-        children: <Widget>[
-          SizedBox(height: screenheight * 0.01),
-          Expanded(
-            child: FutureBuilder<List<TrabajosEmpleado>?>(
-              future: fetchTrabajosEmpleado(http.Client(), int.parse(id)),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return const Center(
-                    child: Text('Ningun Resultado!'),
-                  );
-                } else if (snapshot.hasData) {
-                  return TrabajosEmpleadoList(trabajosEmpleado: snapshot.data!);
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
+      body: Container(
+        color :  Color(0xFFF1F0F5),
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: screenheight * 0.01),
+            Expanded(
+              child: FutureBuilder<List<TrabajosEmpleado>?>(
+                future: fetchTrabajosEmpleado(http.Client(), idEmployee),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text('Ningun Resultado!'),
+                    );
+                  } else if (snapshot.hasData) {
+                    return TrabajosEmpleadoList(trabajosEmpleado: snapshot.data!);
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              ),
             ),
-          ),
-       ],
+        ],
+        ),
       ),
     );
   }
 }
 
+
+
 class TrabajosEmpleadoList extends StatefulWidget{
-  const TrabajosEmpleadoList({Key? key, required this.trabajosEmpleado}) : super(key: key);
+  const TrabajosEmpleadoList({Key? key,required this.trabajosEmpleado}) : super(key: key);
   final List<TrabajosEmpleado> trabajosEmpleado;
 
   @override
@@ -229,7 +193,7 @@ class TrabajosEmpleadoList extends StatefulWidget{
 
 
 class TrabajosEmpleadoListState extends State<TrabajosEmpleadoList> {
-  TrabajosEmpleadoListState({Key? key, required this.trabajosEmpleado});
+  TrabajosEmpleadoListState({Key? key,required this.trabajosEmpleado});
 
   var locacion = "";
 
@@ -245,31 +209,13 @@ class TrabajosEmpleadoListState extends State<TrabajosEmpleadoList> {
       itemBuilder: (context, index) {
         return Container(
           alignment: Alignment.center,
-          margin: EdgeInsets.only(
-              left: screenSize * 0.05,
-              right: screenSize * 0.05,
-              bottom: 10.0
+          margin: const EdgeInsets.only(
+              bottom: 5.0
           ),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(20.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 2,
-                blurRadius: 3,
-                offset: const Offset(0, 3), // changes position of shadow
-              ),
-            ],
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
           ),
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MyHomePage(latitud:trabajosEmpleado[index].latitud, longitud:trabajosEmpleado[index].longitud)),
-              );
-            },
-            borderRadius: BorderRadius.circular(20.0),
             // ignore: prefer_const_constructors
             child: Container(
               margin: EdgeInsets.only(
@@ -284,62 +230,86 @@ class TrabajosEmpleadoListState extends State<TrabajosEmpleadoList> {
                     margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
                     child: Row(
                       children: <Widget>[
-                        Text("Estado > " + trabajosEmpleado[index].estado_servicio, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                        Text(trabajosEmpleado[index].nombreS, textAlign: TextAlign.left,style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
                       ],
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    margin: const EdgeInsets.only(top: 4.0),
                     child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Text("Fecha de publicación > " + trabajosEmpleado[index].fecha_publicacion, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                        Expanded(flex: 1, child: Text("Fecha", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))),                            
+                        Expanded(flex: 3, child: Text(trabajosEmpleado[index].fecha_publicacion, style: const TextStyle(fontSize: 15))) 
                       ],
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    margin: const EdgeInsets.only(top: 4.0),
+                    child: FutureBuilder<String>(   
+                      future: getLocacion(double.parse(trabajosEmpleado[index].latitud), double.parse(trabajosEmpleado[index].longitud)),
+                      builder: (context, snapshot){
+                        if (snapshot.hasError) {
+                          return Container(
+                            child: Text('An error has occurred!'),
+                          );
+                        } else if (snapshot.hasData) {
+                          return Row (
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget> [ 
+                              Expanded(flex: 1, child: Text("Ubicación", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))),                            
+                              Expanded(flex: 3, child: Text(snapshot.data.toString(), style: const TextStyle(fontSize: 15)))
+                          ]);
+                        } else {
+                          return Container(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 4.0),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Text("Ubicación > " + trabajosEmpleado[index].latitud + ", " +  trabajosEmpleado[index].longitud, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                        Expanded(flex: 1, child: Text("Nombre del Cliente", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))),                            
+                        Expanded(flex: 3, child: Text(trabajosEmpleado[index].nombre + " " + trabajosEmpleado[index].apellido, textAlign: TextAlign.left,style: TextStyle(fontSize: 15),)),
                       ],
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    margin: const EdgeInsets.only(top: 4.0),
                     child: Row(
                       children: <Widget>[
-                        Text("Descripcion > " + trabajosEmpleado[index].descripcion, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
+                        Expanded(flex: 1, child: Text("Numero Telefonico", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))),                            
+                        Expanded(flex: 3, child: Text(trabajosEmpleado[index].telefono, textAlign: TextAlign.left,style: TextStyle(fontSize: 15),)),
                       ],
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-                    child: Row(
-                      children: <Widget>[
-                        Text("Usuario > " + trabajosEmpleado[index].nombre + " " + trabajosEmpleado[index].apellido, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-                    child: Row(
-                      children: <Widget>[
-                        Text("Telefono > " + trabajosEmpleado[index].telefono, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-                    child: Row(
-                      children: <Widget>[
-                        Text("Servicio > " + trabajosEmpleado[index].nombreS, textAlign: TextAlign.left,style: TextStyle(fontSize: 18),),
-                      ],
-                    ),
+                  OutlinedButton(
+                     onPressed: (){
+                       Navigator.push(
+                       context,
+                       MaterialPageRoute(builder: (context) => MyHomePage(latitud:trabajosEmpleado[index].latitud, longitud:trabajosEmpleado[index].longitud, trabajoId :trabajosEmpleado[index].id)),
+                       );
+                     },
+                     child: const Text('Ver Detalles', style: TextStyle(color: Colors.white, fontSize: 14)),
+                       style: OutlinedButton.styleFrom(
+                           shape: RoundedRectangleBorder(
+                         borderRadius: BorderRadius.circular(5)),
+                         side: const BorderSide( width: 0.5, color: Color(0xFFF96332),),
+                           //  padding: EdgeInsets.all(60),
+                         minimumSize: Size(screenSize * 0.92, screenHeight * 0.045),
+                         backgroundColor: const Color(0xFFF96332),
+                       ),
                   ),
                 ],
               ),       
             ),
-          ),   
         );    
       },
     );

@@ -246,7 +246,7 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
 }
 
 class CategoriasList extends StatelessWidget {
-  const CategoriasList({Key? key, required this.categorias}) : super(key: key);
+  const CategoriasList({Key? key,required this.categorias}) : super(key: key);
 
   final List<Categorias> categorias;
   @override

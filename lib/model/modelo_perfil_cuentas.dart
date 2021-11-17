@@ -94,6 +94,11 @@ Future<String> getLocacion(double latitud, double longitud) async {
   return locacion;
 }
 
+Future<String> getLocacion2(double latitud, double longitud) async {
+  List<Placemark> placemarks = await placemarkFromCoordinates(latitud, longitud);   
+  var locacion = placemarks[0].street.toString() + ", " + placemarks[0].postalCode.toString() + ", " + placemarks[0].subLocality.toString() + ", " +  placemarks[0].locality.toString();
+  return locacion;
+}
 
 // Modelo constructor del perfil de usuario
 Future<List<Resenas>?> fetchEmployeeReviews(http.Client client, String id) async {

@@ -11,14 +11,15 @@ import 'navigation_confirm_job_screen.dart';
 
 class NavigationEmployeesScreen extends StatefulWidget{
 
-  final String? profesion;
-  final int? id_profesion;
-  final String? tiposervicio;
-  final int? id_tiposervicio;
-  final String? servicio;
-  final int? id_servicio;
+  final String profesion;
+  final int id_profesion;
+  final String tiposervicio;
+  final int id_tiposervicio;
+  final String servicio;
+  final int id_servicio;
 
-  const NavigationEmployeesScreen({Key? key, required this.tiposervicio, required this.id_tiposervicio, this.profesion, this.id_profesion, this.servicio, this.id_servicio}) : super(key: key);
+  const NavigationEmployeesScreen({Key? key,required this.tiposervicio,required this.id_tiposervicio,
+  required this.profesion,required this.id_profesion,required this.servicio,required this.id_servicio}) : super(key: key);
   
   @override
   // ignore: no_logic_in_create_state
@@ -27,7 +28,8 @@ class NavigationEmployeesScreen extends StatefulWidget{
 
 
 class NavigationEmployeesState extends State<NavigationEmployeesScreen> {
-  NavigationEmployeesState({Key? key, required this.tiposervicio, required this.id_tiposervicio, required this.profesion, required this.id_profesion, required this.id_servicio, required this.servicio});
+  NavigationEmployeesState({Key? key,required this.tiposervicio,required this.id_tiposervicio,
+  required this.profesion,required this.id_profesion,required this.id_servicio,required this.servicio});
 
   String busqueda = "";
   double latitud = 0.0, longitud = 0.0;
@@ -37,12 +39,12 @@ class NavigationEmployeesState extends State<NavigationEmployeesScreen> {
     setState(() => busqueda = textoBuscador);
   }
 
-  final String? profesion;
-  final int? id_profesion;
-  final String? tiposervicio;
-  final int? id_tiposervicio;
-  final String? servicio;
-  final int? id_servicio;
+  final String profesion;
+  final int id_profesion;
+  final String tiposervicio;
+  final int id_tiposervicio;
+  final String servicio;
+  final int id_servicio;
 
 
   void _getCurrentLocation() async {
@@ -110,7 +112,7 @@ class NavigationEmployeesState extends State<NavigationEmployeesScreen> {
           Container(
             alignment: Alignment.topLeft,
             margin: const EdgeInsets.only(top: 10.0, left: 20.0),
-            child: Text('Profesion > $profesion > $tiposervicio > $servicio', 
+            child: Text('> $profesion > $tiposervicio > $servicio', 
               style: const TextStyle(
                 fontSize: 12.0,
                 color: Colors.black,
@@ -128,7 +130,7 @@ class NavigationEmployeesState extends State<NavigationEmployeesScreen> {
                   alignment: Alignment.topLeft,  
                   width: screenSize * 0.90,
                   child: FutureBuilder<List<Empleados>?>(
-                    future: fetchEmpleados(http.Client(), busqueda, id_servicio!, latitud, longitud),
+                    future: fetchEmpleados(http.Client(), busqueda, id_servicio, latitud, longitud),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
                         return const Center(
@@ -156,10 +158,10 @@ class NavigationEmployeesState extends State<NavigationEmployeesScreen> {
 class EmpleadosList extends StatelessWidget {
 
   final List<Empleados> empleados;
-  final String? servicio;
-  final int? id_servicio;
+  final String servicio;
+  final int id_servicio;
 
-  const EmpleadosList({Key? key, required this.empleados, required this.servicio, required this.id_servicio}) : super(key: key);
+  const EmpleadosList({Key? key,required this.empleados,required this.servicio,required this.id_servicio}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;

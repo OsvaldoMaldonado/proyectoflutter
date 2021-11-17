@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 //Modelo constructor del menu de navegación de home
-Future<List<TrabajosEmpleado>?> fetchTrabajosEmpleado(http.Client client,int id) async {
+Future<List<TrabajosEmpleado>?> fetchTrabajosEmpleado(http.Client client,String id) async {
     final response = await client
       .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/home_empleados.php/?id=$id"));
     return compute(parseTrabajosEmpleado, response.body);  
@@ -22,6 +22,7 @@ List<TrabajosEmpleado>? parseTrabajosEmpleado(String responseBody) {
 }
 
 class TrabajosEmpleado {
+  final String id;
   final String estado_servicio;
   final String fecha_publicacion;
   final String costo;
@@ -34,6 +35,7 @@ class TrabajosEmpleado {
   final String nombreS;
 
   const TrabajosEmpleado({
+    required this.id,
     required this.estado_servicio,
     required this.fecha_publicacion,
     required this.costo,
@@ -47,6 +49,7 @@ class TrabajosEmpleado {
   });
   factory TrabajosEmpleado.fromJson(Map<String, dynamic> json) {
     return TrabajosEmpleado(
+      id: json['id'] as String,
       estado_servicio: json['estado_servicio'] as String,
       fecha_publicacion: json['fecha_publicacion'] as String,
       costo: json['costo'] as String,
@@ -59,4 +62,18 @@ class TrabajosEmpleado {
       nombreS: json['nombreS'] as String,
     );
   }
+}
+
+// Modelo constructor del perfil de usuario
+Future<TrabajosEmpleado?> fetchDetallesTrabajoEmpleado(http.Client client, String id) async {
+    final response = await client
+      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/detalles_trabajo_empleado.php/?id=$id"));
+    return compute(parseDetalles, response.body);
+}
+
+// A function that converts a response body into a List<Categorias>.
+TrabajosEmpleado? parseDetalles(String responseBody) {
+  Map<String, dynamic> map = jsonDecode(responseBody);
+  TrabajosEmpleado person = TrabajosEmpleado.fromJson(map);
+  return person;
 }

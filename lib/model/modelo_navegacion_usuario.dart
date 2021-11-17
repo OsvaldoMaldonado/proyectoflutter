@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:core';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:servicios_vic/navigation_home_screen.dart';
 
 //Modelo constructor del menu de navegación de home
 Future<List<Categorias>?> fetchCategorias(http.Client client, String nombre) async {
@@ -186,5 +188,29 @@ class Empleados {
       telefono: json['telefono'] as String,
       imagen: json['imagen'] as String,
     );
+  }
+}
+
+
+insertartrabajo(String estado_servicio, String fecha_publicacion, double costo, double latitud, 
+double longitud, String descripcion, int prestador_id, int cliente_id, int? servicio_id, BuildContext context) async{
+  String theUrl = "https://proyectonunoxd.000webhostapp.com/insertartrabajo.php";
+  var response = await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
+  body: {
+    "u_estado_servicio":estado_servicio,
+    "u_fecha_publicacion":fecha_publicacion,
+    "u_costo":costo.toString(),
+    "u_latitud":latitud.toString(),
+    "u_longitud":longitud.toString(),
+    "u_descripcion":descripcion,
+    "u_prestador_id":prestador_id.toString(),
+    "u_cliente_id":cliente_id.toString(),
+    "u_servicio_id":servicio_id.toString(),
+  });
+  var message = jsonDecode(response.body);
+  if(message == 'Creado'){
+    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+      const NavigationHomeScreen()), (Route<dynamic> route) => false);
+  }else{
   }
 }

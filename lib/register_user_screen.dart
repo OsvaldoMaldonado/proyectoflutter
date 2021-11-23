@@ -163,6 +163,7 @@ class RegisterUserState extends State<RegisterUserScreen> {
                       ),
                     ),
                   ),
+                  /*
                   SizedBox(height: screenheight * 0.01,),
                   const Text("Metodo de pago", style: TextStyle(fontSize: 16),),
                   SizedBox(height: screenheight * 0.01 ,),
@@ -270,6 +271,7 @@ class RegisterUserState extends State<RegisterUserScreen> {
                     ),
                   ),
                   SizedBox(height: screenheight * 0.01,),
+                  */
                   OutlinedButton(
 
                     onPressed: () async{

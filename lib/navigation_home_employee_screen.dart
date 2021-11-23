@@ -157,7 +157,7 @@ class NavigationHomeEmployeeState extends State<NavigationHomeEmployeeScreen> {
             SizedBox(height: screenheight * 0.01),
             Expanded(
               child: FutureBuilder<List<TrabajosEmpleado>?>(
-                future: fetchTrabajosEmpleado(http.Client(), idEmployee),
+                future: fetchTrabajosEmpleado(http.Client(), idEmployee, "activo"),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return const Center(
@@ -173,6 +173,24 @@ class NavigationHomeEmployeeState extends State<NavigationHomeEmployeeScreen> {
                 },
               ),
             ),
+            SizedBox(height: screenheight * 0.01),
+            Expanded(
+              child: FutureBuilder<List<TrabajosEmpleado>?>(
+                future: fetchTrabajosEmpleado(http.Client(), idEmployee, "pendienteCosto"),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(
+                    );
+                  } else if (snapshot.hasData) {
+                    return TrabajosPendientesCostoEmpleadoList(trabajosEmpleado: snapshot.data!);
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              ),
+            ),
         ],
         ),
       ),
@@ -180,6 +198,66 @@ class NavigationHomeEmployeeState extends State<NavigationHomeEmployeeScreen> {
   }
 }
 
+
+class TrabajosPendientesCostoEmpleadoList extends StatefulWidget{
+  const TrabajosPendientesCostoEmpleadoList({Key? key,required this.trabajosEmpleado}) : super(key: key);
+  final List<TrabajosEmpleado> trabajosEmpleado;
+
+  @override
+  // ignore: no_logic_in_create_state
+  TrabajosPendientesCostoEmpleadoListState createState() => TrabajosPendientesCostoEmpleadoListState(trabajosEmpleado: trabajosEmpleado);
+}
+
+
+class TrabajosPendientesCostoEmpleadoListState extends State<TrabajosPendientesCostoEmpleadoList> {
+  TrabajosPendientesCostoEmpleadoListState({Key? key,required this.trabajosEmpleado});
+
+  final List<TrabajosEmpleado> trabajosEmpleado;
+  @override
+  Widget build(BuildContext context) {
+    double screenSize = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: trabajosEmpleado.length,
+      itemBuilder: (context, index) {
+        return Container(
+          alignment: Alignment.center,
+          margin: const EdgeInsets.only(
+              bottom: 5.0
+          ),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+          ),
+            // ignore: prefer_const_constructors
+            child: Container(
+              margin: EdgeInsets.only(
+                  left: screenSize * 0.05,
+                  right: screenSize * 0.05,
+                  bottom: 10.0,
+                  top: 10.0
+              ),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    margin: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text("Tienes un trabajo de " + trabajosEmpleado[index].nombreS + " pendiente con " + trabajosEmpleado[index].nombre + " " + trabajosEmpleado[index].apellido + "\n !Recuerdale!", 
+                        textAlign: TextAlign.left,style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
+                      ],
+                    ),
+                  ),
+                ],
+              ),       
+            ),
+        );    
+      },
+    );
+  }
+}
 
 
 class TrabajosEmpleadoList extends StatefulWidget{

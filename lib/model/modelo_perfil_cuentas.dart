@@ -4,22 +4,19 @@ import 'package:flutter/foundation.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
 
-// Modelo constructor del perfil de usuario
-Future<List<User>?> fetchUser(http.Client client, String id) async {
+Future<User?> fetchUser(http.Client client, String id) async {
     final response = await client
-      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/user.php?id=$id"));
+      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/pagina_perfil_usuario.php/?id=$id"));
     return compute(parseUser, response.body);
 }
 
 // A function that converts a response body into a List<Categorias>.
-List<User>? parseUser(String responseBody) {
-  try{
-    final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-
-    return parsed.map<User>((json) => User.fromJson(json)).toList();
-  }catch(e){}
-  return null;
+User? parseUser(String responseBody) {
+  Map<String, dynamic> map = jsonDecode(responseBody);
+  User person = User.fromJson(map);
+  return person;
 }
+
 
 class User {
   final String correo;
@@ -48,7 +45,7 @@ class User {
 // Modelo constructor del perfil de usuario
 Future<Employee?> fetchEmployee(http.Client client, String id) async {
     final response = await client
-      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/employee.php/?id=$id"));
+      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/pagina_perfil_empleado.php/?id=$id"));
     return compute(parseEmployee, response.body);
 }
 
@@ -103,7 +100,7 @@ Future<String> getLocacion2(double latitud, double longitud) async {
 // Modelo constructor del perfil de usuario
 Future<List<Resenas>?> fetchEmployeeReviews(http.Client client, String id) async {
     final response = await client
-      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/resenasempleado.php/?id=$id"));
+      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/seccion_resenas_empleado_perfil.php/?id=$id"));
     return compute(parseEmployeeReviews, response.body);
 }
 

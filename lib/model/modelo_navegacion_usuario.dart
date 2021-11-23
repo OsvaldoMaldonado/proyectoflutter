@@ -9,12 +9,12 @@ import 'package:servicios_vic/navigation_home_screen.dart';
 Future<List<Categorias>?> fetchCategorias(http.Client client, String nombre) async {
   if(nombre != ''){
     final response = await client
-      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/categoriashome.php?nombre=$nombre"));
+      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/pagina_principal_usuarios.php?nombre=$nombre"));
 
     return compute(parseCategorias, response.body);
   }else{
     final response = await client
-      .get(Uri.parse('https://proyectonunoxd.000webhostapp.com/categoriashome.php'));
+      .get(Uri.parse('https://proyectonunoxd.000webhostapp.com/pagina_principal_usuarios.php'));
 
     return compute(parseCategorias, response.body);
   }
@@ -58,11 +58,11 @@ class Categorias {
 Future<List<TipoServicio>?> fetchTipoServicio(http.Client client, int id, String? nombre) async {
   if(nombre!=''){
     final response = await client
-      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/tiposervicio.php/?id=$id&nombre='$nombre'"));
+      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/pagina_seleccion_tipo_de_servicio_usuarios.php/?id=$id&nombre='$nombre'"));
     return compute(parseTipoServicio, response.body);
   }else{
     final response = await client
-      .get(Uri.parse('https://proyectonunoxd.000webhostapp.com/tiposervicio.php/?id=$id'));  
+      .get(Uri.parse('https://proyectonunoxd.000webhostapp.com/pagina_seleccion_tipo_de_servicio_usuarios.php/?id=$id'));  
     return compute(parseTipoServicio, response.body);
   }
 }
@@ -102,11 +102,11 @@ class TipoServicio {
 Future<List<Servicio>?> fetchServicio(http.Client client, int id, String nombre) async {
     if(nombre!=''){
       final response = await client
-        .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/servicio.php/?id=$id&nombre='$nombre'"));
+        .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/pagina_seleccion_servicio_usuarios.php/?id=$id&nombre='$nombre'"));
       return compute(parseServicio, response.body);
     }else{
       final response = await client
-        .get(Uri.parse('https://proyectonunoxd.000webhostapp.com/servicio.php/?id=$id'));
+        .get(Uri.parse('https://proyectonunoxd.000webhostapp.com/pagina_seleccion_servicio_usuarios.php/?id=$id'));
       return compute(parseServicio, response.body);
     }
 }
@@ -144,12 +144,12 @@ class Servicio {
 Future<List<Empleados>?> fetchEmpleados(http.Client client, String nombre ,int sid, double ulatitud, double ulongitud) async {
   if(nombre != ''){
     final response = await client
-      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/empleadosdashboard.php/?sid=$sid&ulatitud=$ulatitud&ulongitud=$ulongitud&nombre='$nombre'"));
+      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/pagina_seleccion_empleado_usuarios.php/?sid=$sid&ulatitud=$ulatitud&ulongitud=$ulongitud&nombre='$nombre'"));
 
     return compute(parseEmpleados, response.body);
   }else{
     final response = await client
-      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/empleadosdashboard.php/?sid=$sid&ulatitud=$ulatitud&ulongitud=$ulongitud"));
+      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/pagina_seleccion_empleado_usuarios.php/?sid=$sid&ulatitud=$ulatitud&ulongitud=$ulongitud"));
 
     return compute(parseEmpleados, response.body);
   }
@@ -194,7 +194,7 @@ class Empleados {
 
 insertartrabajo(String estado_servicio, String fecha_publicacion, double costo, double latitud, 
 double longitud, String descripcion, int prestador_id, int cliente_id, int? servicio_id, BuildContext context) async{
-  String theUrl = "https://proyectonunoxd.000webhostapp.com/insertartrabajo.php";
+  String theUrl = "https://proyectonunoxd.000webhostapp.com/crear_nuevo_trabajo.php";
   var response = await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
   body: {
     "u_estado_servicio":estado_servicio,

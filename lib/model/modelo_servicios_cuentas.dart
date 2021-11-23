@@ -77,7 +77,7 @@ class HistorialServicios {
 // Modelo constructor del perfil de usuario
 Future<List<HistorialServiciosEmpleadoP>?> fetchHistorialServiciosEmpleadoP(http.Client client, String id, String estado) async {
     final response = await client
-      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/historial_de_servicios_empleado_pendientes.php/?id=$id&estado=$estado"));
+      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/historial_de_servicios_empleado.php/?id=$id&estado=$estado"));
     return compute(parseHistorialServiciosEmpleadoP, response.body);
 }
 
@@ -134,6 +134,3 @@ class HistorialServiciosEmpleadoP {
     );
   }
 }
-
-
-//https://proyectonunoxd.000webhostapp.com/historial_de_servicios_usuario.php/?id=2

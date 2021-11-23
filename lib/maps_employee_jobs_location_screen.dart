@@ -4,6 +4,7 @@ import 'package:location/location.dart' as location;
 import 'package:geocoding/geocoding.dart';
 import 'package:servicios_vic/model/modelo_navegacion_empleado.dart';
 import 'package:http/http.dart' as http;
+import 'package:servicios_vic/navigation_change_price_employee_screen.dart';
 
 import 'model/modelo_perfil_cuentas.dart';
 
@@ -91,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       );
                     } else if (snapshot.hasData) {
                       //return Text(snapshot.data!.correo);
-                      return DetallesTrabajo(detallesTrabajosEmpleado: snapshot.data!);
+                      return DetallesTrabajo(detallesTrabajosEmpleado: snapshot.data!, idTrabajo: trabajoId,);
                     } else {
                       return const Center(
                         child: CircularProgressIndicator(),
@@ -124,27 +125,51 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
 class DetallesTrabajo extends StatefulWidget{
-  const DetallesTrabajo({Key? key,required this.detallesTrabajosEmpleado}) : super(key: key);
+  const DetallesTrabajo({Key? key,required this.detallesTrabajosEmpleado, required this.idTrabajo}) : super(key: key);
   final TrabajosEmpleado detallesTrabajosEmpleado;
+  final String idTrabajo;
 
   @override
   // ignore: no_logic_in_create_state
-  DetallesTrabajoState createState() => DetallesTrabajoState(trabajosEmpleado: detallesTrabajosEmpleado);
+  DetallesTrabajoState createState() => DetallesTrabajoState(trabajosEmpleado: detallesTrabajosEmpleado, idTrabajo: idTrabajo);
 }
 
+Widget _buildAlertDialog(BuildContext context) {
+    return AlertDialog(
+      title: Text('Notificaciones'),
+      content:
+          Text("¿Desea recibir notificaciones? Serán muy pocas de verdad :)"),
+      actions: <Widget>[
+        FlatButton(
+            child: Text("Aceptar"),
+            textColor: Colors.blue,
+            onPressed: () {
+              Navigator.of(context).pop();
+            }),
+
+        FlatButton(
+            child: Text("Cancelar"),
+            textColor: Colors.red,
+            onPressed: () {
+              Navigator.of(context).pop();
+            }),
+      ],
+    );
+  }
 
 class DetallesTrabajoState extends State<DetallesTrabajo> {
-  DetallesTrabajoState({Key? key,required this.trabajosEmpleado});
+  DetallesTrabajoState({Key? key,required this.trabajosEmpleado, required this.idTrabajo});
 
   var locacion = "";
-
+  final String idTrabajo;
   final TrabajosEmpleado trabajosEmpleado;
+
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
         //border: Border.all(color: const Color(0xFFF96332), width: 1),
@@ -162,7 +187,7 @@ class DetallesTrabajoState extends State<DetallesTrabajo> {
             Container(
               margin: const EdgeInsets.only(top: 4.0, bottom: 10.0),
               child: Row(
-                children: <Widget>[
+                children: const <Widget>[
                   Text("Detalles del servicio", textAlign: TextAlign.left,style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
                 ],
               ),
@@ -173,7 +198,7 @@ class DetallesTrabajoState extends State<DetallesTrabajo> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Expanded(flex: 2, child: Text("Servicio", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),                            
+                  const Expanded(flex: 2, child: Text("Servicio", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),                            
                   Expanded(flex: 5, child: Text(trabajosEmpleado.nombreS, style: const  TextStyle(fontSize: 17, color: Colors.black54,))),
                 ],
               ),
@@ -184,16 +209,16 @@ class DetallesTrabajoState extends State<DetallesTrabajo> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Expanded(flex: 2, child: Text("Fecha", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),                            
+                  const Expanded(flex: 2, child: Text("Fecha", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),                            
                   Expanded(flex: 5, child: Text(trabajosEmpleado.fecha_publicacion, style:  TextStyle(fontSize: 17, color: Colors.black54,))),
                 ],
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(top: 4.0, bottom: 6.0, left: 7.0),
+              margin: const EdgeInsets.only(top: 0.0, bottom: 3.0, left: 7.0),
               child: Row(
                 children: <Widget>[
-                  Expanded(flex: 2, child: Text("Pago", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),                            
+                  const Expanded(flex: 2, child: Text("Pago", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),                            
                   Expanded(flex: 5, 
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -201,6 +226,7 @@ class DetallesTrabajoState extends State<DetallesTrabajo> {
                         Text("\$" + trabajosEmpleado.costo + " MXN", textAlign: TextAlign.left,style:  TextStyle(fontSize: 17, color: Colors.black54,)),
                         OutlinedButton(
                           onPressed: (){
+                            Navigator.push(context,MaterialPageRoute(builder: (context) => NavigationChangePriceScreen(idTrabajo: idTrabajo)));
                           },
                           child: const Text('Nuevo Precio', style: TextStyle(color: Colors.white, fontSize: 14)),
                           style: OutlinedButton.styleFrom(
@@ -274,9 +300,23 @@ class DetallesTrabajoState extends State<DetallesTrabajo> {
             ),
             SizedBox(height: screenHeight * 0.05,),
             OutlinedButton(
-              onPressed: (){
-               
-              },
+              onPressed: () => showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: const Text('Finalización de contrato'),
+                  content: const Text('¿Esta seguro que quiere finalizar el contrato?'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'No'),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () => finalizacionContrato(http.Client(), idTrabajo, context),
+                      child: const Text('OK'),
+                    ),
+                  ],
+                )
+              ),
               child: const Text('Finalizar Contrato', style: TextStyle(color: Colors.white, fontSize: 14)),
                 style: OutlinedButton.styleFrom(
                     shape: RoundedRectangleBorder(

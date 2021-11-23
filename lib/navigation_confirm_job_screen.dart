@@ -6,10 +6,9 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
-import 'package:servicios_vic/model/modelo_login_cuentas.dart';
 import 'package:servicios_vic/model/modelo_navegacion_usuario.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'model/PaypalPayment.dart';
+import 'paypal_payment.dart';
 
 class NavigationConfirmJobScreen extends StatefulWidget{
 

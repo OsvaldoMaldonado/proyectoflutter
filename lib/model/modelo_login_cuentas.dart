@@ -5,13 +5,12 @@ import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:servicios_vic/navigation_employees_screen.dart';
 import 'package:servicios_vic/navigation_home_employee_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../navigation_home_screen.dart';
 
 insertarusuario(String correo, String nombre, String apellido, String contrasena, String telefono) async{
-  String theUrl = "https://proyectonunoxd.000webhostapp.com/insertarusuario.php";
+  String theUrl = "https://proyectonunoxd.000webhostapp.com/crear_nuevo_usuario.php";
   await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
   body: {
     "u_correo":correo,
@@ -23,7 +22,7 @@ insertarusuario(String correo, String nombre, String apellido, String contrasena
 }
 
 Future<void> userLogin(String email, String password, BuildContext context) async{
-  var url = 'https://proyectonunoxd.000webhostapp.com/logearusuario.php';
+  var url = 'https://proyectonunoxd.000webhostapp.com/login_usuario.php';
   var data = {'email': email, 'password' : password};
   var response = await http.post(Uri.parse(Uri.encodeFull(url)), body: json.encode(data));
   var message = jsonDecode(response.body);
@@ -39,7 +38,7 @@ Future<void> userLogin(String email, String password, BuildContext context) asyn
 }
 
 insertarempleado(String correo, String nombre, String apellido, String contrasena, String RFC) async{
-  String theUrl = "https://proyectonunoxd.000webhostapp.com/insertarempleado.php";
+  String theUrl = "https://proyectonunoxd.000webhostapp.com/crear_nuevo_empleado.php";
   await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
     body: {
       "u_correo":correo,
@@ -59,7 +58,7 @@ insertarempleado(String correo, String nombre, String apellido, String contrasen
     });
 }*/
 Future<void> loginempleado(String email, String password, BuildContext context) async{
-  var url = 'https://proyectonunoxd.000webhostapp.com/logearempleado.php';
+  var url = 'https://proyectonunoxd.000webhostapp.com/login_empleado.php';
   var data = {'email': email, 'password' : password};
   var response = await http.post(Uri.parse(Uri.encodeFull(url)), body: json.encode(data));
   var message = jsonDecode(response.body);

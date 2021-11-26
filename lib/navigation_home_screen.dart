@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:servicios_vic/home_screen.dart';
 import 'package:servicios_vic/model/modelo_navegacion_usuario.dart';
 import 'package:servicios_vic/user_profile_screen.dart';
+import 'package:servicios_vic/services_user_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'model/colors.dart';
 import 'navigation_category_screen.dart';
@@ -90,6 +91,11 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
                 Container(
                   margin: const EdgeInsets.only(left: 12.0,top: 12.0),
                   child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ServicesUserScreen()));
+                    },
                     child: Row(
                       children: <Widget>[
                         const Icon(Icons.access_time,size: 30.0),
@@ -240,7 +246,7 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
 }
 
 class CategoriasList extends StatelessWidget {
-  const CategoriasList({Key? key, required this.categorias}) : super(key: key);
+  const CategoriasList({Key? key,required this.categorias}) : super(key: key);
 
   final List<Categorias> categorias;
   @override

@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 class _ArticleDescription extends StatelessWidget {
   const _ArticleDescription({
 
+<<<<<<< Updated upstream
     required this.title,
     required this.subtitle,
     required this.author,
@@ -20,6 +21,86 @@ class _ArticleDescription extends StatelessWidget {
   final String author;
   final String publishDate;
   final String readDuration;
+=======
+class ServicesEmployeeScreen extends StatefulWidget{
+   const ServicesEmployeeScreen({Key? key}) : super(key: key);
+
+  @override
+  ServicesEmployeeState createState() => ServicesEmployeeState();
+}
+
+
+class ServicesEmployeeState extends State<ServicesEmployeeScreen> {
+  final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+
+  String locacion = "";
+  String id = '2';
+  double latitud = 0.0, longitud = 0.0;
+
+  void _getiD() async {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String idUser = prefs.getString('id') ?? '';
+
+      setState(() => id = idUser);
+  }
+
+  @override
+  void initState() {
+    _getiD();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double screenSize = MediaQuery.of(context).size.width;
+    double screenheight = MediaQuery.of(context).size.height;
+
+    return Scaffold(
+      key: _globalKey,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        shadowColor: Colors.transparent,
+        foregroundColor: const Color(0xFFF96332),
+        title: const Text('Historial de servicios', style: TextStyle(fontSize: 20.0,color: Colors.black,),)
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[    
+          SizedBox(height: screenheight * 0.01),
+         
+          Container(
+            margin: const EdgeInsets.only(left: 10.0),
+            child: const  Text("Servicios Finalizados: ", style: TextStyle(fontSize: 18,), textAlign: TextAlign.start,),
+          ),  
+          SizedBox(height: screenheight * 0.01),
+          Expanded(
+            child: FutureBuilder<List<HistorialServiciosEmpleadoP>?>(
+              future: fetchHistorialServiciosEmpleadoP(http.Client(), id, 'finalizado'),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text('Ningun Resultado!'),
+                  );
+                } else if (snapshot.hasData) {
+                  return HistorialServiciosEmpleadoFList(historialServiciosEmpleado: snapshot.data!);
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class HistorialServiciosEmpleadoPList extends StatelessWidget {
+  const HistorialServiciosEmpleadoPList({Key? key,required this.historialServiciosEmpleado});
+>>>>>>> Stashed changes
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +161,7 @@ class _ArticleDescription extends StatelessWidget {
   }
 }
 
+<<<<<<< Updated upstream
 class CustomListItemTwo extends StatelessWidget {
   const CustomListItemTwo({
     Key? key,
@@ -95,6 +177,10 @@ class CustomListItemTwo extends StatelessWidget {
   final String author;
   final String publishDate;
   final String readDuration;
+=======
+class HistorialServiciosEmpleadoAList extends StatelessWidget {
+  const HistorialServiciosEmpleadoAList({Key? key,required this.historialServiciosEmpleado});
+>>>>>>> Stashed changes
 
   @override
   Widget build(BuildContext context) {
@@ -133,8 +219,13 @@ class ServicesEmployeeScreen extends StatefulWidget{
   State<ServicesEmployeeScreen> createState() => _ServicesEmployeeScreenState();
 }
 
+<<<<<<< Updated upstream
 class _ServicesEmployeeScreenState extends State<ServicesEmployeeScreen> {
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+=======
+class HistorialServiciosEmpleadoFList extends StatelessWidget {
+  const HistorialServiciosEmpleadoFList({Key? key,required this.historialServiciosEmpleado});
+>>>>>>> Stashed changes
 
   @override
   Widget build(BuildContext context) {

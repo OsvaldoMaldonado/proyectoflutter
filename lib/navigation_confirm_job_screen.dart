@@ -6,10 +6,9 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
-import 'package:servicios_vic/model/modelo_login_cuentas.dart';
+import 'package:servicios_vic/model/modelo_navegacion_usuario.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'model/PaypalPayment.dart';
+import 'paypal_payment.dart';
 
 class NavigationConfirmJobScreen extends StatefulWidget{
 
@@ -29,7 +28,7 @@ class NavigationConfirmJobScreen extends StatefulWidget{
 class NavigationConfirmJobState extends State<NavigationConfirmJobScreen> {
   String dropdownValue = 'Efectivo';
 
-  NavigationConfirmJobState({Key? key, required this.servicio, required this.id_servicio, required this.id_prestador, required this.prestador});
+  NavigationConfirmJobState({Key? key, this.servicio, this.id_servicio, this.id_prestador, this.prestador});
   String busqueda = "";
   String locacion = "";
   String descripcion = "";
@@ -237,14 +236,13 @@ class NavigationConfirmJobState extends State<NavigationConfirmJobScreen> {
                         builder: (BuildContext context) => PaypalPayment(
                           onFinish: (number) async {
                             // payment done
-
-                              print('order id: ' + number);
-                              insertartrabajo("pendiente", _getCurrentDate(), 50.0, latitud, longitud, descripcion, int.parse(id_prestador.toString()), int.parse(id), id_servicio, context);
-
+                              insertartrabajo("activo", _getCurrentDate(), 50.0, latitud, longitud, descripcion, int.parse(id_prestador.toString()), int.parse(id), id_servicio, context);
                           },
                         ),
                       ),
                     );
+                  }else{
+                      insertartrabajo("activo", _getCurrentDate(), 0.0, latitud, longitud, descripcion, int.parse(id_prestador.toString()), int.parse(id), id_servicio, context);
                   }
 
                 },

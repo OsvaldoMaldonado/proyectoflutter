@@ -10,10 +10,10 @@ import 'navigation_home_screen.dart';
 
 class NavigationCategoryScreen extends StatefulWidget{
 
-  String? profesion;
-  int? id_profesion;
+  String profesion;
+  int id_profesion;
 
-  NavigationCategoryScreen({Key? key, required this.profesion, required this.id_profesion}) : super(key: key);
+  NavigationCategoryScreen({Key? key,required this.profesion,required this.id_profesion}) : super(key: key);
   
   @override
   // ignore: no_logic_in_create_state
@@ -22,7 +22,7 @@ class NavigationCategoryScreen extends StatefulWidget{
 
 
 class NavigationCategoryState extends State<NavigationCategoryScreen> {
-  NavigationCategoryState({Key? key, required this.profesion, required this.id_profesion});
+  NavigationCategoryState({Key? key,required this.profesion,required this.id_profesion});
 
   String busqueda = "";
 
@@ -31,8 +31,8 @@ class NavigationCategoryState extends State<NavigationCategoryScreen> {
     setState(() => busqueda = textoBuscador);
   }
 
-  String? profesion;
-  int? id_profesion;
+  String profesion;
+  int id_profesion;
  
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class NavigationCategoryState extends State<NavigationCategoryScreen> {
           Container(
             alignment: Alignment.topLeft,
             margin: const EdgeInsets.only(top: 10.0, left: 20.0),
-            child: Text('Profesion > $profesion', 
+            child: Text('> $profesion', 
               style: const TextStyle(
                 fontSize: 12.0,
                 color: Colors.black,
@@ -81,7 +81,7 @@ class NavigationCategoryState extends State<NavigationCategoryScreen> {
             alignment: Alignment.topLeft,  
             width: screenSize * 0.90,
             child: FutureBuilder<List<TipoServicio>?>(
-              future: fetchTipoServicio(http.Client(), id_profesion!, busqueda),
+              future: fetchTipoServicio(http.Client(), id_profesion, busqueda),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(
@@ -105,10 +105,10 @@ class NavigationCategoryState extends State<NavigationCategoryScreen> {
 }
 class TipoServicioList extends StatelessWidget {
 
-  final String? profesion;
-  final int? id_profesion;
+  final String profesion;
+  final int id_profesion;
   final List<TipoServicio> tiposervicio;
-  const TipoServicioList({Key? key, required this.tiposervicio, this.profesion, this.id_profesion}) : super(key: key);
+  const TipoServicioList({Key? key,required this.tiposervicio,required this.profesion,required this.id_profesion}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;

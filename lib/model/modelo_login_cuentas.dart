@@ -5,13 +5,12 @@ import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:servicios_vic/navigation_employees_screen.dart';
 import 'package:servicios_vic/navigation_home_employee_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../navigation_home_screen.dart';
 
 insertarusuario(String correo, String nombre, String apellido, String contrasena, String telefono) async{
-  String theUrl = "https://proyectonunoxd.000webhostapp.com/insertarusuario.php";
+  String theUrl = "https://proyectonunoxd.000webhostapp.com/crear_nuevo_usuario.php";
   await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
   body: {
     "u_correo":correo,
@@ -21,9 +20,45 @@ insertarusuario(String correo, String nombre, String apellido, String contrasena
     "u_telefono":telefono,
   });
 }
+<<<<<<< Updated upstream
 
+=======
+modificarusuario(String nombre, String nombremod) async{
+  String theUrl = "https://tadeo46.000webhostapp.com/modificarusuario.php";
+  await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
+      body: {
+        "u_nombre":nombre,
+        "u_nombremod":nombremod,
+      });
+}
+
+modificarusuarioapellido(String apellido, String apellidomod) async{
+  String theUrl = "https://tadeo46.000webhostapp.com/modificarusuarioapellido.php";
+  await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
+      body: {
+        "u_nombre":apellido,
+        "u_nombremod":apellidomod,
+      });
+}
+modificarusuariocorreo(String correo, String correomod) async{
+  String theUrl = "https://tadeo46.000webhostapp.com/modificarusuariocorreo.php";
+  await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
+      body: {
+        "u_nombre":correo,
+        "u_nombremod":correomod,
+      });
+}
+modificarusuariotelefono(String telefono, String telefonomod) async{
+  String theUrl = "https://tadeo46.000webhostapp.com/modificarusuariotelefono.php";
+  await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
+      body: {
+        "u_nombre":telefono,
+        "u_nombremod":telefonomod,
+      });
+}
+>>>>>>> Stashed changes
 Future<void> userLogin(String email, String password, BuildContext context) async{
-  var url = 'https://proyectonunoxd.000webhostapp.com/logearusuario.php';
+  var url = 'https://proyectonunoxd.000webhostapp.com/login_usuario.php';
   var data = {'email': email, 'password' : password};
   var response = await http.post(Uri.parse(Uri.encodeFull(url)), body: json.encode(data));
   var message = jsonDecode(response.body);
@@ -31,6 +66,7 @@ Future<void> userLogin(String email, String password, BuildContext context) asyn
     SharedPreferences prefs = await SharedPreferences.getInstance();
                     prefs.setString('id', message);
                     prefs.setString('type','usuario');
+        print(prefs.get('id'));
     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
       const NavigationHomeScreen()), (Route<dynamic> route) => false);
   }else{
@@ -38,7 +74,7 @@ Future<void> userLogin(String email, String password, BuildContext context) asyn
 }
 
 insertarempleado(String correo, String nombre, String apellido, String contrasena, String RFC) async{
-  String theUrl = "https://proyectonunoxd.000webhostapp.com/insertarempleado.php";
+  String theUrl = "https://proyectonunoxd.000webhostapp.com/crear_nuevo_empleado.php";
   await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
     body: {
       "u_correo":correo,
@@ -48,6 +84,24 @@ insertarempleado(String correo, String nombre, String apellido, String contrasen
       "u_RFC":RFC,
     });
 }
+<<<<<<< Updated upstream
+=======
+insertarempleadoespecializacion(String correo) async{
+  String theUrl = "https://tadeo46.000webhostapp.com/verservicios.php";
+  await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
+      body: {
+        "u_correo":correo,
+      });
+}
+modificarempleadotelefono(String telefono, String telefonomod) async{
+  String theUrl = "https://tadeo46.000webhostapp.com/modificarempleadotelefono.php";
+  await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
+      body: {
+        "u_nombre":telefono,
+        "u_nombremod":telefonomod,
+      });
+}
+>>>>>>> Stashed changes
 //cambiar
 /*loginempleado(String correo,String contrasena) async{
   String theUrl = "https://proyectonunoxd.000webhostapp.com/logearempleado.php";
@@ -58,7 +112,7 @@ insertarempleado(String correo, String nombre, String apellido, String contrasen
     });
 }*/
 Future<void> loginempleado(String email, String password, BuildContext context) async{
-  var url = 'https://proyectonunoxd.000webhostapp.com/logearempleado.php';
+  var url = 'https://proyectonunoxd.000webhostapp.com/login_empleado.php';
   var data = {'email': email, 'password' : password};
   var response = await http.post(Uri.parse(Uri.encodeFull(url)), body: json.encode(data));
   var message = jsonDecode(response.body);
@@ -66,31 +120,9 @@ Future<void> loginempleado(String email, String password, BuildContext context) 
     SharedPreferences prefs = await SharedPreferences.getInstance();
                     prefs.setString('id', message);
                     prefs.setString('type','prestador');
+    print(prefs.get('id'));
     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
       const NavigationHomeEmployeeScreen()), (Route<dynamic> route) => false);
-  }else{
-  }
-}
-
-insertartrabajo(String estado_servicio, String fecha_publicacion, double costo, double latitud, 
-double longitud, String descripcion, int prestador_id, int cliente_id, int? servicio_id, BuildContext context) async{
-  String theUrl = "https://proyectonunoxd.000webhostapp.com/insertartrabajo.php";
-  var response = await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
-  body: {
-    "u_estado_servicio":estado_servicio,
-    "u_fecha_publicacion":fecha_publicacion,
-    "u_costo":costo.toString(),
-    "u_latitud":latitud.toString(),
-    "u_longitud":longitud.toString(),
-    "u_descripcion":descripcion,
-    "u_prestador_id":prestador_id.toString(),
-    "u_cliente_id":cliente_id.toString(),
-    "u_servicio_id":servicio_id.toString(),
-  });
-  var message = jsonDecode(response.body);
-  if(message == 'Creado'){
-    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-      const NavigationHomeScreen()), (Route<dynamic> route) => false);
   }else{
   }
 }

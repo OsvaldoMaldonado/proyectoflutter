@@ -10,12 +10,13 @@ import 'package:servicios_vic/model/modelo_navegacion_usuario.dart';
 
 class NavigationJobScreen extends StatefulWidget{
 
-  final String? profesion;
-  final int? id_profesion;
-  final String? tiposervicio;
-  final int? id_tiposervicio;
+  final String profesion;
+  final int id_profesion;
+  final String tiposervicio;
+  final int id_tiposervicio;
 
-  const NavigationJobScreen({Key? key, required this.tiposervicio, required this.id_tiposervicio, this.profesion, this.id_profesion}) : super(key: key);
+  const NavigationJobScreen({Key? key,required this.tiposervicio,required this.id_tiposervicio, 
+  required this.profesion,required this.id_profesion}) : super(key: key);
   
   @override
   // ignore: no_logic_in_create_state
@@ -24,7 +25,8 @@ class NavigationJobScreen extends StatefulWidget{
 
 
 class NavigationJobState extends State<NavigationJobScreen> {
-  NavigationJobState({Key? key, required this.tiposervicio, required this.id_tiposervicio, this.profesion, this.id_profesion});
+  NavigationJobState({Key? key,required this.tiposervicio,required this.id_tiposervicio, 
+  required this.profesion,required this.id_profesion});
 
   String busqueda = "";
 
@@ -32,10 +34,10 @@ class NavigationJobState extends State<NavigationJobScreen> {
     //print(textoBuscador);
     setState(() => busqueda = textoBuscador);
   }
-  final String? profesion;
-  final int? id_profesion;
-  final String? tiposervicio;
-  final int? id_tiposervicio;
+  final String profesion;
+  final int id_profesion;
+  final String tiposervicio;
+  final int id_tiposervicio;
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +73,7 @@ class NavigationJobState extends State<NavigationJobScreen> {
           Container(
             alignment: Alignment.topLeft,
             margin: const EdgeInsets.only(top: 10.0, left: 20.0),
-            child: Text('Profesion > $profesion > $tiposervicio', 
+            child: Text('> $profesion > $tiposervicio', 
               style: const TextStyle(
                 fontSize: 12.0,
                 color: Colors.black,
@@ -89,7 +91,7 @@ class NavigationJobState extends State<NavigationJobScreen> {
                   alignment: Alignment.topLeft,  
                   width: screenSize * 0.90,
                   child: FutureBuilder<List<Servicio>?>(
-                    future: fetchServicio(http.Client(), id_tiposervicio!, busqueda),
+                    future: fetchServicio(http.Client(), id_tiposervicio, busqueda),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
                         return const Center(
@@ -116,13 +118,14 @@ class NavigationJobState extends State<NavigationJobScreen> {
 
 class ServicioList extends StatelessWidget {
   
-  final String? profesion;
-  final int? id_profesion;
-  final String? tiposervicio;
-  final int? id_tiposervicio;
+  final String profesion;
+  final int id_profesion;
+  final String tiposervicio;
+  final int id_tiposervicio;
 
   final List<Servicio> servicio;
-  const ServicioList({Key? key, required this.servicio, this.profesion, this.id_profesion, this.tiposervicio, this.id_tiposervicio}) : super(key: key);
+  const ServicioList({Key? key,required this.servicio,required this.profesion,
+  required this.id_profesion,required this.tiposervicio,required this.id_tiposervicio}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;

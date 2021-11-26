@@ -164,8 +164,9 @@ class RegisterEmployeeScreen extends StatelessWidget{
                     getvalue3 = entrada_registro_Empleado_ContraCuenta.text.toString();
                     getvalue4 = entrada_registro_Empleado_RFCCuenta.text.toString();
                     getvalue5 = entrada_registro_Empleado_NombreCorreo.text.toString();
-                    insertarempleado(getvalue5, getvalue, getvalue2, getvalue3, getvalue4);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterEmployeeJobsScreen()));
+                   // insertarempleado(getvalue5, getvalue, getvalue2, getvalue3, getvalue4);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterEmployeeJobsScreen(nombre: getvalue,apellido: getvalue2
+                      ,contra: getvalue3,rfc: getvalue4,correo: getvalue5,)));
 
                   },
                   child: const Text('Siguiente', style: TextStyle(color: Colors.white, fontSize: 20)),

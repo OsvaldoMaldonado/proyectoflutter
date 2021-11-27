@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:servicios_vic/employee_profile_screen.dart';
+import 'package:servicios_vic/finances_employee_screen.dart';
 import 'package:servicios_vic/home_screen.dart';
 import 'package:servicios_vic/maps_employee_jobs_location_screen.dart';
 import 'package:servicios_vic/model/modelo_navegacion_empleado.dart';
@@ -126,6 +127,21 @@ class NavigationHomeEmployeeState extends State<NavigationHomeEmployeeScreen> {
               ),
               onTap: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const ServicesEmployeeScreen()));  
+              } ,
+            ),
+            ListTile(
+              title: Row(
+                children: const <Widget>[
+                  SizedBox(width: 7.0,),
+                  Icon(Icons.money,size: 30.0, color: Colors.black54),
+                  Padding(
+                    padding: EdgeInsets.only(left: 15.0),
+                    child: Text('Finanzas',style: TextStyle(fontSize: 18.0, color: Colors.black54),),
+                  )
+                ],
+              ),
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const FinancesEmployeeScreen()));  
               } ,
             ),
             ListTile(

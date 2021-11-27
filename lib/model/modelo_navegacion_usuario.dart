@@ -171,6 +171,8 @@ class Empleados {
   final String apellido;
   final String telefono;
   final String imagen;
+  final String latitud;
+  final String longitud;
 
   const Empleados({
     required this.id,
@@ -178,6 +180,8 @@ class Empleados {
     required this.apellido,
     required this.telefono,
     required this.imagen,
+    required this.latitud,
+    required this.longitud,
   });
 
   factory Empleados.fromJson(Map<String, dynamic> json) {
@@ -187,6 +191,8 @@ class Empleados {
       apellido: json['apellido'] as String,
       telefono: json['telefono'] as String,
       imagen: json['imagen'] as String,
+      latitud: json['latitud'] as String,
+      longitud: json['longitud'] as String,
     );
   }
 }

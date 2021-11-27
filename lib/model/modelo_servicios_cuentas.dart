@@ -134,3 +134,30 @@ class HistorialServiciosEmpleadoP {
     );
   }
 }
+
+Future<TotalMes?> fetchTotalMes(http.Client client, String id, String estado) async {
+    final response = await client
+      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/finanzas_empleado.php/?id=$id&estado=$estado"));
+    return compute(parseTotalMes, response.body);
+}
+
+// A function that converts a response body into a List<Categorias>.
+TotalMes? parseTotalMes(String responseBody) {
+  Map<String, dynamic> map = jsonDecode(responseBody);
+  TotalMes person = TotalMes.fromJson(map);
+  return person;
+}
+
+class TotalMes {
+  final int total;
+
+  const TotalMes({
+    required this.total,
+  });
+
+  factory TotalMes.fromJson(Map<String, dynamic> json) {
+    return TotalMes(
+      total: json['total'] as int,
+    );
+  }
+}

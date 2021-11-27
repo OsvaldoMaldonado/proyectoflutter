@@ -38,6 +38,7 @@ Future<void> userLogin(String email, String password, BuildContext context) asyn
 }
 
 insertarempleado(String correo, String nombre, String apellido, String contrasena, String RFC) async{
+  
   String theUrl = "https://proyectonunoxd.000webhostapp.com/crear_nuevo_empleado.php";
   await http.post(Uri.parse(Uri.encodeFull(theUrl)),headers: {"Accept":"application/json"},
     body: {
@@ -66,7 +67,6 @@ Future<void> loginempleado(String email, String password, BuildContext context) 
     SharedPreferences prefs = await SharedPreferences.getInstance();
                     prefs.setString('id', message);
                     prefs.setString('type','prestador');
-    print(prefs.get('id'));
     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
       const NavigationHomeEmployeeScreen()), (Route<dynamic> route) => false);
   }else{

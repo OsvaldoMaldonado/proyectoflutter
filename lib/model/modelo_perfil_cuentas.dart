@@ -17,7 +17,6 @@ User? parseUser(String responseBody) {
   return person;
 }
 
-
 class User {
   final String correo;
   final String nombre;

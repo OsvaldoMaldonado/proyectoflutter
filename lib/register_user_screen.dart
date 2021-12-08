@@ -32,7 +32,7 @@ class RegisterUserState extends State<RegisterUserScreen> {
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
-    double screenheight = MediaQuery.of(context).size.height;
+    double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       
@@ -43,7 +43,7 @@ class RegisterUserState extends State<RegisterUserScreen> {
               children: <Widget>[
                 SizedBox(
                   width: screenSize,
-                  height: screenheight * 0.10,
+                  height: screenHeight * 0.10,
                   child: const DecoratedBox(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -61,7 +61,7 @@ class RegisterUserState extends State<RegisterUserScreen> {
                   bottom : 0,
                   child: SizedBox(
                     width: screenSize,
-                    height: screenheight * 0.03,
+                    height: screenHeight * 0.03,
                     child: const DecoratedBox(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
@@ -86,10 +86,10 @@ class RegisterUserState extends State<RegisterUserScreen> {
                       fontSize: 22),
                     ),
                   ),
-                  SizedBox(height: screenheight * 0.03,),
+                  SizedBox(height: screenHeight * 0.03,),
                   SizedBox(
                       width: screenSize * 0.90,
-                      height: screenheight * 0.10,
+                      height: screenHeight * 0.10,
                       child:TextField(
                         controller: entrada_registro_NombreCorreo,
                         decoration: const InputDecoration(
@@ -98,13 +98,13 @@ class RegisterUserState extends State<RegisterUserScreen> {
                         ),
                     ),
                   ),
-                  SizedBox(height: screenheight * 0.01,),
+                  SizedBox(height: screenHeight * 0.01,),
                   Row(
                     children: <Widget>[
                       SizedBox(width: screenSize * 0.05),
                       SizedBox(
                         width: screenSize * 0.40,
-                        height: screenheight * 0.10,
+                        height: screenHeight * 0.10,
                         child:TextField(
                           controller: entrada_registro_NombreCuenta,
                           decoration: const InputDecoration(
@@ -116,7 +116,7 @@ class RegisterUserState extends State<RegisterUserScreen> {
                       SizedBox(width: screenSize * 0.05,),
                       SizedBox(
                         width: screenSize * 0.45,
-                        height: screenheight * 0.10,
+                        height: screenHeight * 0.10,
                         child:TextField(
                           controller: entrada_registro_ApellidoCuenta,
                           decoration: const InputDecoration(
@@ -126,10 +126,10 @@ class RegisterUserState extends State<RegisterUserScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: screenheight * 0.01,),
+                  SizedBox(height: screenHeight * 0.01,),
                   SizedBox(
                     width: screenSize * 0.90,
-                    height: screenheight * 0.10,
+                    height: screenHeight * 0.10,
                     child:TextField(
                       controller: entrada_registro_ContraCuenta,
                       obscureText: true,
@@ -139,10 +139,10 @@ class RegisterUserState extends State<RegisterUserScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: screenheight * 0.01,),
+                  SizedBox(height: screenHeight * 0.01,),
                   SizedBox(
                     width: screenSize * 0.90,
-                    height: screenheight * 0.10,
+                    height: screenHeight * 0.10,
                     child:const TextField(
                       obscureText: true,                      
                       decoration: InputDecoration(
@@ -151,10 +151,10 @@ class RegisterUserState extends State<RegisterUserScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: screenheight * 0.01,),
+                  SizedBox(height: screenHeight * 0.01,),
                   SizedBox(
                     width: screenSize * 0.90,
-                    height: screenheight * 0.10,
+                    height: screenHeight * 0.10,
                     child:TextField(
                       controller: entrada_registro_TelefonoCuenta,
                       decoration: const InputDecoration(
@@ -164,15 +164,15 @@ class RegisterUserState extends State<RegisterUserScreen> {
                     ),
                   ),
                   /*
-                  SizedBox(height: screenheight * 0.01,),
+                  SizedBox(height: screenHeight * 0.01,),
                   const Text("Metodo de pago", style: TextStyle(fontSize: 16),),
-                  SizedBox(height: screenheight * 0.01 ,),
+                  SizedBox(height: screenHeight * 0.01 ,),
                   Row(
                     children: <Widget>[
                       SizedBox(width: screenSize * 0.05),
                       SizedBox(
                         width: screenSize * 0.30,
-                        height: screenheight * 0.10,
+                        height: screenHeight * 0.10,
                         child: InputDecorator(
                           decoration: const InputDecoration(
                             icon: Icon(Icons.credit_card),
@@ -221,7 +221,7 @@ class RegisterUserState extends State<RegisterUserScreen> {
                         visible: visibilidad1,
                         child: SizedBox(
                           width: screenSize * 0.13,
-                          height: screenheight * 0.07,
+                          height: screenHeight * 0.07,
                           child:const TextField(
                             decoration: InputDecoration(
                               labelText: 'DD',
@@ -234,7 +234,7 @@ class RegisterUserState extends State<RegisterUserScreen> {
                         visible: visibilidad2,
                         child: SizedBox(
                           width: screenSize * 0.15,
-                          height: screenheight * 0.07,
+                          height: screenHeight * 0.07,
                           child:const TextField(
                             decoration: InputDecoration(
                               labelText: 'MM',
@@ -247,7 +247,7 @@ class RegisterUserState extends State<RegisterUserScreen> {
                         visible: visibilidad3,
                         child: SizedBox(
                           width: screenSize * 0.25,
-                          height: screenheight * 0.07,
+                          height: screenHeight * 0.07,
                           child:const TextField(
                             decoration: InputDecoration(
                               labelText: 'AAAA',
@@ -257,12 +257,12 @@ class RegisterUserState extends State<RegisterUserScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: screenheight * 0.01,),
+                  SizedBox(height: screenHeight * 0.01,),
                   Visibility(
                     visible: visibilidad4,
                     child: SizedBox(
                       width: screenSize * 0.90,
-                      height: screenheight * 0.10,
+                      height: screenHeight * 0.10,
                       child:const TextField(
                             decoration: InputDecoration(
                           labelText: 'Numero de tarjeta',
@@ -270,7 +270,7 @@ class RegisterUserState extends State<RegisterUserScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: screenheight * 0.01,),
+                  SizedBox(height: screenHeight * 0.01,),
                   */
                   OutlinedButton(
 
@@ -293,11 +293,11 @@ class RegisterUserState extends State<RegisterUserScreen> {
                         ),
                       side: const BorderSide( width: 1, color: Color(0xFFF96332),),
                         //  padding: EdgeInsets.all(60),
-                      minimumSize: Size(screenSize * 0.90, screenheight * 0.07),
+                      minimumSize: Size(screenSize * 0.90, screenHeight * 0.07),
                         backgroundColor: const Color(0xFFF96332),
                     ),
                   ),
-                  SizedBox(height: screenheight * 0.01,),
+                  SizedBox(height: screenHeight * 0.01,),
                ],
               ),
             ),

@@ -15,7 +15,7 @@ class LoginEmployeeScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
-    double screenheight = MediaQuery.of(context).size.height;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -28,7 +28,7 @@ class LoginEmployeeScreen extends StatelessWidget{
               children: <Widget>[
                 SizedBox(
                   width: screenSize,
-                  height: screenheight * 0.22,
+                  height: screenHeight * 0.22,
                   child: const DecoratedBox(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -46,7 +46,7 @@ class LoginEmployeeScreen extends StatelessWidget{
                   bottom : 0,
                   child: SizedBox(
                     width: screenSize,
-                    height: screenheight * 0.03,
+                    height: screenHeight * 0.03,
                     child: const DecoratedBox(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
@@ -65,10 +65,10 @@ class LoginEmployeeScreen extends StatelessWidget{
                   fontSize: 22),
                 ),
             ),
-            SizedBox(height: screenheight * 0.03,),
+            SizedBox(height: screenHeight * 0.03,),
             SizedBox(
               width: screenSize * 0.90,
-              height: screenheight * 0.10,
+              height: screenHeight * 0.10,
               child:TextField(
                 controller: entrada_login_Empleado_NombreCorreo,
                 decoration: const InputDecoration(
@@ -77,10 +77,10 @@ class LoginEmployeeScreen extends StatelessWidget{
                 ),
               ),
             ),
-            SizedBox(height: screenheight * 0.01,),
+            SizedBox(height: screenHeight * 0.01,),
             SizedBox(
               width: screenSize * 0.90,
-              height: screenheight * 0.10,
+              height: screenHeight * 0.10,
               child:TextField(
                 obscureText: true,
                 controller: entrada_login_Empleado_NombreContra,
@@ -90,7 +90,7 @@ class LoginEmployeeScreen extends StatelessWidget{
                 ),
               ),
             ),
-            SizedBox(height: screenheight * 0.02),
+            SizedBox(height: screenHeight * 0.02),
             OutlinedButton(
               onPressed: () async{
                 getvalue = entrada_login_Empleado_NombreContra.text.toString();
@@ -106,7 +106,7 @@ class LoginEmployeeScreen extends StatelessWidget{
                     ),
                   side: const BorderSide( width: 1, color: Color(0xFFF96332),),
                     //  padding: EdgeInsets.all(60),
-                  minimumSize: Size(screenSize * 0.90, screenheight * 0.07),
+                  minimumSize: Size(screenSize * 0.90, screenHeight * 0.07),
                     backgroundColor: const Color(0xFFF96332),
                 ),
               ),

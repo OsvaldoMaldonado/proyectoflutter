@@ -4,23 +4,138 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:servicios_vic/home_screen.dart';
+import 'package:servicios_vic/model/colors.dart';
 import 'package:servicios_vic/model/modelo_navegacion_usuario.dart';
-import 'package:servicios_vic/user_profile_screen.dart';
-import 'package:servicios_vic/services_user_screen.dart';
+import 'package:servicios_vic/screens_client/services_user_screen.dart';
+import 'package:servicios_vic/screens_client/user_profile_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'model/colors.dart';
 import 'navigation_category_screen.dart';
 
-
-class NavigationHomeScreen extends StatefulWidget{
-   const NavigationHomeScreen({Key? key}) : super(key: key);
+class NavigationHomeScreen extends StatefulWidget {
+  const NavigationHomeScreen({Key? key}) : super(key: key);
 
   @override
   NavigationHomeState createState() => NavigationHomeState();
 }
 
-
 class NavigationHomeState extends State<NavigationHomeScreen> {
+  final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+
+  int _selectedIndex = 0;
+  String _title = '¿Que necesitas hoy?';
+  String _color = 'F1F0F5';
+
+  var appBarTitleText = Text("¿Que necesitas hoy?");
+  static const List<Widget> _widgetOptions = <Widget>[
+    NavigationHomeScreenTab(),
+    UserProfileScreen(),
+    ServicesUserScreen(),
+  ];
+  
+  @override
+  Widget build(BuildContext context) {
+    void _onItemTapped(int index) {
+      setState(() {
+        _selectedIndex = index;
+        switch (index) {
+          case 0:
+            {
+              _title = '¿Que necesitas hoy?';
+              _color = 'F1F0F5';
+            }
+            break;
+          case 1:
+            {
+              _title = 'Mi perfil';
+              _color = 'F1F0F5';
+            }
+            break;
+          case 2:
+            {
+              _title = 'Historial de servicios';
+              _color = 'F1F0F5';
+            }
+            break;
+        }
+      });
+    }
+
+    @override
+    initState() {
+      _title = 'Bienvenido a Servicios Vic';
+      _color = 'F1F0F5';
+    }
+
+    return Scaffold(
+        key: _globalKey,
+        appBar: AppBar(
+          backgroundColor: HexColor(_color),
+          elevation: 0,
+          shadowColor: Colors.transparent,
+          foregroundColor: Colors.black38,
+          title: Text(
+            _title,
+            style: TextStyle(
+              fontSize: 20.0,
+              color: Colors.black,
+            ),
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.help),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () 
+                async {
+                       SharedPreferences prefs = await SharedPreferences.getInstance();
+                        prefs.remove('id');
+                        prefs.remove('type');
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (BuildContext ctx) => const HomeScreen()));
+                    
+              },
+            ),
+          ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: Color(0xFFF96332),
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home, size: 25.0, color: Color(0xFFF96332)),
+              label: 'Inicio',
+            ),
+            BottomNavigationBarItem(
+              icon:
+                  Icon(Icons.person_pin, size: 25.0, color: Color(0xFFF96332)),
+              label: 'Mi cuenta',
+            ),
+            BottomNavigationBarItem(
+              icon:
+                  Icon(Icons.access_time, size: 25.0, color: Color(0xFFF96332)),
+              label: 'Historial',
+            ),
+           
+          ],
+          currentIndex: _selectedIndex, //New
+          onTap: _onItemTapped,
+        ),
+        body: Container(
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ));
+  }
+}
+
+class NavigationHomeScreenTab extends StatefulWidget{
+   const NavigationHomeScreenTab ({Key? key}) : super(key: key);
+
+  @override
+  NavigationHomeTabState createState() => NavigationHomeTabState();
+}
+
+
+class NavigationHomeTabState extends State<NavigationHomeScreenTab> {
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
 
   String busqueda = "";
@@ -37,18 +152,11 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
   Widget build(BuildContext context) {
     
     double screenSize = MediaQuery.of(context).size.width;
-    double screenheight = MediaQuery.of(context).size.height;
+    double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       key: _globalKey,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        shadowColor: Colors.transparent,
-        foregroundColor: const Color(0xFFF96332),
-        title: const Text('¿Qué necesitas hoy?', style: TextStyle(fontSize: 20.0,color: Colors.black,),)
-      ),
-      drawer: Drawer(
+      /*drawer: Drawer(
          child: ListView(
           // Important: Remove any padding from the ListView.
           
@@ -153,7 +261,7 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
                     )
                   )
                 ),
-                Container(height: screenheight*.40,),
+                Container(height: screenHeight*.40,),
                 Container(
                   margin: const EdgeInsets.only(left: 12.0,top: 6.0),
                   child: InkWell(
@@ -177,26 +285,31 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
             ),
           ],
         ),
-      ), 
-      body: Column(
+      ), */
+      body: Container(
+      color: Color(0xFFF1F0F5),
+      child: Column(
         children: <Widget>[
-          SizedBox(height: screenheight * 0.01),
+          SizedBox(height: screenHeight * 0.01),
           Container(
             alignment: Alignment.topLeft,  
-            width: screenSize * 0.90,
-            child: TextField(
-              onSubmitted: (textoBuscador){
+            width: screenSize * 0.92,
+            height: screenHeight * 0.07,
+            child: TextFormField(
+              onFieldSubmitted: (textoBuscador){
                 setBuscador(textoBuscador);
               },
-              decoration: const InputDecoration(    
-                focusColor: Colors.grey,  
-                hintText: 'Buscar profesiones',
-                fillColor: Color(0xffe0e0e0), filled: true,
-                hintStyle: TextStyle(color: Colors.black),
-              ),  
-            )
+              decoration: const InputDecoration(
+                hintText: 'Buscar profesiones...',
+                labelText: 'Buscar profesiones...',
+                border: OutlineInputBorder(),
+                suffixIcon: Icon(
+                  Icons.search,
+                ),
+              ),
+            ),
           ),
-          SizedBox(height: screenheight * 0.01),
+          SizedBox(height: screenHeight * 0.01),
           Container(
             alignment: Alignment.topLeft,
             margin: const EdgeInsets.only(top:10, left: 20.0),
@@ -207,7 +320,7 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
                     ),
                   ),  
           ), 
-          SizedBox(height: screenheight * 0.01),
+          SizedBox(height: screenHeight * 0.01),
           Container(
             alignment: Alignment.topLeft,  
             width: screenSize * 0.90,
@@ -222,13 +335,13 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
                   return CategoriasList(categorias: snapshot.data!);
                 } else {
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFF96332))),
                   );
                 }
               },
             ),
           ),
-          SizedBox(height: screenheight * 0.01),
+          SizedBox(height: screenHeight * 0.01),
           Container(
             alignment: Alignment.topRight,
             margin: const EdgeInsets.only(top: 10.0, right: 15.0),
@@ -241,6 +354,7 @@ class NavigationHomeState extends State<NavigationHomeScreen> {
             ),
        ],
       ),
+      )
     );
   }
 }
@@ -273,10 +387,10 @@ class CategoriasList extends StatelessWidget {
             
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 2,
-                blurRadius: 3,
-                offset: const Offset(0, 3), // changes position of shadow
+                color: Colors.grey.withOpacity(0.1),
+                spreadRadius: 3,
+                blurRadius: 2,
+                offset: Offset(0, 1), // changes position of shadow
               ),
             ],
           ),
@@ -299,7 +413,7 @@ class CategoriasList extends StatelessWidget {
                     borderRadius: const BorderRadius.vertical(top: Radius.circular(20.0)),
                     color: HexColor(categorias[index].color),
                   ),
-                  child: Icon(IconData(int.parse(categorias[index].icono), fontFamily: 'MaterialIcons'), size: 40.0,),
+                  child: Icon(IconData(int.parse(categorias[index].icono)), size: 40.0,),
                 ),
                 Container(
                   padding: const EdgeInsets.only(
@@ -310,7 +424,7 @@ class CategoriasList extends StatelessWidget {
                   // ignore: prefer_const_constructors
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20.0)),
-                    color: const Color(0xffe0e0e0)
+                    color: Colors.white
                   ),  
                   child: Text(categorias[index].nombre, textAlign: TextAlign.center),
                 ),

@@ -5,9 +5,9 @@ import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:servicios_vic/navigation_home_employee_screen.dart';
+import 'package:servicios_vic/screens_client/navigation_home_screen.dart';
+import 'package:servicios_vic/screens_employee/navigation_home_employee_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../navigation_home_screen.dart';
 
 insertarusuario(String correo, String nombre, String apellido, String contrasena, String telefono) async{
   String theUrl = "https://proyectonunoxd.000webhostapp.com/crear_nuevo_usuario.php";

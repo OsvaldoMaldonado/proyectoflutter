@@ -44,7 +44,7 @@ class RegisterEmployeeJobsState extends State<RegisterEmployeeJobsScreen> {
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
-    double screenheight = MediaQuery.of(context).size.height;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -59,7 +59,7 @@ class RegisterEmployeeJobsState extends State<RegisterEmployeeJobsScreen> {
                       turns: const AlwaysStoppedAnimation(180 / 360),
                       child: SizedBox(
                         width: screenSize,
-                        height: screenheight * 0.22,
+                        height: screenHeight * 0.22,
                         child: const DecoratedBox(
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
@@ -80,7 +80,7 @@ class RegisterEmployeeJobsState extends State<RegisterEmployeeJobsScreen> {
                         turns: const AlwaysStoppedAnimation(180 / 360),
                         child: SizedBox(
                           width: screenSize,
-                          height: screenheight * 0.02,
+                          height: screenHeight * 0.02,
                           child: const DecoratedBox(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.vertical(bottom: Radius.circular(20.0)),
@@ -175,11 +175,11 @@ class RegisterEmployeeJobsState extends State<RegisterEmployeeJobsScreen> {
                     ),
                     side: const BorderSide( width: 1, color: Color(0xFFF96332),),
                     //  padding: EdgeInsets.all(60),
-                    minimumSize: Size(screenSize * 0.90, screenheight * 0.07),
+                    minimumSize: Size(screenSize * 0.90, screenHeight * 0.07),
                     backgroundColor: const Color(0xFFF96332),
                   ),
                 ),
-                SizedBox(height: screenheight * 0.04,),
+                SizedBox(height: screenHeight * 0.04,),
               ]
           )
       ),

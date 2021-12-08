@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:location/location.dart' as location;
 import 'package:geocoding/geocoding.dart';
 import 'package:servicios_vic/model/modelo_navegacion_empleado.dart';
 import 'package:http/http.dart' as http;
-import 'package:servicios_vic/navigation_change_price_employee_screen.dart';
+import 'package:servicios_vic/screens_employee/navigation_change_price_employee_screen.dart';
 
-import 'model/modelo_perfil_cuentas.dart';
+import '../model/modelo_perfil_cuentas.dart';
 
 
 class MyHomePage extends StatefulWidget {
@@ -48,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color(0xFFF1F0F5),
         elevation: 0,
         shadowColor: Colors.transparent,
         foregroundColor: const Color(0xFFF96332),
@@ -95,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       return DetallesTrabajo(detallesTrabajosEmpleado: snapshot.data!, idTrabajo: trabajoId,);
                     } else {
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFF96332))),
                       );
                     }
                   },
@@ -163,7 +164,12 @@ class DetallesTrabajoState extends State<DetallesTrabajo> {
   var locacion = "";
   final String idTrabajo;
   final TrabajosEmpleado trabajosEmpleado;
-
+ String _getCurrentDate() {
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String formatted = formatter.format(now);
+    return formatted; // something like 2013-04-20
+  }
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
@@ -263,7 +269,7 @@ class DetallesTrabajoState extends State<DetallesTrabajo> {
                     ]);
                   } else {
                     return Container(
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFF96332))),
                     );
                   }
                 },
@@ -311,7 +317,7 @@ class DetallesTrabajoState extends State<DetallesTrabajo> {
                       child: const Text('Cancel'),
                     ),
                     TextButton(
-                      onPressed: () => finalizacionContrato(http.Client(), idTrabajo, context),
+                      onPressed: () => finalizacionContrato(http.Client(), idTrabajo, context, _getCurrentDate()),
                       child: const Text('OK'),
                     ),
                   ],

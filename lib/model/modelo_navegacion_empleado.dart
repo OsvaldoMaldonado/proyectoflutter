@@ -5,7 +5,7 @@ import 'dart:core';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:servicios_vic/navigation_home_employee_screen.dart';
+import 'package:servicios_vic/screens_employee/navigation_home_employee_screen.dart';
 
 //Modelo constructor del menu de navegación de home
 Future<List<TrabajosEmpleado>?> fetchTrabajosEmpleado(http.Client client,String id, String estado) async {
@@ -35,6 +35,8 @@ class TrabajosEmpleado {
   final String apellido;
   final String telefono;
   final String nombreS;
+  final String icono;
+  final String color;
 
   const TrabajosEmpleado({
     required this.id,
@@ -48,6 +50,8 @@ class TrabajosEmpleado {
     required this.apellido,
     required this.telefono,
     required this.nombreS,
+    required this.icono,
+    required this.color
   });
   factory TrabajosEmpleado.fromJson(Map<String, dynamic> json) {
     return TrabajosEmpleado(
@@ -62,6 +66,8 @@ class TrabajosEmpleado {
       apellido: json['apellido'] as String,
       telefono: json['telefono'] as String,
       nombreS: json['nombreS'] as String,
+      icono: json['icono'] as String,
+      color: json['color'] as String
     );
   }
 }
@@ -122,9 +128,9 @@ cambioDeCosto(http.Client client,String costo, String? id,  BuildContext context
     }  
 }
 
-finalizacionContrato(http.Client client, String? id,  BuildContext context) async {
+finalizacionContrato(http.Client client, String? id,  BuildContext context, String fecha) async {
     final response = await client
-      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/finalizacion_contrato_empleado.php/?id=$id"));
+      .get(Uri.parse("https://proyectonunoxd.000webhostapp.com/finalizacion_contrato_empleado.php/?id=$id&fecha=$fecha"));
     var message = jsonDecode(response.body);
     if(message != 'Invalid'){
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>

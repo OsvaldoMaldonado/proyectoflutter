@@ -33,11 +33,11 @@ class ServiceTimeEmployeeState extends State<ServiceTimeEmployeeScreen> {
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
-    double screenheight = MediaQuery.of(context).size.height;
+    double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color(0xFFF1F0F5),
         elevation: 0,
         shadowColor: Colors.transparent,
         foregroundColor: const Color(0xFFF96332),
@@ -46,7 +46,7 @@ class ServiceTimeEmployeeState extends State<ServiceTimeEmployeeScreen> {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            SizedBox(height: screenheight * 0.01),
+            SizedBox(height: screenHeight * 0.01),
             TimeRange(
               fromTitle: const Text(
                 'Desde',
@@ -73,7 +73,7 @@ class ServiceTimeEmployeeState extends State<ServiceTimeEmployeeScreen> {
               ),
               borderColor: dark,
               activeBorderColor: dark,
-              backgroundColor: Colors.transparent,
+              backgroundColor: Color(0xFFF1F0F5),
               activeBackgroundColor: dark,
               firstTime: TimeOfDay(hour: 0, minute: 00),
               lastTime: TimeOfDay(hour: 24, minute: 00),
@@ -82,7 +82,7 @@ class ServiceTimeEmployeeState extends State<ServiceTimeEmployeeScreen> {
               timeBlock: 20,
               onRangeCompleted: (range) => setState(() => _timeRange = range),
             ),
-            SizedBox(height: screenheight * 0.02),
+            SizedBox(height: screenHeight * 0.02),
             if (_timeRange != null)
               Container(
                 child: Column(
@@ -108,7 +108,7 @@ class ServiceTimeEmployeeState extends State<ServiceTimeEmployeeScreen> {
                   borderRadius: new BorderRadius.circular(20)),
                   side: const BorderSide( width: 0.5, color: Color(0xFFF96332),),
                     //  padding: EdgeInsets.all(60),
-                  minimumSize: Size(screenSize * 0.30, screenheight * 0.05),
+                  minimumSize: Size(screenSize * 0.30, screenHeight * 0.05),
                   backgroundColor: const Color(0xFFF96332),
                 ),
               ),

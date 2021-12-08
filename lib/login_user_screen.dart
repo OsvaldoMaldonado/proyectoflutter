@@ -22,7 +22,7 @@ class LoginUserState extends State<LoginUserScreen>{
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
-    double screenheight = MediaQuery.of(context).size.height;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -35,7 +35,7 @@ class LoginUserState extends State<LoginUserScreen>{
               children: <Widget>[
                 SizedBox(
                   width: screenSize,
-                  height: screenheight * 0.22,
+                  height: screenHeight * 0.22,
                   child: const DecoratedBox(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -53,7 +53,7 @@ class LoginUserState extends State<LoginUserScreen>{
                   bottom : 0,
                   child: SizedBox(
                     width: screenSize,
-                    height: screenheight * 0.03,
+                    height: screenHeight * 0.03,
                     child: const DecoratedBox(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
@@ -72,10 +72,10 @@ class LoginUserState extends State<LoginUserScreen>{
                 fontSize: 22),
               ),
             ),
-            SizedBox(height: screenheight * 0.05,),
+            SizedBox(height: screenHeight * 0.05,),
             SizedBox(
               width: screenSize * 0.90,
-              height: screenheight * 0.10,
+              height: screenHeight * 0.10,
               child:TextField(
                 controller: entrada_login_NombreCorreo,
                 decoration: const InputDecoration(
@@ -84,10 +84,10 @@ class LoginUserState extends State<LoginUserScreen>{
                 ),
               ),
             ),
-            SizedBox(height: screenheight * 0.01,),
+            SizedBox(height: screenHeight * 0.01,),
             SizedBox(
               width: screenSize * 0.90,
-              height: screenheight * 0.10,
+              height: screenHeight * 0.10,
               child:TextField(
                 controller: entrada_login_NombreContra,
                 obscureText: true,
@@ -97,7 +97,7 @@ class LoginUserState extends State<LoginUserScreen>{
                 ),
               ),
             ),
-            SizedBox(height: screenheight * 0.03,),
+            SizedBox(height: screenHeight * 0.03,),
             OutlinedButton(
               onPressed: () async{
                 getvalue = entrada_login_NombreContra.text.toString();
@@ -111,7 +111,7 @@ class LoginUserState extends State<LoginUserScreen>{
                 ),
                 side: const BorderSide( width: 1, color: Color(0xFFF96332),),
                     //  padding: EdgeInsets.all(60),
-                minimumSize: Size(screenSize * 0.90, screenheight * 0.07),
+                minimumSize: Size(screenSize * 0.90, screenHeight * 0.07),
                 backgroundColor: const Color(0xFFF96332),
               ),
             ),

@@ -12,7 +12,7 @@ class HomeScreen extends  StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
-    double screenheight = MediaQuery.of(context).size.height;
+    double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -27,7 +27,7 @@ class HomeScreen extends  StatelessWidget {
               children: <Widget>[
                 SizedBox(
                   width: screenSize,
-                  height: screenheight * 0.22,
+                  height: screenHeight * 0.22,
                   child: const DecoratedBox(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -45,7 +45,7 @@ class HomeScreen extends  StatelessWidget {
                   bottom : 0,
                   child: SizedBox(
                     width: screenSize,
-                    height: screenheight * 0.03,
+                    height: screenHeight * 0.03,
                     child: const DecoratedBox(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
@@ -64,7 +64,7 @@ class HomeScreen extends  StatelessWidget {
                 fontSize: 22,),
               ),
             ),
-            SizedBox(height: screenheight * 0.04,),
+            SizedBox(height: screenHeight * 0.04,),
             OutlinedButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterUserScreen()));
@@ -79,11 +79,11 @@ class HomeScreen extends  StatelessWidget {
                   ),
                 side: const BorderSide( width: 1, color: Color(0xffe0e0e0),),
                   //  padding: EdgeInsets.all(60),
-                minimumSize: Size(screenSize * 0.90, screenheight * 0.07),
+                minimumSize: Size(screenSize * 0.90, screenHeight * 0.07),
                   backgroundColor: const Color(0xffe0e0e0),
               ),
             ),
-            SizedBox(height: screenheight * 0.01,),
+            SizedBox(height: screenHeight * 0.01,),
             OutlinedButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginUserScreen()));
@@ -98,11 +98,11 @@ class HomeScreen extends  StatelessWidget {
                   ),
                 side: const BorderSide( width: 1, color: Color(0xffe0e0e0),),
                   //  padding: EdgeInsets.all(60),
-                minimumSize: Size(screenSize * 0.90, screenheight * 0.07),
+                minimumSize: Size(screenSize * 0.90, screenHeight * 0.07),
                   backgroundColor: const Color(0xffe0e0e0),
               ),
             ),
-            SizedBox(height: screenheight * 0.01,),
+            SizedBox(height: screenHeight * 0.01,),
             OutlinedButton(
               onPressed: () {
 
@@ -117,18 +117,18 @@ class HomeScreen extends  StatelessWidget {
                   ),
                 side: const BorderSide( width: 1, color: Color(0xffe0e0e0),),
                   //  padding: EdgeInsets.all(60),
-                minimumSize: Size(screenSize * 0.90, screenheight * 0.07),
+                minimumSize: Size(screenSize * 0.90, screenHeight * 0.07),
                   backgroundColor: const Color(0xffe0e0e0),
               ),
             ),
-            SizedBox(height:screenheight * 0.04,),
+            SizedBox(height:screenHeight * 0.04,),
             const Divider(
               color: Color(0xFFF96332),
               thickness: 2.0,
               indent: 20,
               endIndent: 20,
             ),
-            SizedBox(height:screenheight * 0.04,),
+            SizedBox(height:screenHeight * 0.04,),
             OutlinedButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterEmployeeScreen()));
@@ -143,12 +143,12 @@ class HomeScreen extends  StatelessWidget {
                   ),
                 side: const BorderSide( width: 1, color: Color(0xffe0e0e0),),
                   //  padding: EdgeInsets.all(60),
-                minimumSize: Size(screenSize * 0.90, screenheight * 0.07),
+                minimumSize: Size(screenSize * 0.90, screenHeight * 0.07),
                   backgroundColor: const Color(0xffe0e0e0),
               ),
             ),
             
-            SizedBox(height:screenheight * 0.01,),
+            SizedBox(height:screenHeight * 0.01,),
             OutlinedButton(
 
               onPressed: () {
@@ -165,7 +165,7 @@ class HomeScreen extends  StatelessWidget {
                   ),
                 side: const BorderSide( width: 1, color: Color(0xffe0e0e0),),
                   //  padding: EdgeInsets.all(60),
-                minimumSize: Size(screenSize * 0.90, screenheight * 0.07),
+                minimumSize: Size(screenSize * 0.90, screenHeight * 0.07),
                   backgroundColor: const Color(0xffe0e0e0),
               ),
             ),

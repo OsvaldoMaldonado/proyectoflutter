@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:servicios_vic/home_screen.dart';
-import 'package:servicios_vic/navigation_home_employee_screen.dart';
-import 'package:servicios_vic/navigation_home_screen.dart';
+import 'package:servicios_vic/screens_client/navigation_home_screen.dart';
+import 'package:servicios_vic/screens_employee/navigation_home_employee_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,10 +15,12 @@ void main() async {
       DeviceOrientation.portraitDown,
     ]);
 
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor:  Colors.transparent,
       systemNavigationBarDividerColor: Colors.black, // navigation bar color
-      statusBarColor: Color(0xfff96332), // status bar color
+      statusBarColor: Colors.white.withOpacity(0.0), // status bar color
+      statusBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.light,
     ));
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -40,8 +42,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'ServiciosVic',
       debugShowCheckedModeBanner: false,
+
       theme: ThemeData(
-        textTheme: GoogleFonts.robotoTextTheme(
+        textTheme: GoogleFonts.montserratTextTheme(
           Theme.of(context).textTheme,
         ),
         platform: TargetPlatform.android,

@@ -3,7 +3,7 @@ import 'dart:core';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:servicios_vic/navigation_home_screen.dart';
+import 'package:servicios_vic/screens_client/navigation_home_screen.dart';
 
 //Modelo constructor del menu de navegación de home
 Future<List<Categorias>?> fetchCategorias(http.Client client, String nombre) async {

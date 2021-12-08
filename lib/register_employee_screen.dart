@@ -19,7 +19,7 @@ class RegisterEmployeeScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
-    double screenheight = MediaQuery.of(context).size.height;
+    double screenHeight = MediaQuery.of(context).size.height;
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -34,7 +34,7 @@ class RegisterEmployeeScreen extends StatelessWidget{
               children: <Widget>[
                 SizedBox(
                   width: screenSize,
-                  height: screenheight * 0.10,
+                  height: screenHeight * 0.10,
                   child: const DecoratedBox(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -52,7 +52,7 @@ class RegisterEmployeeScreen extends StatelessWidget{
                   bottom : 0,
                   child: SizedBox(
                     width: screenSize,
-                    height: screenheight * 0.03,
+                    height: screenHeight * 0.03,
                     child: const DecoratedBox(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
@@ -77,10 +77,10 @@ class RegisterEmployeeScreen extends StatelessWidget{
                     fontSize: 22),
                   ),
                 ),
-                SizedBox(height: screenheight * 0.04,),
+                SizedBox(height: screenHeight * 0.04,),
                 SizedBox(
                   width: screenSize * 0.90,
-                  height: screenheight * 0.10,
+                  height: screenHeight * 0.10,
                   child:TextField(
                     controller: entrada_registro_Empleado_NombreCorreo,
                     decoration: const InputDecoration(
@@ -89,13 +89,13 @@ class RegisterEmployeeScreen extends StatelessWidget{
                     ),
                   ),
                 ),
-                SizedBox(height: screenheight * 0.01,),
+                SizedBox(height: screenHeight * 0.01,),
                 Row(
                   children: <Widget>[
                     SizedBox(width: screenSize * 0.05),
                     SizedBox(
                       width: screenSize * 0.40,
-                      height: screenheight * 0.10,
+                      height: screenHeight * 0.10,
 
                       child:TextField(
                         controller: entrada_registro_Empleado_NombreCuenta,
@@ -108,7 +108,7 @@ class RegisterEmployeeScreen extends StatelessWidget{
                     SizedBox(width: screenSize * 0.05),
                     SizedBox(
                       width: screenSize * 0.45,
-                      height: screenheight * 0.10,
+                      height: screenHeight * 0.10,
                       child:TextField(
                         controller: entrada_registro_Empleado_ApellidoCuenta,
                          decoration: const InputDecoration(
@@ -118,10 +118,10 @@ class RegisterEmployeeScreen extends StatelessWidget{
                     ),
                   ],
                 ),
-                SizedBox(height: screenheight * 0.01,),
+                SizedBox(height: screenHeight * 0.01,),
                 SizedBox(
                   width: screenSize * 0.90,
-                  height: screenheight * 0.10,
+                  height: screenHeight * 0.10,
                   child:TextField(
                     controller: entrada_registro_Empleado_ContraCuenta,
                     obscureText: true,
@@ -131,10 +131,10 @@ class RegisterEmployeeScreen extends StatelessWidget{
                     ),
                   ),
                 ),
-                SizedBox(height: screenheight * 0.01,),
+                SizedBox(height: screenHeight * 0.01,),
                 SizedBox(
                   width: screenSize * 0.90,
-                  height: screenheight * 0.10,
+                  height: screenHeight * 0.10,
                   child:const TextField(
                     obscureText: true,
                      decoration: InputDecoration(
@@ -143,10 +143,10 @@ class RegisterEmployeeScreen extends StatelessWidget{
                     ),
                   ),
                 ),
-                SizedBox(height: screenheight * 0.01,),
+                SizedBox(height: screenHeight * 0.01,),
                 SizedBox(
                   width: screenSize * 0.90,
-                  height: screenheight * 0.10,
+                  height: screenHeight * 0.10,
                   child:TextField(
                     controller: entrada_registro_Empleado_RFCCuenta,
                      decoration: const InputDecoration(
@@ -155,7 +155,7 @@ class RegisterEmployeeScreen extends StatelessWidget{
                     ),
                   ),
                 ),
-                SizedBox(height: screenheight * 0.01,),
+                SizedBox(height: screenHeight * 0.01,),
                 OutlinedButton(
 
                   onPressed: () {
@@ -178,11 +178,11 @@ class RegisterEmployeeScreen extends StatelessWidget{
                         ),
                       side: const BorderSide( width: 1, color: Color(0xFFF96332),),
                         //  padding: EdgeInsets.all(60),
-                      minimumSize: Size(screenSize * 0.90, screenheight * 0.07),
+                      minimumSize: Size(screenSize * 0.90, screenHeight * 0.07),
                         backgroundColor: const Color(0xFFF96332),
                     ),
                   ),
-                SizedBox(height: screenheight * 0.01,),
+                SizedBox(height: screenHeight * 0.01,),
                 ],
               ),  
             ),

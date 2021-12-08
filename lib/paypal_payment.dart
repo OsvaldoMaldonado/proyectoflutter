@@ -198,7 +198,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
           backgroundColor: Colors.black12,
           elevation: 0.0,
         ),
-        body: Center(child: Container(child: CircularProgressIndicator())),
+        body: Center(child: Container(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFF96332))))),
       );
     }
   }

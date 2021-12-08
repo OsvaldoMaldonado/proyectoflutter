@@ -31,11 +31,11 @@ class NavigationChangePriceState extends State<NavigationChangePriceScreen> {
   Widget build(BuildContext context) {
 
     double screenSize = MediaQuery.of(context).size.width;
-    double screenheight = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color(0xFFF1F0F5),
         elevation: 0,
         shadowColor: Colors.transparent,
         foregroundColor: const Color(0xFFF96332),
@@ -75,14 +75,14 @@ class NavigationChangePriceState extends State<NavigationChangePriceScreen> {
                   //return Text(snapshot.data!.correo);
                 } else {
                   return Container(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFF96332))),
                   );
                 }
               },
             ),
             SizedBox(
               width: screenSize * 0.90,
-              height: screenheight * 0.10,
+              height: screenHeight * 0.10,
               child:TextField(
                 controller: nuevoPrecio,
                 decoration: const InputDecoration(
@@ -106,7 +106,7 @@ class NavigationChangePriceState extends State<NavigationChangePriceScreen> {
                     borderRadius: BorderRadius.circular(5)),
                     side: const BorderSide( width: 0.5, color: Color(0xFFF96332),),
                       //  padding: EdgeInsets.all(60),
-                    minimumSize: Size(screenSize * 0.40, screenheight * 0.1),
+                    minimumSize: Size(screenSize * 0.40, screenHeight * 0.1),
                     backgroundColor: const Color(0xFFF96332),
                   ),  
                 ),
